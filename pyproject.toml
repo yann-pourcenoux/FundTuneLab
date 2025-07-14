@@ -1,0 +1,12 @@
+[project]
+name = "fundtunelab"
+version = "0.1.0"
+description = "A personal exploration of Python libraries for investment portfolio optimization, applied to real-world fund allocation"
+readme = "README.md"
+requires-python = ">=3.8"
+dependencies = []
+
+[dependency-groups]
+dev = [
+    "ruff>=0.12.3",
+]

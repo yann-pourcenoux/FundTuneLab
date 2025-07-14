@@ -1,0 +1,585 @@
+{
+  "master": {
+    "tasks": [
+      {
+        "id": 1,
+        "title": "Setup Project Repository and Environment",
+        "description": "Establish the project structure, initialize uv package management, and configure the directory layout as described in the PRD.",
+        "details": "Create the initial folder structure (data/, src/, results/, config/, notebooks/). Initialize a git repository and set up uv for dependency management ensuring Python 3.8+ is used. Document installation steps in README.md.\n<info added on 2025-07-14T11:49:00.791Z>\nSuccessfully completed all setup requirements. The directory structure now includes additional subdirectories: data/{raw, processed, external} and results/{optimizations, backtests, reports, plots}, with each folder accompanied by a README detailing its purpose. The uv package management is set up using \"uv init --python 3.13\" with a properly configured pyproject.toml that enforces the Python 3.8+ requirement, and a virtual environment located at .venv/ has been created. Dependency management was verified with a successful \"uv sync\" run. Project documentation has been updated in README.md to include comprehensive installation instructions, usage examples for uv commands, an overview of the project structure, and prerequisites. Additionally, the src directory has been transformed into a proper Python package by adding an __init__.py file.\n</info added on 2025-07-14T11:49:00.791Z>",
+        "testStrategy": "Verify the structure exists, uv dependency management works, and running a 'uv install' command successfully installs required packages.",
+        "priority": "high",
+        "dependencies": [],
+        "status": "done",
+        "subtasks": []
+      },
+      {
+        "id": 2,
+        "title": "Implement Configuration Management Module",
+        "description": "Create a centralized settings module to standardize configuration parameters for data sources, optimization parameters, and output paths.",
+        "details": "Develop config/settings.py containing necessary configuration variables (e.g., asset lists, date ranges, file paths). Use environment variables if needed for sensitive data. Ensure consistent format across modules.",
+        "testStrategy": "Test by importing the module in a dummy script and printing configuration values. Validate that changing parameters in settings.py reflects across different modules.",
+        "priority": "high",
+        "dependencies": [
+          1
+        ],
+        "status": "pending",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Create config/settings.py with standardized parameters",
+            "description": "Develop a configuration file (config/settings.py) that includes standardized parameters for data sources, optimization settings, and output paths.",
+            "dependencies": [],
+            "details": "Include sample default values, clear comments for each parameter, and ensure a consistent structure that can be accessed across modules.",
+            "status": "pending",
+            "testStrategy": ""
+          },
+          {
+            "id": 2,
+            "title": "Integrate environment variable management",
+            "description": "Implement a secure method to manage sensitive data by integrating environment variable management within the configuration module.",
+            "dependencies": [
+              1
+            ],
+            "details": "Utilize libraries such as python-dotenv or os.environ to retrieve sensitive data, and ensure proper documentation on setting environment variables.",
+            "status": "pending",
+            "testStrategy": ""
+          },
+          {
+            "id": 3,
+            "title": "Implement configuration consistency tests",
+            "description": "Develop tests to ensure that configuration values in config/settings.py are consistent and correctly loaded across all modules.",
+            "dependencies": [
+              1,
+              2
+            ],
+            "details": "Create a dummy script or unit tests that import the configuration file and verify that parameter changes are reflected in dependent modules.",
+            "status": "pending",
+            "testStrategy": ""
+          }
+        ]
+      },
+      {
+        "id": 3,
+        "title": "Develop Data Collection Pipeline",
+        "description": "Implement the data collection flow using yfinance to download historical OHLCV data for specified assets.",
+        "details": "Create src/data_collection.py that uses the yfinance library to download data for assets defined in config/settings.py, saving the raw data in data/raw/ folder. Handle API errors, rate limits, and include logging for failures.",
+        "testStrategy": "Run the script with a test asset list and validate that CSV files are created in the raw data folder with correct date indexing. Check for successful error handling on invalid asset symbols.",
+        "priority": "high",
+        "dependencies": [
+          1,
+          2
+        ],
+        "status": "pending",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Set Up yfinance API Calls",
+            "description": "Configure yfinance API integration for downloading historical OHLCV data.",
+            "dependencies": [],
+            "details": "Import the yfinance library, set up asset symbols based on config/settings.py, and validate the API connection with basic API requests.",
+            "status": "pending",
+            "testStrategy": ""
+          },
+          {
+            "id": 2,
+            "title": "Handle API Errors and Rate Limiting",
+            "description": "Implement robust error handling for API issues including rate limits and connectivity errors.",
+            "dependencies": [
+              1
+            ],
+            "details": "Add try-except blocks around API calls, detect HTTP errors or rate-limit responses, and design reconnection/backoff strategies to ensure reliable data downloads.",
+            "status": "pending",
+            "testStrategy": ""
+          },
+          {
+            "id": 3,
+            "title": "Implement Data Download and CSV Creation Logic",
+            "description": "Develop functionality to download historical asset data and store it in CSV format.",
+            "dependencies": [
+              1,
+              2
+            ],
+            "details": "Retrieve historical data using yfinance, process the downloaded data for accuracy, and save the output as CSV files in the data/raw/ folder. Validate CSV output meets date indexing requirements.",
+            "status": "pending",
+            "testStrategy": ""
+          },
+          {
+            "id": 4,
+            "title": "Integrate Logging for Error Tracking",
+            "description": "Set up logging to monitor and record errors and API call statuses during data collection.",
+            "dependencies": [
+              1,
+              2,
+              3
+            ],
+            "details": "Integrate Python logging library to capture API call statuses, error messages, and exceptions. Ensure logs are stored in a log file for future debugging and analytics.",
+            "status": "pending",
+            "testStrategy": ""
+          }
+        ]
+      },
+      {
+        "id": 4,
+        "title": "Implement Data Cleaning and Preprocessing",
+        "description": "Create scripts to validate, clean, and preprocess the downloaded data ensuring consistency across different date ranges.",
+        "details": "Develop preprocessing functions in data_collection.py or a separate module to handle missing values, filter outliers, standardize date formats, and save processed data to data/processed/.",
+        "testStrategy": "Run preprocessing on raw data and validate that processed files contain no missing dates, consistent date format, and cleaned numerical values. Use assertions for data integrity in test cases.",
+        "priority": "high",
+        "dependencies": [
+          3
+        ],
+        "status": "pending",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Identify and Handle Missing Values",
+            "description": "Scan through the dataset to detect missing values and apply appropriate handling techniques such as imputation or deletion.",
+            "dependencies": [],
+            "details": "Implement functions to check for null or NaN values in key columns. Define rules for imputation and log any dropped rows.",
+            "status": "pending",
+            "testStrategy": ""
+          },
+          {
+            "id": 2,
+            "title": "Filter Out Outliers",
+            "description": "Analyze numerical data to identify and filter out outliers that may skew results.",
+            "dependencies": [
+              1
+            ],
+            "details": "Utilize statistical methods or visual inspection (e.g., using IQR or Z-score thresholds) to detect outliers and remove or transform them as necessary.",
+            "status": "pending",
+            "testStrategy": ""
+          },
+          {
+            "id": 3,
+            "title": "Standardize Date Formats",
+            "description": "Convert all date fields into a consistent format to ensure data uniformity across different datasets.",
+            "dependencies": [
+              1,
+              2
+            ],
+            "details": "Parse various date formats into one standard (e.g., YYYY-MM-DD) using date utilities. Validate that no date is left in an incorrect format.",
+            "status": "pending",
+            "testStrategy": ""
+          },
+          {
+            "id": 4,
+            "title": "Save Processed Data with Integrity Checks",
+            "description": "Output the cleaned and preprocessed data ensuring that integrity checks are in place to validate the saved dataset.",
+            "dependencies": [
+              1,
+              2,
+              3
+            ],
+            "details": "Save the data to the specified path (data/processed/) and include automated integrity checks such as verifying date ranges, non-null constraints, and acceptable numerical ranges.",
+            "status": "pending",
+            "testStrategy": ""
+          }
+        ]
+      },
+      {
+        "id": 5,
+        "title": "Implement PyPortfolioOpt Optimizer Module",
+        "description": "Build the portfolio optimization module using PyPortfolioOpt to perform mean-variance optimization and related strategies as specified.",
+        "details": "Develop src/pypfopt_optimizer.py module which loads preprocessed data, applies mean-variance optimization, calculates efficient frontier, and generates portfolio weights. Ensure output in standardized JSON/CSV format saved in results/portfolios/.",
+        "testStrategy": "Run the optimizer with sample data and verify the generated portfolio weights are valid (sum to 1, non-negative). Compare against known benchmarks from documentation examples.",
+        "priority": "medium",
+        "dependencies": [
+          4
+        ],
+        "status": "pending",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Load Preprocessed Data",
+            "description": "Retrieve and load the preprocessed data needed for optimization from the data/processed/ directory.",
+            "dependencies": [],
+            "details": "Ensure that the data meets quality checks such as proper date formats and absence of null values before proceeding.",
+            "status": "pending",
+            "testStrategy": ""
+          },
+          {
+            "id": 2,
+            "title": "Implement Mean-Variance Optimization Logic with PyPortfolioOpt",
+            "description": "Develop the core logic to apply mean-variance optimization using the PyPortfolioOpt library.",
+            "dependencies": [
+              1
+            ],
+            "details": "Integrate the library functions to compute the optimal portfolio weights based on risk-return metrics, ensuring compatibility with provided preprocessed data.",
+            "status": "pending",
+            "testStrategy": ""
+          },
+          {
+            "id": 3,
+            "title": "Calculate the Efficient Frontier",
+            "description": "Compute the efficient frontier from the optimization results to identify the best risk-return trade-offs.",
+            "dependencies": [
+              2
+            ],
+            "details": "Use PyPortfolioOpt capabilities to generate multiple portfolio setups along the frontier and cross-check with benchmark values for validation.",
+            "status": "pending",
+            "testStrategy": ""
+          },
+          {
+            "id": 4,
+            "title": "Format Output to JSON/CSV Files with Validations",
+            "description": "Export the optimization results and efficient frontier data into JSON and CSV formats, ensuring data integrity.",
+            "dependencies": [
+              3
+            ],
+            "details": "Validate the formatting to ensure the outputs adhere to the standardized schema, including checks for summed weights and non-negative values, and save them in the results/portfolios/ directory.",
+            "status": "pending",
+            "testStrategy": ""
+          }
+        ]
+      },
+      {
+        "id": 6,
+        "title": "Implement Riskfolio-Lib Optimizer Module",
+        "description": "Develop the optimizer module using Riskfolio-Lib focusing on risk parity and advanced risk management strategies.",
+        "details": "Develop src/riskfolio_optimizer.py to load processed data, apply risk parity optimization, and generate corresponding portfolio weights. Standardize the output to match the format used by the other optimizers.",
+        "testStrategy": "Test the module with sample data verifying that portfolio weights satisfy risk parity properties. Validate against known Riskfolio-Lib outputs and check sum consistency.",
+        "priority": "medium",
+        "dependencies": [
+          4
+        ],
+        "status": "pending",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Load and Verify Processed Data",
+            "description": "Load the processed data from the data storage and verify its integrity.",
+            "dependencies": [],
+            "details": "Implement functions to read the processed data file, perform data integrity checks such as missing values, date consistency, and basic statistics validation.",
+            "status": "pending",
+            "testStrategy": ""
+          },
+          {
+            "id": 2,
+            "title": "Apply Risk Parity Optimization with Riskfolio-Lib",
+            "description": "Utilize the Riskfolio-Lib library to perform risk parity optimization on the processed data.",
+            "dependencies": [
+              1
+            ],
+            "details": "Implement the optimization routine using Riskfolio-Lib. Ensure the function integrates the processed data correctly, applies risk parity strategy, and generates preliminary weights.",
+            "status": "pending",
+            "testStrategy": ""
+          },
+          {
+            "id": 3,
+            "title": "Ensure Output Format Consistency",
+            "description": "Standardize the output format of the optimizer to ensure consistency with other modules.",
+            "dependencies": [
+              2
+            ],
+            "details": "Develop output routines that convert the results into a standardized JSON/CSV format, aligning with the format used by other optimizer modules in the project.",
+            "status": "pending",
+            "testStrategy": ""
+          },
+          {
+            "id": 4,
+            "title": "Validate that Weights Follow Risk Parity Principles",
+            "description": "Verify that the portfolio weights produced adhere to risk parity properties.",
+            "dependencies": [
+              3
+            ],
+            "details": "Implement tests to check that the weights meet criteria such as normalization (sum to 1) and equal risk contributions across assets. Compare outputs against known Riskfolio-Lib benchmarks.",
+            "status": "pending",
+            "testStrategy": ""
+          }
+        ]
+      },
+      {
+        "id": 7,
+        "title": "Implement Eiten Optimizer Module",
+        "description": "Build the portfolio construction module using the Eiten library focusing on statistical methods for portfolio optimization.",
+        "details": "Create src/eiten_optimizer.py which extracts processed data, applies statistical portfolio construction methods provided by Eiten, and outputs portfolio weights. Ensure data interface consistency with other optimizer modules.",
+        "testStrategy": "Execute the optimizer with test data to validate output weights, ensuring normalization and proper allocation. Compare outputs with expected patterns based on the Eiten library documentation.",
+        "priority": "medium",
+        "dependencies": [
+          4
+        ],
+        "status": "pending",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Extract Processed Data",
+            "description": "Develop functions to load and extract processed data from the preprocessing outputs, ensuring compatibility with Eiten Optimizer module standards.",
+            "dependencies": [],
+            "details": "Utilize the cleaned and preprocessed data from the Data Cleaning and Preprocessing module; establish a clear data interface for downstream analysis.",
+            "status": "pending",
+            "testStrategy": ""
+          },
+          {
+            "id": 2,
+            "title": "Apply Statistical Methods Using Eiten",
+            "description": "Implement statistical methods provided by the Eiten library on the extracted data to prepare for portfolio optimization.",
+            "dependencies": [
+              1
+            ],
+            "details": "Integrate Eiten library functions, perform statistical calculations, and validate that the method outputs align with expected theoretical values.",
+            "status": "pending",
+            "testStrategy": ""
+          },
+          {
+            "id": 3,
+            "title": "Normalize and Allocate Portfolio Weights",
+            "description": "Ensure that the generated portfolio weights are normalized and allocated correctly ensuring total sum equals 1 and comply with optimization constraints.",
+            "dependencies": [
+              2
+            ],
+            "details": "Apply normalization techniques after statistical processing; adjust weights to match desired portfolio allocation criteria and maintain consistency with optimization requirements.",
+            "status": "pending",
+            "testStrategy": ""
+          },
+          {
+            "id": 4,
+            "title": "Cross-Verify Results with Documentation",
+            "description": "Cross-check the output from the optimizer with the Eiten library documentation and known benchmarks to ensure validity.",
+            "dependencies": [
+              3
+            ],
+            "details": "Use documentation guidelines to validate consistency of outputs; incorporate regression tests comparing generated results with expected patterns provided by the Eiten documentation.",
+            "status": "pending",
+            "testStrategy": ""
+          }
+        ]
+      },
+      {
+        "id": 8,
+        "title": "Develop Portfolio Comparison Engine",
+        "description": "Implement an analysis engine to compare and visualize differences between portfolio allocations from each optimization module.",
+        "details": "Develop src/comparison.py module that reads portfolio weights from results/portfolios/, calculates correlations, discrepancies, and generates visualizations (charts, tables) using matplotlib. Include functions to generate CSV/JSON reports.",
+        "testStrategy": "Validate by running the comparison engine on sample optimizers outputs. Check that correlation matrices and difference metrics are accurately computed and visualizations correctly rendered.",
+        "priority": "medium",
+        "dependencies": [
+          5,
+          6,
+          7
+        ],
+        "status": "pending",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Read Portfolio Data",
+            "description": "Develop functions to load and read portfolio weights from the results/portfolios/ directory.",
+            "dependencies": [],
+            "details": "Ensure robust file handling and logging for missing or corrupted data files.",
+            "status": "pending",
+            "testStrategy": ""
+          },
+          {
+            "id": 2,
+            "title": "Calculate Correlation and Difference Metrics",
+            "description": "Compute statistical correlation matrices and difference metrics between portfolio allocations for comparison.",
+            "dependencies": [
+              1
+            ],
+            "details": "Utilize pandas and numpy to perform the computation; verify calculations with sample data.",
+            "status": "pending",
+            "testStrategy": ""
+          },
+          {
+            "id": 3,
+            "title": "Generate Visualizations with Matplotlib",
+            "description": "Create graphs and charts to visually represent correlations and differences in portfolio allocations.",
+            "dependencies": [
+              2
+            ],
+            "details": "Implement visualization functions using matplotlib; focus on clarity and accuracy of the rendered charts.",
+            "status": "pending",
+            "testStrategy": ""
+          },
+          {
+            "id": 4,
+            "title": "Compile CSV/JSON Reports",
+            "description": "Develop reporting functions to output the computed metrics and visualizations into CSV and JSON formats.",
+            "dependencies": [
+              2
+            ],
+            "details": "Ensure the reports include both numeric metrics and references to the generated visual assets.",
+            "status": "pending",
+            "testStrategy": ""
+          },
+          {
+            "id": 5,
+            "title": "Validate Computed Metrics Against Sample Data",
+            "description": "Design and execute tests to confirm that the correlation, difference metrics, and visualizations are accurate.",
+            "dependencies": [
+              2,
+              3,
+              4
+            ],
+            "details": "Use a set of predefined sample outputs to validate the results; include assertions and comparators in the test suite.",
+            "status": "pending",
+            "testStrategy": ""
+          }
+        ]
+      },
+      {
+        "id": 9,
+        "title": "Integrate Backtesting Analysis",
+        "description": "Integrate existing backtesting capabilities to evaluate the performance of generated portfolios under historical market conditions.",
+        "details": "Implement integration in a new or existing module (e.g., src/backtesting.py) that applies a backtesting framework (from one of the libraries or a dedicated package) to portfolios from optimizers. Calculate performance metrics such as returns, volatility, Sharpe ratio, and maximum drawdown, saving the results in results/backtests/.",
+        "testStrategy": "Run backtesting on generated portfolio weights and verify against historical market data. Validate the resulting performance metrics against expected benchmarks provided in the PRD.",
+        "priority": "medium",
+        "dependencies": [
+          5,
+          6,
+          7
+        ],
+        "status": "pending",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Select and Set Up Backtesting Framework",
+            "description": "Research available backtesting frameworks and select one that fits the project requirements. Set up the development environment for its integration.",
+            "dependencies": [],
+            "details": "Evaluate libraries or packages for backtesting, consider ease of integration with existing optimizer modules, and ensure compatibility with historical data sources.",
+            "status": "pending",
+            "testStrategy": ""
+          },
+          {
+            "id": 2,
+            "title": "Integrate Backtesting Module",
+            "description": "Develop or modify the module (e.g., src/backtesting.py) to integrate the chosen backtesting framework with the current system.",
+            "dependencies": [
+              1
+            ],
+            "details": "Connect the backtesting framework to pull in portfolio weights from the optimizer outputs and initialize configurations for running simulations.",
+            "status": "pending",
+            "testStrategy": ""
+          },
+          {
+            "id": 3,
+            "title": "Implement Performance Metric Calculations",
+            "description": "Code the calculations for key performance metrics such as returns, volatility, Sharpe ratio, and maximum drawdown within the backtesting module.",
+            "dependencies": [
+              2
+            ],
+            "details": "Use the historical market data alongside the simulation results to compute each metric accurately, and ensure the results are formatted for further analysis.",
+            "status": "pending",
+            "testStrategy": ""
+          },
+          {
+            "id": 4,
+            "title": "Link Optimizer Outputs to Backtest Analysis",
+            "description": "Integrate the portfolio weights generated by optimizers into the backtest module, ensuring a smooth data flow between components.",
+            "dependencies": [
+              3
+            ],
+            "details": "Establish data pipelines or function calls to pass optimizer outputs into the backtesting process and prepare the results for further analysis.",
+            "status": "pending",
+            "testStrategy": ""
+          },
+          {
+            "id": 5,
+            "title": "Verify Backtesting Results Against Historical Data",
+            "description": "Develop test scripts and routines to run backtesting on generated portfolios and compare performance metrics against historical benchmarks.",
+            "dependencies": [
+              4
+            ],
+            "details": "Implement tests using sample portfolio weights and historical market data to validate that computed metrics meet expected thresholds and behavior.",
+            "status": "pending",
+            "testStrategy": ""
+          }
+        ]
+      },
+      {
+        "id": 10,
+        "title": "Final End-to-End Integration and Reporting",
+        "description": "Integrate all components to create a complete workflow from data collection, optimization, comparison, and backtesting, and generate final reports.",
+        "details": "Compose a master script or set of scripts that sequentially execute the data collection, preprocessing, optimization modules for all three libraries, comparison engine, and backtesting analysis. Ensure outputs are written in readable formats (CSV, JSON) to results/reports/. Additionally, include a command-line interface for user invocation.",
+        "testStrategy": "Perform an end-to-end test using a sample configuration to ensure each step works sequentially. Validate that final reports contain all expected sections such as portfolio allocations, comparison charts, and backtesting performance metrics.",
+        "priority": "high",
+        "dependencies": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9
+        ],
+        "status": "pending",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Develop Master Orchestration Script",
+            "description": "Create a master script that sequentially executes data collection, preprocessing, optimizers, comparison, and backtesting modules.",
+            "dependencies": [],
+            "details": "Implement orchestration logic that calls each component in order. Ensure that outputs from one module are properly passed as inputs to the next. Use logging to record each stage's completion.",
+            "status": "pending",
+            "testStrategy": ""
+          },
+          {
+            "id": 2,
+            "title": "Integrate Outputs into Unified Report",
+            "description": "Merge outputs from data collection, preprocessing, optimizers, comparison, and backtesting into a single, cohesive report.",
+            "dependencies": [
+              1
+            ],
+            "details": "Design a reporting module that aggregates results into CSV and JSON formats under the results/reports/ directory. Ensure each section of the report (portfolio allocations, comparison charts, backtesting metrics) is clearly delineated.",
+            "status": "pending",
+            "testStrategy": ""
+          },
+          {
+            "id": 3,
+            "title": "Implement Command-Line Interface (CLI)",
+            "description": "Develop a CLI to invoke the master orchestration script easily, allowing users to pass configuration options.",
+            "dependencies": [
+              1,
+              2
+            ],
+            "details": "Build the CLI using a framework such as argparse. Ensure the CLI accepts parameters for configuration files and any runtime options. Provide help messages and usage instructions.",
+            "status": "pending",
+            "testStrategy": ""
+          },
+          {
+            "id": 4,
+            "title": "Integrate Logging and Error Handling",
+            "description": "Enhance the master workflow with robust logging and error handling to improve traceability and resilience.",
+            "dependencies": [
+              1
+            ],
+            "details": "Implement a logging mechanism to record the progress and errors during each stage of the process. Set up error handlers to catch and report failures, ensuring the process can either retry or exit gracefully.",
+            "status": "pending",
+            "testStrategy": ""
+          },
+          {
+            "id": 5,
+            "title": "Develop Comprehensive End-to-End Testing Suite",
+            "description": "Design and implement tests that validate the complete workflow from data collection to report generation.",
+            "dependencies": [
+              1,
+              2,
+              3,
+              4
+            ],
+            "details": "Create an automated test suite that runs the entire integration using a sample configuration. Validate that outputs, logs, and reports match expected results and check for errors or missing sections in the final report.",
+            "status": "pending",
+            "testStrategy": ""
+          },
+          {
+            "id": 6,
+            "title": "Finalize Integration and Documentation",
+            "description": "Perform final validations and refine the integration based on testing feedback, and update documentation for user guidance.",
+            "dependencies": [
+              5
+            ],
+            "details": "Review test results and address any issues found. Update code documentation, usage guides, and inline comments to ensure ease of future maintenance and usability for end-users.",
+            "status": "pending",
+            "testStrategy": ""
+          }
+        ]
+      }
+    ],
+    "metadata": {
+      "created": "2025-07-14T11:38:03.937Z",
+      "updated": "2025-07-14T11:49:05.006Z",
+      "description": "Tasks for master context"
+    }
+  }
+}
