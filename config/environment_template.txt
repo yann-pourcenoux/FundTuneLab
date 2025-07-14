@@ -1,0 +1,38 @@
+# Environment Variables Template for FundTuneLab
+# Copy this file to .env in the project root and fill in your actual API keys
+
+# ============================================================================
+# DATA PROVIDER API KEYS
+# ============================================================================
+
+# Alpha Vantage API Key (for stock data)
+# Get free key at: https://www.alphavantage.co/support/#api-key
+ALPHA_VANTAGE_API_KEY=your_alpha_vantage_api_key_here
+
+# Quandl API Key (for financial and economic data)
+# Get free key at: https://www.quandl.com/
+QUANDL_API_KEY=your_quandl_api_key_here
+
+# IEX Cloud API Key (for real-time and historical stock data)
+# Get free key at: https://iexcloud.io/
+IEX_API_KEY=your_iex_api_key_here
+
+# FRED API Key (for economic data from Federal Reserve)
+# Get free key at: https://fred.stlouisfed.org/docs/api/api_key.html
+FRED_API_KEY=your_fred_api_key_here
+
+# ============================================================================
+# OPTIONAL ENVIRONMENT OVERRIDES
+# ============================================================================
+
+# Override default logging level (DEBUG, INFO, WARNING, ERROR, CRITICAL)
+# FUNDTUNELAB_LOG_LEVEL=INFO
+
+# Override default data start date (YYYY-MM-DD format)
+# FUNDTUNELAB_START_DATE=2020-01-01
+
+# Override default benchmark symbol
+# FUNDTUNELAB_BENCHMARK=SPY
+
+# Override default initial capital for backtesting
+# FUNDTUNELAB_INITIAL_CAPITAL=100000 

@@ -22,15 +22,15 @@
         "dependencies": [
           1
         ],
-        "status": "pending",
+        "status": "done",
         "subtasks": [
           {
             "id": 1,
             "title": "Create config/settings.py with standardized parameters",
             "description": "Develop a configuration file (config/settings.py) that includes standardized parameters for data sources, optimization settings, and output paths.",
             "dependencies": [],
-            "details": "Include sample default values, clear comments for each parameter, and ensure a consistent structure that can be accessed across modules.",
-            "status": "pending",
+            "details": "Include sample default values, clear comments for each parameter, and ensure a consistent structure that can be accessed across modules.\n<info added on 2025-07-14T12:11:47.094Z>\nSuccessfully implemented config/settings.py for the portfolio optimization project. The file now organizes configuration parameters into clear sections: paths, data settings, optimization parameters, backtesting, visualization, and logging. Default values include an asset universe covering US/international equities, bonds, and alternative assets, along with multiple optimization methods (mean-variance, risk parity, hierarchical risk parity, and CVaR). Additionally, risk models and expected returns estimation methods have been integrated. Comprehensive backtesting parameters, performance metrics, and validation functions ensure configuration integrity. Utility functions for path management and automatic directory creation have been added, and environment variable placeholders manage sensitive data such as API keys.\n</info added on 2025-07-14T12:11:47.094Z>",
+            "status": "done",
             "testStrategy": ""
           },
           {
@@ -40,8 +40,8 @@
             "dependencies": [
               1
             ],
-            "details": "Utilize libraries such as python-dotenv or os.environ to retrieve sensitive data, and ensure proper documentation on setting environment variables.",
-            "status": "pending",
+            "details": "Utilize libraries such as python-dotenv or os.environ to retrieve sensitive data, and ensure proper documentation on setting environment variables.\n<info added on 2025-07-14T12:14:35.720Z>\nSuccessfully integrated environment variable management with python-dotenv. The integration includes adding the python-dotenv dependency using uv add and incorporating load_dotenv() in settings.py to automatically load .env files. A new file, config/environment_template.txt, has been created to provide comprehensive API key templates and documentation. Additionally, configuration variables have been updated to allow overrides via environment variables: DEFAULT_START_DATE can be overridden with FUNDTUNELAB_START_DATE, DEFAULT_BENCHMARK with FUNDTUNELAB_BENCHMARK, initial capital with FUNDTUNELAB_INITIAL_CAPITAL, and log level with FUNDTUNELAB_LOG_LEVEL. Robust API key management functions have been implemented, including get_api_key() for safe retrieval of API keys with warnings for missing keys and check_environment_setup() to verify the setup. Backward compatibility is maintained, ensuring that all settings work with sensible defaults even without a .env file.\n</info added on 2025-07-14T12:14:35.720Z>",
+            "status": "done",
             "testStrategy": ""
           },
           {
@@ -52,8 +52,8 @@
               1,
               2
             ],
-            "details": "Create a dummy script or unit tests that import the configuration file and verify that parameter changes are reflected in dependent modules.",
-            "status": "pending",
+            "details": "Create a dummy script or unit tests that import the configuration file and verify that parameter changes are reflected in dependent modules.\n<info added on 2025-07-14T12:17:12.669Z>\nImplemented a comprehensive configuration consistency test suite that verifies parameter changes are correctly propagated across modules. The suite, built using pytest and pytest-mock, comprises 17 test cases covering basic configuration import, project path validation, default value and type checking, environment variable overrides, API key warnings, utility function correctness, and consistency across multiple imports. It also validates data provider configurations, performance metrics, logging settings, error handling, and edge cases. Tests simulate environment variable changes and use temporary directories while ensuring configuration immutability and proper error detection.\n</info added on 2025-07-14T12:17:12.669Z>",
+            "status": "done",
             "testStrategy": ""
           }
         ]
@@ -578,7 +578,7 @@
     ],
     "metadata": {
       "created": "2025-07-14T11:38:03.937Z",
-      "updated": "2025-07-14T11:49:05.006Z",
+      "updated": "2025-07-14T12:17:22.537Z",
       "description": "Tasks for master context"
     }
   }
