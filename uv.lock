@@ -408,6 +408,7 @@ dependencies = [
     { name = "pyportfolioopt" },
     { name = "python-dotenv" },
     { name = "riskfolio-lib" },
+    { name = "scikit-learn" },
     { name = "scipy" },
     { name = "yfinance" },
 ]
@@ -425,6 +426,7 @@ requires-dist = [
     { name = "pyportfolioopt", specifier = ">=1.5.0" },
     { name = "python-dotenv", specifier = ">=1.0.1" },
     { name = "riskfolio-lib", specifier = ">=7.0.1" },
+    { name = "scikit-learn", specifier = ">=1.7.0" },
     { name = "scipy", specifier = ">=1.16.0" },
     { name = "yfinance", specifier = ">=0.2.65" },
 ]
