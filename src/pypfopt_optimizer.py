@@ -6,10 +6,9 @@ It loads preprocessed data, applies mean-variance optimization, calculates effic
 and generates portfolio weights in standardized JSON/CSV format.
 """
 
-import os
 import logging
 import warnings
-from typing import Dict, List, Optional, Tuple, Any, Union
+from typing import Dict, Optional, Tuple, Any
 from datetime import datetime
 from pathlib import Path
 import json
@@ -20,7 +19,6 @@ from config.settings import PROCESSED_DATA_DIR, RESULTS_DIR, ensure_directories
 
 # PyPortfolioOpt imports
 from pypfopt import EfficientFrontier, expected_returns, risk_models
-from pypfopt.discrete_allocation import DiscreteAllocation, get_latest_prices
 
 # Suppress warnings for cleaner output
 warnings.filterwarnings("ignore", category=UserWarning)
@@ -91,7 +89,7 @@ class PyPortfolioOptOptimizer:
         self.performance = None
         self.efficient_frontier_data = None
 
-        self.logger.info(f"PyPortfolioOpt Optimizer initialized")
+        self.logger.info("PyPortfolioOpt Optimizer initialized")
 
     def _setup_logging(self, log_level: int) -> logging.Logger:
         """Setup logging configuration."""
@@ -346,7 +344,6 @@ class PyPortfolioOptOptimizer:
             ef_min.min_volatility()
             min_ret = ef_min.portfolio_performance()[0]
 
-            ef_max = EfficientFrontier(self.expected_returns, self.cov_matrix)
             max_ret = self.expected_returns.max()
 
             # Generate return targets
@@ -369,7 +366,7 @@ class PyPortfolioOptOptimizer:
                             "sharpe_ratio": sharpe,
                         }
                     )
-                except:
+                except Exception:
                     continue  # Skip infeasible points
 
             self.efficient_frontier_data = pd.DataFrame(frontier_data)
@@ -483,7 +480,7 @@ def optimize_portfolio_from_data(
         )
 
         # Load data
-        prices_df = optimizer.load_preprocessed_data()
+        optimizer.load_preprocessed_data()
 
         # Calculate returns and statistics
         expected_returns, cov_matrix = optimizer.calculate_returns_and_statistics()

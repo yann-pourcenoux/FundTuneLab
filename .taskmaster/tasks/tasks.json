@@ -237,21 +237,21 @@
         "id": 6,
         "title": "Implement Riskfolio-Lib Optimizer Module",
         "description": "Develop the optimizer module using Riskfolio-Lib focusing on risk parity and advanced risk management strategies.",
-        "details": "Develop src/riskfolio_optimizer.py to load processed data, apply risk parity optimization, and generate corresponding portfolio weights. Standardize the output to match the format used by the other optimizers.",
+        "details": "Develop src/riskfolio_optimizer.py to load processed data, apply risk parity optimization, and generate corresponding portfolio weights. Standardize the output to match the format used by the other optimizers.\n<info added on 2025-07-14T14:16:26.860Z>\nIntegrate the latest Riskfolio‑Lib best practices into the module by initializing the Portfolio object with a pandas DataFrame where dates serve as the index and asset returns as columns. Use the assets_stats() method with historical or shrinkage estimators to compute necessary statistical measures. Optimize by explicitly setting the objective to “Equal Risk Contribution” (ERC) using parameters such as model=\"Classic\", rm=\"MV\", and obj=\"Equal Risk Contribution\", ensuring flexibility with parameterized constraints like asset bounds. Implement robust error handling and logging around the optimization routine to capture and report failures in a manner consistent with existing modules. After optimization, validate the weights by calculating risk contributions for each asset and confirming balanced risk exposures. Finally, standardize the output by returning a dictionary mapping asset names to their weights, and include key performance metrics (e.g., portfolio variance, expected return, Sharpe ratio) in both JSON and CSV formats, while cleaning any minor numerical artifacts for consistency with other optimizers.\n</info added on 2025-07-14T14:16:26.860Z>",
         "testStrategy": "Test the module with sample data verifying that portfolio weights satisfy risk parity properties. Validate against known Riskfolio-Lib outputs and check sum consistency.",
         "priority": "medium",
         "dependencies": [
           4
         ],
-        "status": "pending",
+        "status": "done",
         "subtasks": [
           {
             "id": 1,
             "title": "Load and Verify Processed Data",
             "description": "Load the processed data from the data storage and verify its integrity.",
             "dependencies": [],
-            "details": "Implement functions to read the processed data file, perform data integrity checks such as missing values, date consistency, and basic statistics validation.",
-            "status": "pending",
+            "details": "Implement functions to read the processed data file, perform data integrity checks such as missing values, date consistency, and basic statistics validation.\n<info added on 2025-07-14T14:18:24.597Z>\nThe data loading and validation routines have been fully implemented. A new load_preprocessed_data() method now reads CSV files based on date pattern matching, consolidates multiple asset files into a single DataFrame, and extracts symbols from filenames while ensuring the required Date, Close, and Symbol columns are present. The _validate_price_data() method performs comprehensive integrity checks, including verification for missing values, non-positive prices, monotonic increasing dates without duplicates, a minimum of 50 data points, and sanity checks on price ranges. These enhancements adhere to established error handling and logging patterns and prepare the module for the Riskfolio-Lib risk parity optimization in subtask 6.2.\n</info added on 2025-07-14T14:18:24.597Z>",
+            "status": "done",
             "testStrategy": ""
           },
           {
@@ -261,8 +261,8 @@
             "dependencies": [
               1
             ],
-            "details": "Implement the optimization routine using Riskfolio-Lib. Ensure the function integrates the processed data correctly, applies risk parity strategy, and generates preliminary weights.",
-            "status": "pending",
+            "details": "Implement the optimization routine using Riskfolio-Lib. Ensure the function integrates the processed data correctly, applies risk parity strategy, and generates preliminary weights.\n<info added on 2025-07-14T14:19:26.058Z>\nImplemented comprehensive risk parity optimization using Riskfolio‑Lib. Key updates include the introduction of the optimize_risk_parity() method, which leverages the Riskfolio‑Lib Portfolio class with configurable statistical estimation methods (historical, EWMA, Ledoit‑Wolf, OAS) and a dual optimization approach—using an ERC objective as primary and a risk budgeting fallback. Enhanced error handling with fallback mechanisms, detailed logging throughout the process, and supporting functions (_calculate_risk_contributions() and _calculate_performance_metrics()) have also been added. The implementation normalizes weights by removing values below 1e-6 and aligns with the latest Riskfolio‑Lib API requirements, setting the stage for output format standardization in subtask 6.3.\n</info added on 2025-07-14T14:19:26.058Z>",
+            "status": "done",
             "testStrategy": ""
           },
           {
@@ -272,8 +272,8 @@
             "dependencies": [
               2
             ],
-            "details": "Develop output routines that convert the results into a standardized JSON/CSV format, aligning with the format used by other optimizer modules in the project.",
-            "status": "pending",
+            "details": "Develop output routines that convert the results into a standardized JSON/CSV format, aligning with the format used by other optimizer modules in the project.\n<info added on 2025-07-14T14:20:23.757Z>\nImplemented standardized output format consistent with other optimizer modules by adding a save_results() method that mirrors the implementation in pypfopt_optimizer.py. The new output generates a JSON file containing a timestamp, assets, weights, performance metrics, risk_free_rate, and additional metadata (library=\"riskfolio-lib\", strategy=\"risk_parity\"). Two CSV files are produced: one for portfolio weights with \"Asset, Weight\" columns matching the pypfopt format, and another for risk contributions with \"Asset, Risk_Contribution\" columns. Enhancements include converting Series to dictionary for proper JSON serialization, generating timestamped filenames with configurable prefixes, comprehensive error handling for file operations, and detailed logging for all saved files. Additionally, the optimize_risk_parity_from_data() convenience function provides a single-function interface for the full optimization workflow, including validation results and configurable output saving.\n</info added on 2025-07-14T14:20:23.757Z>",
+            "status": "done",
             "testStrategy": ""
           },
           {
@@ -283,8 +283,8 @@
             "dependencies": [
               3
             ],
-            "details": "Implement tests to check that the weights meet criteria such as normalization (sum to 1) and equal risk contributions across assets. Compare outputs against known Riskfolio-Lib benchmarks.",
-            "status": "pending",
+            "details": "Implement tests to check that the weights meet criteria such as normalization (sum to 1) and equal risk contributions across assets. Compare outputs against known Riskfolio-Lib benchmarks.\n<info added on 2025-07-14T14:22:57.411Z>\nImplemented the validate_risk_parity_properties() method to comprehensively check portfolio weights, ensuring normalization (sum to 1), non-negative weights, and consistent risk contributions. A dedicated test suite (test_riskfolio_optimizer.py) using real data validates both the primary risk parity and fallback strategies. The module now includes a multi-level fallback approach: first attempting ERC optimization, then using risk budgeting with equal risk budgets, and finally reverting to equal weights when optimization challenges arise (notably with small datasets, e.g., 11 observations). Additionally, robust error handling is provided through covariance matrix regularization via the _fix_covariance_matrix() method, and outputs are saved in standardized JSON/CSV format in accordance with project requirements.\n</info added on 2025-07-14T14:22:57.411Z>",
+            "status": "done",
             "testStrategy": ""
           }
         ]
@@ -578,7 +578,7 @@
     ],
     "metadata": {
       "created": "2025-07-14T11:38:03.937Z",
-      "updated": "2025-07-14T14:02:54.951Z",
+      "updated": "2025-07-14T14:23:04.304Z",
       "description": "Tasks for master context"
     }
   }
