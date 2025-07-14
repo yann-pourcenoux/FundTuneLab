@@ -1,0 +1,138 @@
+{
+  "batch_start_time": "2025-07-14T15:00:37.475156",
+  "files_found": 14,
+  "files_processed": 14,
+  "files_successful": 0,
+  "files_failed": 14,
+  "processing_results": [
+    {
+      "symbol": "VTI",
+      "status": "error",
+      "input_file": "/Users/yann.pourcenoux/Workspaces/FundTuneLab/data/raw/VTI_20250714.csv",
+      "error": "DataPreprocessor.filter_outliers() got an unexpected keyword argument 'outlier_action'",
+      "processing_date": "2025-07-14T15:00:37.479709"
+    },
+    {
+      "symbol": "BND",
+      "status": "error",
+      "input_file": "/Users/yann.pourcenoux/Workspaces/FundTuneLab/data/raw/BND_20250714.csv",
+      "error": "DataPreprocessor.filter_outliers() got an unexpected keyword argument 'outlier_action'",
+      "processing_date": "2025-07-14T15:00:37.481690"
+    },
+    {
+      "symbol": "VWO",
+      "status": "error",
+      "input_file": "/Users/yann.pourcenoux/Workspaces/FundTuneLab/data/raw/VWO_20250714.csv",
+      "error": "DataPreprocessor.filter_outliers() got an unexpected keyword argument 'outlier_action'",
+      "processing_date": "2025-07-14T15:00:37.483350"
+    },
+    {
+      "symbol": "TIPS",
+      "status": "error",
+      "input_file": "/Users/yann.pourcenoux/Workspaces/FundTuneLab/data/raw/TIPS_20250714.csv",
+      "error": "DataPreprocessor.filter_outliers() got an unexpected keyword argument 'outlier_action'",
+      "processing_date": "2025-07-14T15:00:37.484702"
+    },
+    {
+      "symbol": "IWM",
+      "status": "error",
+      "input_file": "/Users/yann.pourcenoux/Workspaces/FundTuneLab/data/raw/IWM_20250714.csv",
+      "error": "DataPreprocessor.filter_outliers() got an unexpected keyword argument 'outlier_action'",
+      "processing_date": "2025-07-14T15:00:37.486983"
+    },
+    {
+      "symbol": "EFA",
+      "status": "error",
+      "input_file": "/Users/yann.pourcenoux/Workspaces/FundTuneLab/data/raw/EFA_20250714.csv",
+      "error": "DataPreprocessor.filter_outliers() got an unexpected keyword argument 'outlier_action'",
+      "processing_date": "2025-07-14T15:00:37.488702"
+    },
+    {
+      "symbol": "DBC",
+      "status": "error",
+      "input_file": "/Users/yann.pourcenoux/Workspaces/FundTuneLab/data/raw/DBC_20250714.csv",
+      "error": "DataPreprocessor.filter_outliers() got an unexpected keyword argument 'outlier_action'",
+      "processing_date": "2025-07-14T15:00:37.490106"
+    },
+    {
+      "symbol": "VEA",
+      "status": "error",
+      "input_file": "/Users/yann.pourcenoux/Workspaces/FundTuneLab/data/raw/VEA_20250714.csv",
+      "error": "DataPreprocessor.filter_outliers() got an unexpected keyword argument 'outlier_action'",
+      "processing_date": "2025-07-14T15:00:37.491637"
+    },
+    {
+      "symbol": "VNQ",
+      "status": "error",
+      "input_file": "/Users/yann.pourcenoux/Workspaces/FundTuneLab/data/raw/VNQ_20250714.csv",
+      "error": "DataPreprocessor.filter_outliers() got an unexpected keyword argument 'outlier_action'",
+      "processing_date": "2025-07-14T15:00:37.493131"
+    },
+    {
+      "symbol": "GLD",
+      "status": "error",
+      "input_file": "/Users/yann.pourcenoux/Workspaces/FundTuneLab/data/raw/GLD_20250714.csv",
+      "error": "DataPreprocessor.filter_outliers() got an unexpected keyword argument 'outlier_action'",
+      "processing_date": "2025-07-14T15:00:37.494398"
+    },
+    {
+      "symbol": "SHY",
+      "status": "error",
+      "input_file": "/Users/yann.pourcenoux/Workspaces/FundTuneLab/data/raw/SHY_20250714.csv",
+      "error": "DataPreprocessor.filter_outliers() got an unexpected keyword argument 'outlier_action'",
+      "processing_date": "2025-07-14T15:00:37.496199"
+    },
+    {
+      "symbol": "TLT",
+      "status": "error",
+      "input_file": "/Users/yann.pourcenoux/Workspaces/FundTuneLab/data/raw/TLT_20250714.csv",
+      "error": "DataPreprocessor.filter_outliers() got an unexpected keyword argument 'outlier_action'",
+      "processing_date": "2025-07-14T15:00:37.497338"
+    },
+    {
+      "symbol": "QQQ",
+      "status": "error",
+      "input_file": "/Users/yann.pourcenoux/Workspaces/FundTuneLab/data/raw/QQQ_20250714.csv",
+      "error": "DataPreprocessor.filter_outliers() got an unexpected keyword argument 'outlier_action'",
+      "processing_date": "2025-07-14T15:00:37.498548"
+    },
+    {
+      "symbol": "SPY",
+      "status": "error",
+      "input_file": "/Users/yann.pourcenoux/Workspaces/FundTuneLab/data/raw/SPY_20250714.csv",
+      "error": "DataPreprocessor.filter_outliers() got an unexpected keyword argument 'outlier_action'",
+      "processing_date": "2025-07-14T15:00:37.499749"
+    }
+  ],
+  "summary_stats": {},
+  "errors": [
+    "DataPreprocessor.filter_outliers() got an unexpected keyword argument 'outlier_action'",
+    "DataPreprocessor.filter_outliers() got an unexpected keyword argument 'outlier_action'",
+    "DataPreprocessor.filter_outliers() got an unexpected keyword argument 'outlier_action'",
+    "DataPreprocessor.filter_outliers() got an unexpected keyword argument 'outlier_action'",
+    "DataPreprocessor.filter_outliers() got an unexpected keyword argument 'outlier_action'",
+    "DataPreprocessor.filter_outliers() got an unexpected keyword argument 'outlier_action'",
+    "DataPreprocessor.filter_outliers() got an unexpected keyword argument 'outlier_action'",
+    "DataPreprocessor.filter_outliers() got an unexpected keyword argument 'outlier_action'",
+    "DataPreprocessor.filter_outliers() got an unexpected keyword argument 'outlier_action'",
+    "DataPreprocessor.filter_outliers() got an unexpected keyword argument 'outlier_action'",
+    "DataPreprocessor.filter_outliers() got an unexpected keyword argument 'outlier_action'",
+    "DataPreprocessor.filter_outliers() got an unexpected keyword argument 'outlier_action'",
+    "DataPreprocessor.filter_outliers() got an unexpected keyword argument 'outlier_action'",
+    "DataPreprocessor.filter_outliers() got an unexpected keyword argument 'outlier_action'"
+  ],
+  "batch_end_time": "2025-07-14T15:00:37.499754",
+  "total_processing_time": "0:00:00.024598",
+  "success_rate": 0.0,
+  "quality_stats": {
+    "files_processed": 0,
+    "total_rows_input": 280,
+    "total_rows_output": 0,
+    "missing_values_found": "0",
+    "missing_values_handled": 0,
+    "outliers_detected": 0,
+    "outliers_removed": 0,
+    "date_format_issues": 0,
+    "integrity_checks_failed": 0
+  }
+}
