@@ -9,7 +9,7 @@ import argparse
 import logging
 import sys
 from pathlib import Path
-from typing import List, Optional
+from typing import List
 
 try:
     from .orchestrator import run_orchestrator
@@ -194,7 +194,7 @@ def main():
             print("All results have been saved to the results/ directory.")
             sys.exit(0)
         else:
-            print(f"⚠ Workflow completed with issues:")
+            print("⚠ Workflow completed with issues:")
             print(f"  ✓ Completed: {completed}/{total} stages")
             print(f"  ✗ Failed: {failed}/{total} stages")
             print("\nCheck the logs in results/logs/ for detailed error information.")

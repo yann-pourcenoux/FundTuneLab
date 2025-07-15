@@ -370,7 +370,6 @@ class PortfolioComparison:
             # Gini coefficient (measure of inequality)
             sorted_weights = np.sort(weights)
             n = len(sorted_weights)
-            cumsum = np.cumsum(sorted_weights)
             gini = (2 * np.sum((np.arange(1, n + 1) * sorted_weights))) / (
                 n * np.sum(sorted_weights)
             ) - (n + 1) / n
@@ -1453,14 +1452,14 @@ if __name__ == "__main__":
         most_similar = comparison.get_most_similar_portfolios(
             correlation_matrix, top_n=3
         )
-        print(f"\nMost Similar Portfolio Pairs:")
+        print("\nMost Similar Portfolio Pairs:")
         for p1, p2, corr in most_similar:
             print(f"  {p1} vs {p2}: {corr:.4f}")
 
         most_different = comparison.get_most_different_portfolios(
             correlation_matrix, top_n=3
         )
-        print(f"\nMost Different Portfolio Pairs:")
+        print("\nMost Different Portfolio Pairs:")
         for p1, p2, corr in most_different:
             print(f"  {p1} vs {p2}: {corr:.4f}")
 
@@ -1471,13 +1470,13 @@ if __name__ == "__main__":
         )
 
         # Show a sample of metrics
-        print(f"\nSample Distance Metrics:")
+        print("\nSample Distance Metrics:")
         sample_pairs = list(metrics["euclidean_distances"].items())[:3]
         for pair, distance in sample_pairs:
             print(f"  {pair}: {distance:.4f} (Euclidean)")
 
             # Show portfolio concentration metrics
-        print(f"\nPortfolio Concentration (HHI):")
+        print("\nPortfolio Concentration (HHI):")
         for portfolio, stats in metrics["summary_statistics"][
             "portfolio_concentration"
         ].items():
@@ -1488,14 +1487,14 @@ if __name__ == "__main__":
             )
 
         # Generate visualizations
-        print(f"\nGenerating visualization plots...")
+        print("\nGenerating visualization plots...")
         saved_plots = comparison.generate_all_visualizations()
-        print(f"Saved plots:")
+        print("Saved plots:")
         for plot_type, path in saved_plots.items():
             print(f"  {plot_type}: {path}")
 
         # Test new CSV/JSON reporting functionality
-        print(f"\nTesting CSV/JSON reporting functionality...")
+        print("\nTesting CSV/JSON reporting functionality...")
 
         # Generate comprehensive report
         generated_reports = comparison.generate_comprehensive_report()
@@ -1504,9 +1503,9 @@ if __name__ == "__main__":
             file_size = os.path.getsize(path) / 1024  # KB
             print(f"  {report_type}: {path} ({file_size:.1f} KB)")
 
-        print(f"\nAll tests completed successfully!")
-        print(f"Check results/reports/ directory for generated reports")
-        print(f"Check results/plots/ directory for generated visualizations")
+        print("\nAll tests completed successfully!")
+        print("Check results/reports/ directory for generated reports")
+        print("Check results/plots/ directory for generated visualizations")
 
     except Exception as e:
         print(f"Error testing portfolio comparison: {e}")

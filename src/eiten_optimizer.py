@@ -265,7 +265,6 @@ class EitenOptimizer:
 
             # Marcenko-Pastur distribution bounds
             lambda_max = (1 + np.sqrt(q)) ** 2
-            lambda_min = (1 - np.sqrt(q)) ** 2
 
             # Filter out noise eigenvalues
             signal_eigenvals = eigenvals[eigenvals > lambda_max]

@@ -11,7 +11,6 @@ import shutil
 import json
 import pandas as pd
 from pathlib import Path
-from datetime import datetime
 from unittest.mock import patch, MagicMock
 import logging
 
@@ -21,10 +20,7 @@ import sys
 sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 
 from orchestrator import FundTuneLabOrchestrator, run_orchestrator
-from unified_reporting import UnifiedReportGenerator, generate_unified_report
-from data_collection import download_default_assets
-from data_preprocessing import preprocess_all_data
-from config.settings import RESULTS_DIR
+from unified_reporting import UnifiedReportGenerator
 
 
 class TestEndToEndWorkflow:
@@ -413,7 +409,7 @@ class TestWorkflowValidation:
             mock_orchestrator.run_full_workflow.return_value = {"success": True}
             mock_orchestrator_class.return_value = mock_orchestrator
 
-            result = run_orchestrator(skip_stages=["backtesting"])
+            run_orchestrator(skip_stages=["backtesting"])
 
             mock_orchestrator_class.assert_called_once_with(log_level=logging.INFO)
             mock_orchestrator.run_full_workflow.assert_called_once_with(

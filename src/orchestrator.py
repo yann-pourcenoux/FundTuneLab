@@ -22,7 +22,7 @@ try:
     from .pypfopt_optimizer import optimize_portfolio_from_data
     from .eiten_optimizer import optimize_eiten_portfolios
     from .riskfolio_optimizer import optimize_risk_parity_from_data
-    from .comparison import PortfolioComparison, load_portfolios
+    from .comparison import load_portfolios
     from .backtesting import run_comprehensive_validation
     from .unified_reporting import generate_unified_report
     from config.settings import (
@@ -45,7 +45,7 @@ except ImportError:
     from pypfopt_optimizer import optimize_portfolio_from_data
     from eiten_optimizer import optimize_eiten_portfolios
     from riskfolio_optimizer import optimize_risk_parity_from_data
-    from comparison import PortfolioComparison, load_portfolios
+    from comparison import load_portfolios
     from backtesting import run_comprehensive_validation
     from unified_reporting import generate_unified_report
     from config.settings import (

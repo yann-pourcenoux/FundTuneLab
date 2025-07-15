@@ -9,7 +9,7 @@ Sharpe ratio, and maximum drawdown.
 
 import logging
 import warnings
-from typing import Dict, List, Optional, Tuple, Any, Union
+from typing import Dict, List, Optional, Any, Union
 from datetime import datetime
 from pathlib import Path
 import json
@@ -96,7 +96,7 @@ class VectorBTBacktester:
         self.portfolio_metadata: Optional[Dict[str, Any]] = None
         self.backtest_results: Optional[Dict[str, Any]] = None
 
-        self.logger.info(f"VectorBT Backtester initialized")
+        self.logger.info("VectorBT Backtester initialized")
         self.logger.info(f"Processed data directory: {self.processed_data_dir}")
         self.logger.info(f"Results directory: {self.results_dir}")
         self.logger.info(f"Risk-free rate: {self.risk_free_rate}")
@@ -1171,7 +1171,6 @@ def integrate_with_optimizer(
 
 if __name__ == "__main__":
     # Enhanced command-line interface
-    import sys
     import argparse
 
     parser = argparse.ArgumentParser(description="FundTuneLab Portfolio Backtesting")
@@ -1216,7 +1215,7 @@ if __name__ == "__main__":
             rebalancing_frequency=args.rebalancing,
             initial_capital=args.capital,
         )
-        print(f"Backtest completed. Results saved to results/backtests/")
+        print("Backtest completed. Results saved to results/backtests/")
         print(f"Total Return: {results['performance_metrics']['total_return']:.4f}")
         print(f"Sharpe Ratio: {results['performance_metrics']['sharpe_ratio']:.4f}")
         print(f"Max Drawdown: {results['performance_metrics']['max_drawdown']:.4f}")

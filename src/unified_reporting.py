@@ -7,12 +7,10 @@ comparison, and backtesting into comprehensive, unified reports in multiple form
 
 import json
 import pandas as pd
-import numpy as np
 from datetime import datetime
 from pathlib import Path
-from typing import Dict, List, Optional, Any, Tuple
+from typing import Dict, List, Optional, Any
 import logging
-import glob
 import warnings
 
 try:
@@ -20,7 +18,6 @@ try:
         RESULTS_DIR,
         REPORTS_DIR,
         PLOTS_DIR,
-        BACKTESTS_DIR,
     )
 except ImportError:
     import sys
@@ -31,7 +28,6 @@ except ImportError:
         RESULTS_DIR,
         REPORTS_DIR,
         PLOTS_DIR,
-        BACKTESTS_DIR,
     )
 
 warnings.filterwarnings("ignore", category=FutureWarning)

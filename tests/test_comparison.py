@@ -11,7 +11,6 @@ import pandas as pd
 import json
 import tempfile
 import os
-from pathlib import Path
 import sys
 
 # Add src directory to path for imports
@@ -203,7 +202,6 @@ class TestPortfolioComparison:
             assert isinstance(metrics[metric], dict)
 
         # Check that identical portfolios have zero distance
-        portfolio_names = list(weights_df.columns)
         for pair_key, distance in metrics["euclidean_distances"].items():
             if "equal_weight" in pair_key and "riskfolio" in pair_key:
                 assert distance < 1e-10, (
@@ -552,8 +550,6 @@ class TestPortfolioValidation:
             # Test correlation and distance metrics
             comparison = PortfolioComparison(portfolios_dir)
             comparison.load_portfolio_data()
-
-            correlation_matrix = comparison.calculate_correlation_matrix()
 
             # Should have zero correlation between orthogonal portfolios
             # Note: with only 2 assets, correlation is undefined (NaN), so we test distance instead
