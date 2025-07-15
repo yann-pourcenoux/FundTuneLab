@@ -1,0 +1,52 @@
+{
+  "timestamp": "20250715_101855",
+  "portfolios_analyzed": 2,
+  "portfolio_names": [
+    "portfolio_optimization_20250714_152306",
+    "riskfolio_risk_parity_20250714_162236"
+  ],
+  "metrics_comparison": {
+    "portfolio_optimization_20250714_152306": {
+      "total_return": -0.01179976636123492,
+      "annualized_return": -0.1446414290087632,
+      "annualized_volatility": 0.05014491726651908,
+      "sharpe_ratio": -3.5135384660256435,
+      "max_drawdown": -0.019656715257315254
+    },
+    "riskfolio_risk_parity_20250714_162236": {
+      "total_return": -0.0259305047765912,
+      "annualized_return": -0.290394035953337,
+      "annualized_volatility": 0.10643828061433219,
+      "sharpe_ratio": -3.40866138224555,
+      "max_drawdown": -0.03932711692157538
+    }
+  },
+  "rankings": {
+    "total_return_ranking": {
+      "portfolio_optimization_20250714_152306": 1,
+      "riskfolio_risk_parity_20250714_162236": 2
+    },
+    "annualized_return_ranking": {
+      "portfolio_optimization_20250714_152306": 1,
+      "riskfolio_risk_parity_20250714_162236": 2
+    },
+    "sharpe_ratio_ranking": {
+      "riskfolio_risk_parity_20250714_162236": 1,
+      "portfolio_optimization_20250714_152306": 2
+    },
+    "annualized_volatility_ranking": {
+      "portfolio_optimization_20250714_152306": 1,
+      "riskfolio_risk_parity_20250714_162236": 2
+    },
+    "max_drawdown_ranking": {
+      "portfolio_optimization_20250714_152306": 1,
+      "riskfolio_risk_parity_20250714_162236": 2
+    }
+  },
+  "best_performers": {
+    "highest_total_return": "portfolio_optimization_20250714_152306",
+    "highest_sharpe_ratio": "riskfolio_risk_parity_20250714_162236",
+    "lowest_volatility": "portfolio_optimization_20250714_152306",
+    "lowest_max_drawdown": "portfolio_optimization_20250714_152306"
+  }
+}
