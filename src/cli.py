@@ -11,14 +11,7 @@ import sys
 from pathlib import Path
 from typing import List
 
-try:
-    from .orchestrator import run_orchestrator
-except ImportError:
-    import sys
-    from pathlib import Path
-
-    sys.path.insert(0, str(Path(__file__).parent))
-    from orchestrator import run_orchestrator
+from .orchestrator import run_orchestrator
 
 
 def setup_cli_parser() -> argparse.ArgumentParser:

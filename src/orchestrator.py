@@ -10,51 +10,25 @@ import logging
 import time
 import json
 from datetime import datetime
-from pathlib import Path
 from typing import Dict, List, Optional, Any
 import traceback
 
 # Import all required modules
-try:
-    # Try relative imports first (when running as package)
-    from .data_collection import download_default_assets
-    from .data_preprocessing import preprocess_all_data
-    from .pypfopt_optimizer import optimize_portfolio_from_data
-    from .eiten_optimizer import optimize_eiten_portfolios
-    from .riskfolio_optimizer import optimize_risk_parity_from_data
-    from .comparison import load_portfolios
-    from .backtesting import run_comprehensive_validation
-    from .unified_reporting import generate_unified_report
-    from config.settings import (
-        RESULTS_DIR,
-        REPORTS_DIR,
-        PLOTS_DIR,
-        BACKTESTS_DIR,
-        ensure_directories,
-    )
-except ImportError:
-    # Fallback to absolute imports (when running directly)
-    import sys
-    from pathlib import Path
-
-    sys.path.insert(0, str(Path(__file__).parent))
-    sys.path.insert(0, str(Path(__file__).parent.parent))
-
-    from data_collection import download_default_assets
-    from data_preprocessing import preprocess_all_data
-    from pypfopt_optimizer import optimize_portfolio_from_data
-    from eiten_optimizer import optimize_eiten_portfolios
-    from riskfolio_optimizer import optimize_risk_parity_from_data
-    from comparison import load_portfolios
-    from backtesting import run_comprehensive_validation
-    from unified_reporting import generate_unified_report
-    from config.settings import (
-        RESULTS_DIR,
-        REPORTS_DIR,
-        PLOTS_DIR,
-        BACKTESTS_DIR,
-        ensure_directories,
-    )
+from .data_collection import download_default_assets
+from .data_preprocessing import preprocess_all_data
+from .pypfopt_optimizer import optimize_portfolio_from_data
+from .eiten_optimizer import optimize_eiten_portfolios
+from .riskfolio_optimizer import optimize_risk_parity_from_data
+from .comparison import load_portfolios
+from .backtesting import run_comprehensive_validation
+from .unified_reporting import generate_unified_report
+from config.settings import (
+    RESULTS_DIR,
+    REPORTS_DIR,
+    PLOTS_DIR,
+    BACKTESTS_DIR,
+    ensure_directories,
+)
 
 # Define the portfolios directory (not in settings.py)
 PORTFOLIOS_DIR = RESULTS_DIR / "portfolios"

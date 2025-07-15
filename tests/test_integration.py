@@ -14,13 +14,9 @@ from pathlib import Path
 from unittest.mock import patch, MagicMock
 import logging
 
-# Set up the Python path to import from src
-import sys
-
-sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
-
-from orchestrator import FundTuneLabOrchestrator, run_orchestrator
-from unified_reporting import UnifiedReportGenerator
+# Import from the installed package
+from src.orchestrator import FundTuneLabOrchestrator, run_orchestrator
+from src.unified_reporting import UnifiedReportGenerator
 
 
 class TestEndToEndWorkflow:

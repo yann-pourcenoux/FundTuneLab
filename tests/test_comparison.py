@@ -11,12 +11,9 @@ import pandas as pd
 import json
 import tempfile
 import os
-import sys
 
-# Add src directory to path for imports
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "src"))
-
-from comparison import PortfolioComparison
+# Import from the installed package
+from src.comparison import PortfolioComparison
 
 
 class TestPortfolioComparison:

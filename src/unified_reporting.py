@@ -13,22 +13,11 @@ from typing import Dict, List, Optional, Any
 import logging
 import warnings
 
-try:
-    from config.settings import (
-        RESULTS_DIR,
-        REPORTS_DIR,
-        PLOTS_DIR,
-    )
-except ImportError:
-    import sys
-    from pathlib import Path
-
-    sys.path.insert(0, str(Path(__file__).parent.parent))
-    from config.settings import (
-        RESULTS_DIR,
-        REPORTS_DIR,
-        PLOTS_DIR,
-    )
+from config.settings import (
+    RESULTS_DIR,
+    REPORTS_DIR,
+    PLOTS_DIR,
+)
 
 warnings.filterwarnings("ignore", category=FutureWarning)
 
