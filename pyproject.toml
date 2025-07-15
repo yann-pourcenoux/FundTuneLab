@@ -16,6 +16,9 @@ dependencies = [
     "vectorbt>=0.28.0",
 ]
 
+[project.scripts]
+fundtunelab = "src.cli:main"
+
 [dependency-groups]
 dev = [
     "pytest>=8.3.5",
