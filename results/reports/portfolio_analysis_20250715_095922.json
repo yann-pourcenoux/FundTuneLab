@@ -1,0 +1,473 @@
+{
+  "metadata": {
+    "report_type": "Portfolio Comparison Analysis",
+    "generated_at": "2025-07-15T09:59:22.784909",
+    "num_portfolios": 6,
+    "num_assets": 14,
+    "common_assets": [
+      "BND",
+      "DBC",
+      "EFA",
+      "GLD",
+      "IWM",
+      "QQQ",
+      "SHY",
+      "SPY",
+      "TIPS",
+      "TLT",
+      "VEA",
+      "VNQ",
+      "VTI",
+      "VWO"
+    ],
+    "portfolios_analyzed": [
+      "Eiten_Eigen Portfolio_20250714_163424",
+      "Eiten_Minimum Variance_20250714_163424",
+      "Eiten_Max Sharpe_20250714_163424",
+      "Eiten_Genetic Algorithm_20250714_163424",
+      "PyPortfolioOpt_max_sharpe_20250714_152306",
+      "Riskfolio-Lib_risk_parity_20250714_162236"
+    ]
+  },
+  "portfolio_weights": {
+    "description": "Normalized portfolio weights for all assets",
+    "data": {
+      "Eiten_Eigen Portfolio_20250714_163424": {
+        "BND": 0.11512674085133608,
+        "DBC": 0.020611138922694772,
+        "EFA": 0.0960090192880808,
+        "GLD": 0.0018400694657345546,
+        "IWM": 0.013237733497867625,
+        "QQQ": 0.08921291262518563,
+        "SHY": 0.004806916318363985,
+        "SPY": 0.09972581437829563,
+        "TIPS": 0.17063527377867843,
+        "TLT": 0.0530086306804443,
+        "VEA": 0.04381025887771503,
+        "VNQ": 0.04371190362957548,
+        "VTI": 0.13859743516398446,
+        "VWO": 0.1096661525220432
+      },
+      "Eiten_Minimum Variance_20250714_163424": {
+        "BND": 0.07142857142857142,
+        "DBC": 0.07142857142857142,
+        "EFA": 0.07142857142857142,
+        "GLD": 0.07142857142857142,
+        "IWM": 0.07142857142857142,
+        "QQQ": 0.07142857142857142,
+        "SHY": 0.07142857142857142,
+        "SPY": 0.07142857142857142,
+        "TIPS": 0.07142857142857142,
+        "TLT": 0.07142857142857142,
+        "VEA": 0.07142857142857142,
+        "VNQ": 0.07142857142857142,
+        "VTI": 0.07142857142857142,
+        "VWO": 0.07142857142857142
+      },
+      "Eiten_Max Sharpe_20250714_163424": {
+        "BND": 0.0,
+        "DBC": 0.1413146394335175,
+        "EFA": 0.0,
+        "GLD": 0.0,
+        "IWM": 1.0443885374932866e-14,
+        "QQQ": 0.8586853605665155,
+        "SHY": 0.0,
+        "SPY": 0.0,
+        "TIPS": 0.0,
+        "TLT": 6.494601216968617e-15,
+        "VEA": 0.0,
+        "VNQ": 1.348782908244955e-14,
+        "VTI": 0.0,
+        "VWO": 0.0
+      },
+      "Eiten_Genetic Algorithm_20250714_163424": {
+        "BND": 0.0,
+        "DBC": 0.14127653963795714,
+        "EFA": 0.0,
+        "GLD": 0.0,
+        "IWM": 0.0,
+        "QQQ": 0.8587234603620428,
+        "SHY": 0.0,
+        "SPY": 0.0,
+        "TIPS": 0.0,
+        "TLT": 0.0,
+        "VEA": 0.0,
+        "VNQ": 0.0,
+        "VTI": 0.0,
+        "VWO": 0.0
+      },
+      "PyPortfolioOpt_max_sharpe_20250714_152306": {
+        "BND": 0.11106022752416207,
+        "DBC": 0.054598432667670976,
+        "EFA": 0.04654755030909712,
+        "GLD": 0.03939243496640004,
+        "IWM": 0.02442049756896323,
+        "QQQ": 0.025635912331163555,
+        "SHY": 0.47989161916382334,
+        "SPY": 0.0313575929394624,
+        "TIPS": 0.005594842975214761,
+        "TLT": 0.037110794703732033,
+        "VEA": 0.04608988534760043,
+        "VNQ": 0.02896779757746651,
+        "VTI": 0.030993018674146576,
+        "VWO": 0.03833939325109698
+      },
+      "Riskfolio-Lib_risk_parity_20250714_162236": {
+        "BND": 0.07142857142857144,
+        "DBC": 0.07142857142857144,
+        "EFA": 0.07142857142857144,
+        "GLD": 0.07142857142857144,
+        "IWM": 0.07142857142857144,
+        "QQQ": 0.07142857142857144,
+        "SHY": 0.07142857142857144,
+        "SPY": 0.07142857142857144,
+        "TIPS": 0.07142857142857144,
+        "TLT": 0.07142857142857144,
+        "VEA": 0.07142857142857144,
+        "VNQ": 0.07142857142857144,
+        "VTI": 0.07142857142857144,
+        "VWO": 0.07142857142857144
+      }
+    }
+  },
+  "correlation_analysis": {
+    "description": "Correlation matrix between portfolio allocations",
+    "correlation_matrix": {
+      "Eiten_Eigen Portfolio_20250714_163424": {
+        "Eiten_Eigen Portfolio_20250714_163424": 1.0,
+        "Eiten_Minimum Variance_20250714_163424": NaN,
+        "Eiten_Max Sharpe_20250714_163424": 0.051083192224829224,
+        "Eiten_Genetic Algorithm_20250714_163424": 0.05109766009446803,
+        "PyPortfolioOpt_max_sharpe_20250714_152306": -0.3655615612952513,
+        "Riskfolio-Lib_risk_parity_20250714_162236": NaN
+      },
+      "Eiten_Minimum Variance_20250714_163424": {
+        "Eiten_Eigen Portfolio_20250714_163424": NaN,
+        "Eiten_Minimum Variance_20250714_163424": NaN,
+        "Eiten_Max Sharpe_20250714_163424": NaN,
+        "Eiten_Genetic Algorithm_20250714_163424": NaN,
+        "PyPortfolioOpt_max_sharpe_20250714_152306": NaN,
+        "Riskfolio-Lib_risk_parity_20250714_162236": NaN
+      },
+      "Eiten_Max Sharpe_20250714_163424": {
+        "Eiten_Eigen Portfolio_20250714_163424": 0.051083192224829224,
+        "Eiten_Minimum Variance_20250714_163424": NaN,
+        "Eiten_Max Sharpe_20250714_163424": 1.0,
+        "Eiten_Genetic Algorithm_20250714_163424": 0.9999999986776839,
+        "PyPortfolioOpt_max_sharpe_20250714_152306": -0.11645496390420625,
+        "Riskfolio-Lib_risk_parity_20250714_162236": NaN
+      },
+      "Eiten_Genetic Algorithm_20250714_163424": {
+        "Eiten_Eigen Portfolio_20250714_163424": 0.05109766009446803,
+        "Eiten_Minimum Variance_20250714_163424": NaN,
+        "Eiten_Max Sharpe_20250714_163424": 0.9999999986776839,
+        "Eiten_Genetic Algorithm_20250714_163424": 1.0,
+        "PyPortfolioOpt_max_sharpe_20250714_152306": -0.11645340484863843,
+        "Riskfolio-Lib_risk_parity_20250714_162236": NaN
+      },
+      "PyPortfolioOpt_max_sharpe_20250714_152306": {
+        "Eiten_Eigen Portfolio_20250714_163424": -0.3655615612952513,
+        "Eiten_Minimum Variance_20250714_163424": NaN,
+        "Eiten_Max Sharpe_20250714_163424": -0.11645496390420625,
+        "Eiten_Genetic Algorithm_20250714_163424": -0.11645340484863843,
+        "PyPortfolioOpt_max_sharpe_20250714_152306": 1.0,
+        "Riskfolio-Lib_risk_parity_20250714_162236": NaN
+      },
+      "Riskfolio-Lib_risk_parity_20250714_162236": {
+        "Eiten_Eigen Portfolio_20250714_163424": NaN,
+        "Eiten_Minimum Variance_20250714_163424": NaN,
+        "Eiten_Max Sharpe_20250714_163424": NaN,
+        "Eiten_Genetic Algorithm_20250714_163424": NaN,
+        "PyPortfolioOpt_max_sharpe_20250714_152306": NaN,
+        "Riskfolio-Lib_risk_parity_20250714_162236": NaN
+      }
+    },
+    "most_similar_pairs": [
+      {
+        "portfolio_1": "Eiten_Eigen Portfolio_20250714_163424",
+        "portfolio_2": "Eiten_Genetic Algorithm_20250714_163424",
+        "correlation": 0.05109766009446803
+      },
+      {
+        "portfolio_1": "Eiten_Eigen Portfolio_20250714_163424",
+        "portfolio_2": "PyPortfolioOpt_max_sharpe_20250714_152306",
+        "correlation": -0.3655615612952513
+      },
+      {
+        "portfolio_1": "Eiten_Eigen Portfolio_20250714_163424",
+        "portfolio_2": "Riskfolio-Lib_risk_parity_20250714_162236",
+        "correlation": NaN
+      },
+      {
+        "portfolio_1": "Eiten_Minimum Variance_20250714_163424",
+        "portfolio_2": "Eiten_Max Sharpe_20250714_163424",
+        "correlation": NaN
+      },
+      {
+        "portfolio_1": "Eiten_Minimum Variance_20250714_163424",
+        "portfolio_2": "Eiten_Genetic Algorithm_20250714_163424",
+        "correlation": NaN
+      }
+    ],
+    "most_different_pairs": [
+      {
+        "portfolio_1": "Eiten_Max Sharpe_20250714_163424",
+        "portfolio_2": "PyPortfolioOpt_max_sharpe_20250714_152306",
+        "correlation": -0.11645496390420625
+      },
+      {
+        "portfolio_1": "Eiten_Max Sharpe_20250714_163424",
+        "portfolio_2": "Riskfolio-Lib_risk_parity_20250714_162236",
+        "correlation": NaN
+      },
+      {
+        "portfolio_1": "Eiten_Genetic Algorithm_20250714_163424",
+        "portfolio_2": "PyPortfolioOpt_max_sharpe_20250714_152306",
+        "correlation": -0.11645340484863843
+      },
+      {
+        "portfolio_1": "Eiten_Genetic Algorithm_20250714_163424",
+        "portfolio_2": "Riskfolio-Lib_risk_parity_20250714_162236",
+        "correlation": NaN
+      },
+      {
+        "portfolio_1": "PyPortfolioOpt_max_sharpe_20250714_152306",
+        "portfolio_2": "Riskfolio-Lib_risk_parity_20250714_162236",
+        "correlation": NaN
+      }
+    ]
+  },
+  "distance_metrics": {
+    "description": "Various distance measures between portfolio pairs",
+    "manhattan_distances": {
+      "Eiten_Eigen Portfolio_20250714_163424 vs Eiten_Minimum Variance_20250714_163424": 0.6379466972152085,
+      "Eiten_Eigen Portfolio_20250714_163424 vs Eiten_Max Sharpe_20250714_163424": 1.7803518969042416,
+      "Eiten_Eigen Portfolio_20250714_163424 vs Eiten_Genetic Algorithm_20250714_163424": 1.7803518969042391,
+      "Eiten_Eigen Portfolio_20250714_163424 vs PyPortfolioOpt_max_sharpe_20250714_152306": 1.1201735052641641,
+      "Eiten_Eigen Portfolio_20250714_163424 vs Riskfolio-Lib_risk_parity_20250714_162236": 0.6379466972152085,
+      "Eiten_Minimum Variance_20250714_163424 vs Eiten_Max Sharpe_20250714_163424": 1.7142857142857166,
+      "Eiten_Minimum Variance_20250714_163424 vs Eiten_Genetic Algorithm_20250714_163424": 1.714285714285714,
+      "Eiten_Minimum Variance_20250714_163424 vs PyPortfolioOpt_max_sharpe_20250714_152306": 0.8961894076616851,
+      "Eiten_Minimum Variance_20250714_163424 vs Riskfolio-Lib_risk_parity_20250714_162236": 1.942890293094024e-16,
+      "Eiten_Max Sharpe_20250714_163424 vs Eiten_Genetic Algorithm_20250714_163424": 7.619959111815964e-05,
+      "Eiten_Max Sharpe_20250714_163424 vs PyPortfolioOpt_max_sharpe_20250714_152306": 1.8395313100023334,
+      "Eiten_Max Sharpe_20250714_163424 vs Riskfolio-Lib_risk_parity_20250714_162236": 1.7142857142857166,
+      "Eiten_Genetic Algorithm_20250714_163424 vs PyPortfolioOpt_max_sharpe_20250714_152306": 1.8395313100023307,
+      "Eiten_Genetic Algorithm_20250714_163424 vs Riskfolio-Lib_risk_parity_20250714_162236": 1.714285714285714,
+      "PyPortfolioOpt_max_sharpe_20250714_152306 vs Riskfolio-Lib_risk_parity_20250714_162236": 0.8961894076616851
+    },
+    "euclidean_distances": {
+      "Eiten_Eigen Portfolio_20250714_163424 vs Eiten_Minimum Variance_20250714_163424": 0.19122330535951995,
+      "Eiten_Eigen Portfolio_20250714_163424 vs Eiten_Max Sharpe_20250714_163424": 0.8403977298225042,
+      "Eiten_Eigen Portfolio_20250714_163424 vs Eiten_Genetic Algorithm_20250714_163424": 0.8404271432566209,
+      "Eiten_Eigen Portfolio_20250714_163424 vs PyPortfolioOpt_max_sharpe_20250714_152306": 0.5328742392713247,
+      "Eiten_Eigen Portfolio_20250714_163424 vs Riskfolio-Lib_risk_parity_20250714_162236": 0.19122330535951995,
+      "Eiten_Minimum Variance_20250714_163424 vs Eiten_Max Sharpe_20250714_163424": 0.8281798140143788,
+      "Eiten_Minimum Variance_20250714_163424 vs Eiten_Genetic Algorithm_20250714_163424": 0.8282128172152762,
+      "Eiten_Minimum Variance_20250714_163424 vs PyPortfolioOpt_max_sharpe_20250714_152306": 0.43236611323411483,
+      "Eiten_Minimum Variance_20250714_163424 vs Riskfolio-Lib_risk_parity_20250714_162236": 5.1925927263190304e-17,
+      "Eiten_Max Sharpe_20250714_163424 vs Eiten_Genetic Algorithm_20250714_163424": 5.388124758177825e-05,
+      "Eiten_Max Sharpe_20250714_163424 vs PyPortfolioOpt_max_sharpe_20250714_152306": 0.9778660042009891,
+      "Eiten_Max Sharpe_20250714_163424 vs Riskfolio-Lib_risk_parity_20250714_162236": 0.8281798140143788,
+      "Eiten_Genetic Algorithm_20250714_163424 vs PyPortfolioOpt_max_sharpe_20250714_152306": 0.977895084026392,
+      "Eiten_Genetic Algorithm_20250714_163424 vs Riskfolio-Lib_risk_parity_20250714_162236": 0.8282128172152762,
+      "PyPortfolioOpt_max_sharpe_20250714_152306 vs Riskfolio-Lib_risk_parity_20250714_162236": 0.4323661132341149
+    },
+    "max_absolute_differences": {
+      "Eiten_Eigen Portfolio_20250714_163424 vs Eiten_Minimum Variance_20250714_163424": 0.099206702350107,
+      "Eiten_Eigen Portfolio_20250714_163424 vs Eiten_Max Sharpe_20250714_163424": 0.7694724479413299,
+      "Eiten_Eigen Portfolio_20250714_163424 vs Eiten_Genetic Algorithm_20250714_163424": 0.7695105477368572,
+      "Eiten_Eigen Portfolio_20250714_163424 vs PyPortfolioOpt_max_sharpe_20250714_152306": 0.47508470284545934,
+      "Eiten_Eigen Portfolio_20250714_163424 vs Riskfolio-Lib_risk_parity_20250714_162236": 0.09920670235010699,
+      "Eiten_Minimum Variance_20250714_163424 vs Eiten_Max Sharpe_20250714_163424": 0.7872567891379441,
+      "Eiten_Minimum Variance_20250714_163424 vs Eiten_Genetic Algorithm_20250714_163424": 0.7872948889334714,
+      "Eiten_Minimum Variance_20250714_163424 vs PyPortfolioOpt_max_sharpe_20250714_152306": 0.4084630477352519,
+      "Eiten_Minimum Variance_20250714_163424 vs Riskfolio-Lib_risk_parity_20250714_162236": 1.3877787807814457e-17,
+      "Eiten_Max Sharpe_20250714_163424 vs Eiten_Genetic Algorithm_20250714_163424": 3.809979556035348e-05,
+      "Eiten_Max Sharpe_20250714_163424 vs PyPortfolioOpt_max_sharpe_20250714_152306": 0.8330494482353519,
+      "Eiten_Max Sharpe_20250714_163424 vs Riskfolio-Lib_risk_parity_20250714_162236": 0.7872567891379441,
+      "Eiten_Genetic Algorithm_20250714_163424 vs PyPortfolioOpt_max_sharpe_20250714_152306": 0.8330875480308793,
+      "Eiten_Genetic Algorithm_20250714_163424 vs Riskfolio-Lib_risk_parity_20250714_162236": 0.7872948889334714,
+      "PyPortfolioOpt_max_sharpe_20250714_152306 vs Riskfolio-Lib_risk_parity_20250714_162236": 0.4084630477352519
+    },
+    "mean_absolute_differences": {
+      "Eiten_Eigen Portfolio_20250714_163424 vs Eiten_Minimum Variance_20250714_163424": 0.04556762122965775,
+      "Eiten_Eigen Portfolio_20250714_163424 vs Eiten_Max Sharpe_20250714_163424": 0.12716799263601725,
+      "Eiten_Eigen Portfolio_20250714_163424 vs Eiten_Genetic Algorithm_20250714_163424": 0.12716799263601708,
+      "Eiten_Eigen Portfolio_20250714_163424 vs PyPortfolioOpt_max_sharpe_20250714_152306": 0.08001239323315458,
+      "Eiten_Eigen Portfolio_20250714_163424 vs Riskfolio-Lib_risk_parity_20250714_162236": 0.04556762122965775,
+      "Eiten_Minimum Variance_20250714_163424 vs Eiten_Max Sharpe_20250714_163424": 0.1224489795918369,
+      "Eiten_Minimum Variance_20250714_163424 vs Eiten_Genetic Algorithm_20250714_163424": 0.12244897959183672,
+      "Eiten_Minimum Variance_20250714_163424 vs PyPortfolioOpt_max_sharpe_20250714_152306": 0.06401352911869179,
+      "Eiten_Minimum Variance_20250714_163424 vs Riskfolio-Lib_risk_parity_20250714_162236": 1.3877787807814457e-17,
+      "Eiten_Max Sharpe_20250714_163424 vs Eiten_Genetic Algorithm_20250714_163424": 5.4428279370114026e-06,
+      "Eiten_Max Sharpe_20250714_163424 vs PyPortfolioOpt_max_sharpe_20250714_152306": 0.13139509357159523,
+      "Eiten_Max Sharpe_20250714_163424 vs Riskfolio-Lib_risk_parity_20250714_162236": 0.1224489795918369,
+      "Eiten_Genetic Algorithm_20250714_163424 vs PyPortfolioOpt_max_sharpe_20250714_152306": 0.13139509357159504,
+      "Eiten_Genetic Algorithm_20250714_163424 vs Riskfolio-Lib_risk_parity_20250714_162236": 0.12244897959183672,
+      "PyPortfolioOpt_max_sharpe_20250714_152306 vs Riskfolio-Lib_risk_parity_20250714_162236": 0.06401352911869179
+    },
+    "rms_differences": {
+      "Eiten_Eigen Portfolio_20250714_163424 vs Eiten_Minimum Variance_20250714_163424": 0.051106578072984056,
+      "Eiten_Eigen Portfolio_20250714_163424 vs Eiten_Max Sharpe_20250714_163424": 0.22460574097274455,
+      "Eiten_Eigen Portfolio_20250714_163424 vs Eiten_Genetic Algorithm_20250714_163424": 0.2246136020436755,
+      "Eiten_Eigen Portfolio_20250714_163424 vs PyPortfolioOpt_max_sharpe_20250714_152306": 0.1424166309707926,
+      "Eiten_Eigen Portfolio_20250714_163424 vs Riskfolio-Lib_risk_parity_20250714_162236": 0.051106578072984056,
+      "Eiten_Minimum Variance_20250714_163424 vs Eiten_Max Sharpe_20250714_163424": 0.22134036562028353,
+      "Eiten_Minimum Variance_20250714_163424 vs Eiten_Genetic Algorithm_20250714_163424": 0.22134918609674245,
+      "Eiten_Minimum Variance_20250714_163424 vs PyPortfolioOpt_max_sharpe_20250714_152306": 0.11555470438379745,
+      "Eiten_Minimum Variance_20250714_163424 vs Riskfolio-Lib_risk_parity_20250714_162236": 1.3877787807814457e-17,
+      "Eiten_Max Sharpe_20250714_163424 vs Eiten_Genetic Algorithm_20250714_163424": 1.4400369144496867e-05,
+      "Eiten_Max Sharpe_20250714_163424 vs PyPortfolioOpt_max_sharpe_20250714_152306": 0.2613456827066964,
+      "Eiten_Max Sharpe_20250714_163424 vs Riskfolio-Lib_risk_parity_20250714_162236": 0.22134036562028353,
+      "Eiten_Genetic Algorithm_20250714_163424 vs PyPortfolioOpt_max_sharpe_20250714_152306": 0.26135345461694814,
+      "Eiten_Genetic Algorithm_20250714_163424 vs Riskfolio-Lib_risk_parity_20250714_162236": 0.22134918609674245,
+      "PyPortfolioOpt_max_sharpe_20250714_152306 vs Riskfolio-Lib_risk_parity_20250714_162236": 0.11555470438379745
+    }
+  },
+  "concentration_metrics": {
+    "description": "Portfolio concentration and diversity measures",
+    "data": {
+      "Eiten_Eigen Portfolio_20250714_163424": {
+        "herfindahl_index": 0.10799492394119162,
+        "effective_assets": 9.259694469941454,
+        "top3_concentration": 0.424359449793999,
+        "gini_coefficient": 0.4056635458332991
+      },
+      "Eiten_Minimum Variance_20250714_163424": {
+        "herfindahl_index": 0.07142857142857142,
+        "effective_assets": 14.0,
+        "top3_concentration": 0.21428571428571427,
+        "gini_coefficient": 2.220446049250313e-16
+      },
+      "Eiten_Max Sharpe_20250714_163424": {
+        "herfindahl_index": 0.7573103757694717,
+        "effective_assets": 1.3204625632970384,
+        "top3_concentration": 1.0000000000000464,
+        "gini_coefficient": 0.9083836229380584
+      },
+      "Eiten_Genetic Algorithm_20250714_163424": {
+        "herfindahl_index": 0.7573650420282363,
+        "effective_assets": 1.320367252919389,
+        "top3_concentration": 1.0,
+        "gini_coefficient": 0.9083890657660059
+      },
+      "PyPortfolioOpt_max_sharpe_20250714_152306": {
+        "herfindahl_index": 0.2583690273017469,
+        "effective_assets": 3.8704329634376373,
+        "top3_concentration": 0.6455502793556565,
+        "gini_coefficient": 0.5431023950074663
+      },
+      "Riskfolio-Lib_risk_parity_20250714_162236": {
+        "herfindahl_index": 0.07142857142857144,
+        "effective_assets": 13.999999999999998,
+        "top3_concentration": 0.2142857142857143,
+        "gini_coefficient": 2.220446049250313e-16
+      }
+    }
+  },
+  "diversity_metrics": {
+    "description": "Portfolio diversity measures",
+    "data": {
+      "Eiten_Eigen Portfolio_20250714_163424": {
+        "shannon_entropy": 2.341434316113741,
+        "num_positions": "14",
+        "max_weight": 0.17063527377867843,
+        "weight_std": 0.05110657807298404
+      },
+      "Eiten_Minimum Variance_20250714_163424": {
+        "shannon_entropy": 2.639057329615258,
+        "num_positions": "14",
+        "max_weight": 0.07142857142857142,
+        "weight_std": 1.3877787807814457e-17
+      },
+      "Eiten_Max Sharpe_20250714_163424": {
+        "shannon_entropy": 0.4073427783265468,
+        "num_positions": "2",
+        "max_weight": 0.8586853605665155,
+        "weight_std": 0.22134036562028359
+      },
+      "Eiten_Genetic Algorithm_20250714_163424": {
+        "shannon_entropy": 0.4072740245515716,
+        "num_positions": "2",
+        "max_weight": 0.8587234603620428,
+        "weight_std": 0.22134918609674245
+      },
+      "PyPortfolioOpt_max_sharpe_20250714_152306": {
+        "shannon_entropy": 1.9468687840363001,
+        "num_positions": "14",
+        "max_weight": 0.47989161916382334,
+        "weight_std": 0.11555470438379745
+      },
+      "Riskfolio-Lib_risk_parity_20250714_162236": {
+        "shannon_entropy": 2.6390573296152584,
+        "num_positions": "14",
+        "max_weight": 0.07142857142857144,
+        "weight_std": 1.3877787807814457e-17
+      }
+    }
+  },
+  "portfolio_statistics": {
+    "description": "Basic statistical measures for each portfolio",
+    "data": {
+      "Eiten_Eigen Portfolio_20250714_163424": {
+        "sum_weights": 0.9999999999999998,
+        "mean_weight": 0.07142857142857141,
+        "median_weight": 0.07111077165281496,
+        "min_weight": 0.0018400694657345546,
+        "max_weight": 0.17063527377867843,
+        "weight_range": 0.16879520431294387
+      },
+      "Eiten_Minimum Variance_20250714_163424": {
+        "sum_weights": 0.9999999999999998,
+        "mean_weight": 0.07142857142857141,
+        "median_weight": 0.07142857142857142,
+        "min_weight": 0.07142857142857142,
+        "max_weight": 0.07142857142857142,
+        "weight_range": 0.0
+      },
+      "Eiten_Max Sharpe_20250714_163424": {
+        "sum_weights": 1.0000000000000633,
+        "mean_weight": 0.07142857142857595,
+        "median_weight": 0.0,
+        "min_weight": 0.0,
+        "max_weight": 0.8586853605665155,
+        "weight_range": 0.8586853605665155
+      },
+      "Eiten_Genetic Algorithm_20250714_163424": {
+        "sum_weights": 1.0,
+        "mean_weight": 0.07142857142857142,
+        "median_weight": 0.0,
+        "min_weight": 0.0,
+        "max_weight": 0.8587234603620428,
+        "weight_range": 0.8587234603620428
+      },
+      "PyPortfolioOpt_max_sharpe_20250714_152306": {
+        "sum_weights": 1.0,
+        "mean_weight": 0.07142857142857142,
+        "median_weight": 0.03772509397741451,
+        "min_weight": 0.005594842975214761,
+        "max_weight": 0.47989161916382334,
+        "weight_range": 0.47429677618860855
+      },
+      "Riskfolio-Lib_risk_parity_20250714_162236": {
+        "sum_weights": 0.9999999999999999,
+        "mean_weight": 0.07142857142857142,
+        "median_weight": 0.07142857142857144,
+        "min_weight": 0.07142857142857144,
+        "max_weight": 0.07142857142857144,
+        "weight_range": 0.0
+      }
+    }
+  },
+  "visualizations": {
+    "description": "Generated visualization files",
+    "files": {
+      "correlation_heatmap": "results/plots/correlation_heatmap_20250715_095922.png",
+      "weights_comparison": "results/plots/weights_comparison_20250715_095922.png",
+      "concentration_analysis": "results/plots/concentration_analysis_20250715_095922.png",
+      "euclidean_distances_heatmap": "results/plots/euclidean_distances_heatmap_20250715_095922.png",
+      "manhattan_distances_heatmap": "results/plots/manhattan_distances_heatmap_20250715_095922.png"
+    }
+  }
+}

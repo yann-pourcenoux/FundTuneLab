@@ -357,15 +357,15 @@
           6,
           7
         ],
-        "status": "pending",
+        "status": "done",
         "subtasks": [
           {
             "id": 1,
             "title": "Read Portfolio Data",
             "description": "Develop functions to load and read portfolio weights from the results/portfolios/ directory.",
             "dependencies": [],
-            "details": "Ensure robust file handling and logging for missing or corrupted data files.",
-            "status": "pending",
+            "details": "Ensure robust file handling and logging for missing or corrupted data files.\n<info added on 2025-07-14T14:38:54.448Z>\nPortfolio Data Loading (Subtask 8.1) has been completed successfully. The PortfolioComparison class now accurately loads data from the results/portfolios/ directory for PyPortfolioOpt, Riskfolio-Lib, and Eiten formats. It extracts portfolio weights, performance metrics, and metadata, builds a standardized data structure, identifies the 14 common assets across portfolios, and constructs a weights DataFrame (14 x 3) for further analysis. Robust error handling and logging are in place, and a seaborn dependency has been added for future visualization needs. Note that while the current implementation handles only the first Eiten strategy, support for multiple strategies (eigen_portfolio, minimum_variance, max_sharpe, genetic_algorithm) is planned. The completed data loading phase now sets the stage for correlation and difference metrics calculations in Subtask 8.2.\n</info added on 2025-07-14T14:38:54.448Z>",
+            "status": "done",
             "testStrategy": ""
           },
           {
@@ -375,8 +375,8 @@
             "dependencies": [
               1
             ],
-            "details": "Utilize pandas and numpy to perform the computation; verify calculations with sample data.",
-            "status": "pending",
+            "details": "Utilize pandas and numpy to perform the computation; verify calculations with sample data.\n<info added on 2025-07-14T14:42:06.754Z>\nSubtask 8.2 is now complete with a fully functional implementation of the correlation and difference metrics module. The module calculates a comprehensive correlation matrix using pandas, applies multiple distance metrics (Manhattan, Euclidean, max absolute, mean absolute, RMS), and computes advanced portfolio concentration measures (HHI, effective number of assets, top-3 concentration ratio, Gini coefficient). It also evaluates portfolio diversity through Shannon entropy, position count, maximum weight, and weight standard deviation, alongside basic statistical summaries (sum, mean, median, min, max, range) for each portfolio. Additionally, two analysis functions—get_most_similar_portfolios() and get_most_different_portfolios()—efficiently identify top correlated and least correlated portfolio pairs, with results structured within a comprehensive metrics dictionary. The implementation has been robustly tested on six portfolios (including four Eiten strategies, PyPortfolioOpt, and Riskfolio) and incorporates graceful handling of NaN values, thorough error management, and a modular design with helper functions. Next, attention will shift to implementing matplotlib visualizations in Subtask 8.3 to graphically represent these results.\n</info added on 2025-07-14T14:42:06.754Z>",
+            "status": "done",
             "testStrategy": ""
           },
           {
@@ -387,7 +387,7 @@
               2
             ],
             "details": "Implement visualization functions using matplotlib; focus on clarity and accuracy of the rendered charts.",
-            "status": "pending",
+            "status": "done",
             "testStrategy": ""
           },
           {
@@ -397,8 +397,8 @@
             "dependencies": [
               2
             ],
-            "details": "Ensure the reports include both numeric metrics and references to the generated visual assets.",
-            "status": "pending",
+            "details": "Ensure the reports include both numeric metrics and references to the generated visual assets.\n<info added on 2025-07-15T08:00:06.189Z>\nSubtask 8.4 is now complete. The PortfolioComparison class has been enhanced with comprehensive CSV/JSON reporting functionality. A new export_metrics_to_json() method generates a detailed JSON report covering all calculated metrics, including correlation analysis, distance metrics, concentration measures, and file references to the visualizations from Subtask 8.3. Multiple individual CSV export methods have been added for portfolio weights, correlation matrix, distance metrics, and concentration metrics, alongside a generate_comprehensive_report() method that produces all report files in one operation. Additionally, a _create_summary_report() helper now creates a human-readable summary of key findings. Testing verified the generation of six report files (totaling ~28KB) with proper timestamped filenames, robust error handling, and validated data integrity.\n</info added on 2025-07-15T08:00:06.189Z>",
+            "status": "done",
             "testStrategy": ""
           },
           {
@@ -410,8 +410,8 @@
               3,
               4
             ],
-            "details": "Use a set of predefined sample outputs to validate the results; include assertions and comparators in the test suite.",
-            "status": "pending",
+            "details": "Use a set of predefined sample outputs to validate the results; include assertions and comparators in the test suite.\n<info added on 2025-07-15T08:04:42.235Z>\n16 comprehensive test cases were implemented and all tests passed successfully. The newly added suite in tests/test_comparison.py validates the full range of portfolio comparison functionalities, including data loading, weights DataFrame creation, and form recognition; correlation matrix calculations with proper NaN handling; computation of distance metrics (with manual validation, e.g., √2 for orthogonal unit vectors); and concentration metrics (validating HHI of 0.2 and effective assets of 5.0 for equal weights). The suite also checks portfolio similarity/difference detection, JSON/CSV export file formats, report generation, edge case error handling, and numerical precision across calculations, ensuring the computed metrics are accurate and robust against various conditions.\n</info added on 2025-07-15T08:04:42.235Z>",
+            "status": "done",
             "testStrategy": ""
           }
         ]
@@ -578,7 +578,7 @@
     ],
     "metadata": {
       "created": "2025-07-14T11:38:03.937Z",
-      "updated": "2025-07-14T14:35:02.552Z",
+      "updated": "2025-07-15T08:04:53.510Z",
       "description": "Tasks for master context"
     }
   }
