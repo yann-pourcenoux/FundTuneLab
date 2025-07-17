@@ -1,21 +1,21 @@
 {
   "models": {
     "main": {
-      "provider": "openai",
-      "modelId": "o3-mini",
-      "maxTokens": 100000,
+      "provider": "openrouter",
+      "modelId": "deepseek/deepseek-chat-v3-0324:free",
+      "maxTokens": 163840,
       "temperature": 0.2
     },
     "research": {
-      "provider": "openai",
-      "modelId": "gpt-4o-mini-search-preview",
+      "provider": "openrouter",
+      "modelId": "perplexity/sonar-deep-research",
       "maxTokens": 8700,
       "temperature": 0.1
     },
     "fallback": {
-      "provider": "openai",
-      "modelId": "o4-mini",
-      "maxTokens": 120000,
+      "provider": "openrouter",
+      "modelId": "google/gemini-2.5-pro-exp-03-25",
+      "maxTokens": 1000000,
       "temperature": 0.2
     }
   },
