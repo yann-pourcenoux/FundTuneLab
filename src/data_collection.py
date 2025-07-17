@@ -23,6 +23,7 @@ from config.settings import (
     ensure_directories,
 )
 
+
 class DataCollectionError(Exception):
     """Custom exception for data collection errors."""
 
@@ -49,23 +50,20 @@ class DataValidationError(DataCollectionError):
 
 class DataCollector:
     """
-    Main class for collecting financial data from various providers.
+    Main class for collecting financial data from Yahoo Finance.
 
     Handles rate limiting, error recovery, and data validation.
     """
 
-    def __init__(self, provider: str = "yahoo"):
+    def __init__(self):
         """
-        Initialize the DataCollector.
-
-        Args:
-            provider (str): Data provider to use ('yahoo', 'alpha_vantage', 'quandl')
+        Initialize the DataCollector for Yahoo Finance.
         """
-        self.provider = provider
-        self.provider_config = DATA_PROVIDERS.get(provider, {})
+        self.provider = "yahoo"
+        self.provider_config = DATA_PROVIDERS.get(self.provider, {})
 
         if not self.provider_config.get("enabled", False):
-            raise ValueError(f"Provider '{provider}' is not enabled or configured")
+            raise ValueError(f"Provider '{self.provider}' is not enabled or configured")
 
         self.rate_limit = self.provider_config.get("rate_limit", 1000)
         self.timeout = self.provider_config.get("timeout", 30)
@@ -89,11 +87,10 @@ class DataCollector:
             "validation_errors": 0,
         }
 
-
         # Ensure data directories exist
         ensure_directories()
 
-        logger.info(f"DataCollector initialized with provider: {provider}")
+        logger.info("DataCollector initialized with provider: {self.provider}")
 
     def _enforce_rate_limit(self):
         """Enforce rate limiting based on provider configuration."""
@@ -265,9 +262,7 @@ class DataCollector:
 
             try:
                 self._enforce_rate_limit()
-                logger.info(
-                    f"Downloading data for {symbol} (attempt {retries + 1})"
-                )
+                logger.info(f"Downloading data for {symbol} (attempt {retries + 1})")
 
                 # Create ticker object
                 ticker = yf.Ticker(symbol)
@@ -294,9 +289,7 @@ class DataCollector:
                     self._save_data_to_csv(data, symbol)
 
                 self._record_success()
-                logger.info(
-                    f"Successfully downloaded {len(data)} rows for {symbol}"
-                )
+                logger.info(f"Successfully downloaded {len(data)} rows for {symbol}")
                 return data
 
             except (RequestException, Timeout, ConnectionError) as e:
@@ -596,7 +589,7 @@ def download_default_assets(
     Returns:
         Dict[str, Optional[pd.DataFrame]]: Data for each asset
     """
-    collector = DataCollector(provider="yahoo")
+    collector = DataCollector()
     return collector.download_multiple_symbols(
         symbols=DEFAULT_ASSETS,
         start_date=start_date,

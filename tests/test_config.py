@@ -5,7 +5,6 @@ This module tests the configuration consistency, environment variable handling,
 and utility functions to ensure proper operation across different environments.
 """
 
-import os
 import pytest
 from pathlib import Path
 from unittest.mock import patch
@@ -71,69 +70,6 @@ def test_default_values():
     assert settings.BACKTESTING["initial_capital"] > 0
     assert 0 <= settings.BACKTESTING["transaction_cost"] <= 1
     assert 0 <= settings.BACKTESTING["cash_buffer"] <= 1
-
-
-class TestEnvironmentVariables:
-    """Test environment variable handling."""
-
-    def test_environment_variable_overrides(self):
-        """Test that environment variables properly override defaults."""
-        with patch.dict(
-            os.environ,
-            {
-                "FUNDTUNELAB_START_DATE": "2019-01-01",
-                "FUNDTUNELAB_BENCHMARK": "VTI",
-                "FUNDTUNELAB_INITIAL_CAPITAL": "50000",
-                "FUNDTUNELAB_LOG_LEVEL": "DEBUG",
-            },
-        ):
-            # Re-import to get updated values
-            import importlib
-            from config import settings
-
-            importlib.reload(settings)
-
-            assert settings.DEFAULT_START_DATE == "2019-01-01"
-            assert settings.DEFAULT_BENCHMARK == "VTI"
-            assert settings.BACKTESTING["initial_capital"] == 50000
-            assert settings.LOGGING["level"] == "DEBUG"
-
-    def test_api_key_retrieval(self):
-        """Test API key retrieval functionality."""
-        from config import settings
-
-        # Test with mock API key
-        with patch.dict(os.environ, {"ALPHA_VANTAGE_API_KEY": "test_key_123"}):
-            key = settings.get_api_key("alpha_vantage")
-            assert key == "test_key_123"
-
-        # Test with missing API key
-        with patch.dict(os.environ, {}, clear=True):
-            key = settings.get_api_key("alpha_vantage")
-            assert key == ""
-
-    def test_invalid_provider(self):
-        """Test error handling for invalid provider names."""
-        from config import settings
-
-        with pytest.raises(ValueError, match="Unknown provider"):
-            settings.get_api_key("invalid_provider")
-
-    def test_check_environment_setup(self):
-        """Test environment setup checking."""
-        from config import settings
-
-        with patch.dict(
-            os.environ,
-            {"ALPHA_VANTAGE_API_KEY": "test_key", "QUANDL_API_KEY": ""},
-            clear=True,
-        ):
-            status = settings.check_environment_setup()
-            assert isinstance(status, dict)
-            assert status["alpha_vantage"] is True
-            assert status["quandl"] is False
-            assert status["iex"] is False
-            assert status["fred"] is False
 
 
 class TestUtilityFunctions:

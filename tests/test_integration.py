@@ -12,7 +12,6 @@ import json
 import pandas as pd
 from pathlib import Path
 from unittest.mock import patch, MagicMock
-from loguru import logger
 
 # Import from the installed package
 from src.orchestrator import FundTuneLabOrchestrator, run_orchestrator
@@ -385,7 +384,7 @@ class TestWorkflowValidation:
 
     def test_cli_argument_validation(self):
         """Test CLI argument validation."""
-        from cli import validate_skip_stages
+        from src.cli import validate_skip_stages
 
         # Valid stages should pass
         valid_stages = ["data_collection", "backtesting"]
@@ -416,46 +415,70 @@ class TestWorkflowValidation:
 class TestDataIntegrity:
     """Test data integrity and validation."""
 
+    @pytest.fixture
+    def temp_workspace(self):
+        """Create a temporary workspace for testing."""
+        temp_dir = tempfile.mkdtemp(prefix="fundtunelab_integrity_test_")
+        yield Path(temp_dir)
+        shutil.rmtree(temp_dir, ignore_errors=True)
+
+    """Test data integrity and validation."""
+
     def test_empty_results_handling(self, temp_workspace):
         """Test handling of empty results directories."""
-        # Create empty results structure
+        # More explicit setup for clarity
         results_dir = temp_workspace / "results"
+        portfolios_dir = results_dir / "portfolios"
+        reports_dir = results_dir / "reports"
+
         results_dir.mkdir(exist_ok=True)
-        (results_dir / "portfolios").mkdir(exist_ok=True)
-        (results_dir / "reports").mkdir(exist_ok=True)
+        portfolios_dir.mkdir(exist_ok=True)
+        reports_dir.mkdir(exist_ok=True)
 
         with patch("src.unified_reporting.RESULTS_DIR", results_dir):
-            generator = UnifiedReportGenerator()
+            # Pass the explicit reports_dir to the constructor
+            generator = UnifiedReportGenerator(output_dir=reports_dir)
             generator._collect_portfolio_data()
             generator._collect_comparison_data()
             generator._collect_backtest_data()
 
-            # Should handle empty data gracefully
             unified_data = generator._create_unified_data_structure()
-            assert unified_data["executive_summary"]["total_portfolios_generated"] == 0
+
+            assert (
+                unified_data["executive_summary"]["total_portfolios_generated"] == 0
+            ), "Should be 0 portfolios"
             assert not unified_data["executive_summary"][
                 "comparison_analyses_available"
-            ]
-            assert not unified_data["executive_summary"]["backtests_available"]
+            ], "Should be no comparison data"
+            assert not unified_data["executive_summary"]["backtests_available"], (
+                "Should be no backtest data"
+            )
 
     def test_corrupted_file_handling(self, temp_workspace):
         """Test handling of corrupted data files."""
-        portfolios_dir = temp_workspace / "portfolios"
+        results_dir = temp_workspace / "results"
+        portfolios_dir = results_dir / "portfolios"
+        reports_dir = results_dir / "reports"
+
+        results_dir.mkdir(exist_ok=True)
         portfolios_dir.mkdir(exist_ok=True, parents=True)
+        reports_dir.mkdir(exist_ok=True)
 
         # Create corrupted JSON file
         corrupted_file = portfolios_dir / "corrupted.json"
         corrupted_file.write_text("{ invalid json content")
 
-        with patch("src.unified_reporting.RESULTS_DIR", temp_workspace):
-            generator = UnifiedReportGenerator()
+        with patch("src.unified_reporting.RESULTS_DIR", results_dir):
+            generator = UnifiedReportGenerator(output_dir=reports_dir)
             generator._collect_portfolio_data()
 
             # Should handle corrupted files gracefully
-            assert len(generator.metadata["errors"]) > 0
+            assert len(generator.metadata["errors"]) > 0, (
+                "Should have recorded an error"
+            )
             assert any(
                 "corrupted.json" in error for error in generator.metadata["errors"]
-            )
+            ), "Error message should mention the corrupted file"
 
 
 if __name__ == "__main__":

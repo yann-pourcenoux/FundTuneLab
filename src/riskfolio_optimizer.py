@@ -54,7 +54,6 @@ class RiskfolioOptimizer:
         processed_data_dir: Optional[Path] = None,
         results_dir: Optional[Path] = None,
         risk_free_rate: float = 0.02,
-
     ):
         """
         Initialize the RiskfolioOptimizer.
@@ -89,11 +88,9 @@ class RiskfolioOptimizer:
         self.performance: Optional[Dict[str, float]] = None
         self.risk_contributions: Optional[pd.Series] = None
 
-
         logger.info("RiskfolioOptimizer initialized")
         logger.info(f"Processed data directory: {self.processed_data_dir}")
         logger.info(f"Results directory: {self.results_dir}")
-
 
     def load_preprocessed_data(self, date_pattern: str = "20250714") -> pd.DataFrame:
         """
@@ -111,9 +108,7 @@ class RiskfolioOptimizer:
             DataLoadError: If data loading fails
         """
         try:
-            logger.info(
-                f"Loading preprocessed data from {self.processed_data_dir}"
-            )
+            logger.info(f"Loading preprocessed data from {self.processed_data_dir}")
 
             # Find all processed CSV files
             csv_files = list(
@@ -169,9 +164,7 @@ class RiskfolioOptimizer:
             self.prices_df = prices_df
             self.assets = list(prices_df.columns)
 
-            logger.info(
-                f"Loaded data for {len(self.assets)} assets: {self.assets}"
-            )
+            logger.info(f"Loaded data for {len(self.assets)} assets: {self.assets}")
             logger.info(
                 f"Date range: {prices_df.index.min()} to {prices_df.index.max()}"
             )
@@ -493,9 +486,7 @@ class RiskfolioOptimizer:
     def _calculate_performance_metrics(self):
         """Calculate portfolio performance metrics."""
         if self.portfolio is None or self.weights is None:
-            logger.warning(
-                "Cannot calculate performance: missing portfolio or weights"
-            )
+            logger.warning("Cannot calculate performance: missing portfolio or weights")
             return
 
         try:
@@ -605,9 +596,7 @@ class RiskfolioOptimizer:
                 )
                 risk_contrib_df.to_csv(risk_contrib_path, index=False)
                 saved_files["risk_contributions"] = risk_contrib_path
-                logger.info(
-                    f"Risk contributions saved to CSV: {risk_contrib_path}"
-                )
+                logger.info(f"Risk contributions saved to CSV: {risk_contrib_path}")
 
             return saved_files
 

@@ -5,22 +5,6 @@
 # DATA PROVIDER API KEYS
 # ============================================================================
 
-# Alpha Vantage API Key (for stock data)
-# Get free key at: https://www.alphavantage.co/support/#api-key
-ALPHA_VANTAGE_API_KEY=your_alpha_vantage_api_key_here
-
-# Quandl API Key (for financial and economic data)
-# Get free key at: https://www.quandl.com/
-QUANDL_API_KEY=your_quandl_api_key_here
-
-# IEX Cloud API Key (for real-time and historical stock data)
-# Get free key at: https://iexcloud.io/
-IEX_API_KEY=your_iex_api_key_here
-
-# FRED API Key (for economic data from Federal Reserve)
-# Get free key at: https://fred.stlouisfed.org/docs/api/api_key.html
-FRED_API_KEY=your_fred_api_key_here
-
 # ============================================================================
 # OPTIONAL ENVIRONMENT OVERRIDES
 # ============================================================================

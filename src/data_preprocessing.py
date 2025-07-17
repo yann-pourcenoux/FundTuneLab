@@ -41,7 +41,6 @@ class DataPreprocessor:
         self,
         raw_data_dir: Optional[Path] = None,
         processed_data_dir: Optional[Path] = None,
-
     ):
         """
         Initialize the DataPreprocessor.
@@ -57,8 +56,6 @@ class DataPreprocessor:
         # Ensure directories exist
         ensure_directories()
         self.processed_data_dir.mkdir(parents=True, exist_ok=True)
-
-
 
         # Data quality statistics
         self.quality_stats = {
@@ -78,8 +75,6 @@ class DataPreprocessor:
         self.price_columns = ["Open", "High", "Low", "Close"]
 
         logger.info("DataPreprocessor initialized")
-
-
 
     def identify_missing_values(self, df: pd.DataFrame, symbol: str) -> Dict[str, Any]:
         """
@@ -147,9 +142,7 @@ class DataPreprocessor:
         Returns:
             DataFrame with missing values handled
         """
-        logger.info(
-            f"Handling missing values for {symbol} using strategy: {strategy}"
-        )
+        logger.info(f"Handling missing values for {symbol} using strategy: {strategy}")
 
         original_length = len(df)
         df_cleaned = df.copy()
@@ -169,9 +162,7 @@ class DataPreprocessor:
             if missing_count == 0:
                 continue
 
-            logger.info(
-                f"{symbol}: Handling {missing_count} missing values in {col}"
-            )
+            logger.info(f"{symbol}: Handling {missing_count} missing values in {col}")
 
             if strategy == "auto":
                 # Auto strategy: use forward fill for small gaps, drop for large gaps
@@ -373,9 +364,7 @@ class DataPreprocessor:
                 )
 
                 if capped_count > 0:
-                    logger.info(
-                        f"{symbol}: Capped {capped_count} outliers in {col}"
-                    )
+                    logger.info(f"{symbol}: Capped {capped_count} outliers in {col}")
 
         return df_filtered
 
@@ -709,9 +698,7 @@ class DataPreprocessor:
             original_rows = len(df)
             self.quality_stats["total_rows_input"] += original_rows
 
-            logger.info(
-                f"Loaded {symbol}: {original_rows} rows, {df.shape[1]} columns"
-            )
+            logger.info(f"Loaded {symbol}: {original_rows} rows, {df.shape[1]} columns")
 
             # Step 1: Handle missing values
             missing_analysis = self.identify_missing_values(df, symbol)

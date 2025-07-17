@@ -585,11 +585,22 @@
         "dependencies": [],
         "priority": "medium",
         "subtasks": []
+      },
+      {
+        "id": 12,
+        "title": "Remove Non-Yahoo Data Ingestion",
+        "description": "Remove all settings and code related to data ingestion from sources other than Yahoo Finance. This includes removing configurations for 'alpha_vantage', 'quandl', 'iex', and 'fred' from 'config/settings.py', and simplifying the 'DataCollector' class in 'src/data_collection.py' to only support Yahoo Finance.",
+        "details": "",
+        "testStrategy": "",
+        "status": "done",
+        "dependencies": [],
+        "priority": "medium",
+        "subtasks": []
       }
     ],
     "metadata": {
       "created": "2025-07-14T11:38:03.937Z",
-      "updated": "2025-07-17T19:36:20.022Z",
+      "updated": "2025-07-17T19:54:03.488Z",
       "description": "Tasks for master context"
     }
   }

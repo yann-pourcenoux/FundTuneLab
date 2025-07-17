@@ -7,11 +7,9 @@ to ensure consistency across the project.
 """
 
 from pathlib import Path
-from typing import Dict
 import os
 from datetime import datetime
 from dotenv import load_dotenv
-from loguru import logger
 
 # Load environment variables from .env file if it exists
 load_dotenv()
@@ -59,19 +57,7 @@ DATA_PROVIDERS = {
         "enabled": True,
         "rate_limit": 2000,  # requests per hour
         "timeout": 30,  # seconds
-    },
-    "alpha_vantage": {
-        "enabled": False,
-        "api_key_env": "ALPHA_VANTAGE_API_KEY",
-        "rate_limit": 5,  # requests per minute for free tier
-        "timeout": 30,
-    },
-    "quandl": {
-        "enabled": False,
-        "api_key_env": "QUANDL_API_KEY",
-        "rate_limit": 50,  # requests per day for free tier
-        "timeout": 30,
-    },
+    }
 }
 
 # Default asset universe for optimization
@@ -246,71 +232,6 @@ LOGGING = {
     "backup_count": 5,
     "console_output": True,
 }
-
-# ============================================================================
-# ENVIRONMENT VARIABLES (sensitive data)
-# ============================================================================
-
-# API keys and sensitive settings (to be loaded from environment)
-ENVIRONMENT_VARIABLES = {
-    "ALPHA_VANTAGE_API_KEY": os.getenv("ALPHA_VANTAGE_API_KEY"),
-    "QUANDL_API_KEY": os.getenv("QUANDL_API_KEY"),
-    "IEX_API_KEY": os.getenv("IEX_API_KEY"),
-    "FRED_API_KEY": os.getenv("FRED_API_KEY"),
-}
-
-# ============================================================================
-# API KEY MANAGEMENT
-# ============================================================================
-
-
-def get_api_key(provider: str) -> str:
-    """
-    Safely retrieve API key for a given provider.
-
-    Args:
-        provider: Name of the data provider (e.g., 'alpha_vantage', 'quandl')
-
-    Returns:
-        API key string if found, empty string otherwise
-
-    Raises:
-        Warning if API key is not found but provider is enabled
-    """
-    key_mapping = {
-        "alpha_vantage": "ALPHA_VANTAGE_API_KEY",
-        "quandl": "QUANDL_API_KEY",
-        "iex": "IEX_API_KEY",
-        "fred": "FRED_API_KEY",
-    }
-
-    if provider not in key_mapping:
-        raise ValueError(f"Unknown provider: {provider}")
-
-    env_var = key_mapping[provider]
-    api_key = os.getenv(env_var, "")
-
-    # Check if provider is enabled but no API key is provided
-    if provider in DATA_PROVIDERS and DATA_PROVIDERS[provider].get("enabled", False):
-        if not api_key:
-
-            logger.warning(
-                f"Provider '{provider}' is enabled but no API key found. "
-                f"Please set {env_var} in your .env file.",
-            )
-
-    return api_key
-
-
-def check_environment_setup() -> Dict[str, bool]:
-    """
-    Check which API keys are properly configured.
-
-    Returns:
-        Dictionary mapping provider names to boolean indicating if API key is available
-    """
-    providers = ["alpha_vantage", "quandl", "iex", "fred"]
-    return {provider: bool(get_api_key(provider)) for provider in providers}
 
 
 # ============================================================================

@@ -50,7 +50,6 @@ class PyPortfolioOptOptimizer:
         processed_data_dir: Optional[Path] = None,
         results_dir: Optional[Path] = None,
         risk_free_rate: float = 0.02,
-
     ):
         """
         Initialize the optimizer.
@@ -97,9 +96,7 @@ class PyPortfolioOptOptimizer:
             DataLoadError: If data loading fails
         """
         try:
-            logger.info(
-                f"Loading preprocessed data from {self.processed_data_dir}"
-            )
+            logger.info(f"Loading preprocessed data from {self.processed_data_dir}")
 
             # Find all processed CSV files
             csv_files = list(
@@ -155,9 +152,7 @@ class PyPortfolioOptOptimizer:
             self.prices_df = prices_df
             self.assets = list(prices_df.columns)
 
-            logger.info(
-                f"Loaded data for {len(self.assets)} assets: {self.assets}"
-            )
+            logger.info(f"Loaded data for {len(self.assets)} assets: {self.assets}")
             logger.info(
                 f"Date range: {prices_df.index.min()} to {prices_df.index.max()}"
             )

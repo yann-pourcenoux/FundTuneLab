@@ -7,6 +7,7 @@ three libraries, comparison engine, and backtesting analysis.
 """
 
 from loguru import logger
+from config.settings import LOGGING
 import time
 import json
 from datetime import datetime
@@ -51,6 +52,13 @@ class FundTuneLabOrchestrator:
         """
         Initialize the orchestrator.
         """
+        self.logger = logger
+        self.logger.add(
+            LOGGING["file"],
+            rotation=LOGGING["max_file_size"],
+            compression="zip",
+            level=LOGGING["level"],
+        )
 
         # Ensure all required directories exist
         ensure_directories()
@@ -93,8 +101,6 @@ class FundTuneLabOrchestrator:
                 self._run_report_generation,
             ),
         ]
-
-
 
     def run_full_workflow(
         self, skip_stages: Optional[List[str]] = None
@@ -222,9 +228,7 @@ class FundTuneLabOrchestrator:
                     )
 
             except Exception as e:
-                logger.error(
-                    f"PyPortfolioOpt {method} optimization error: {str(e)}"
-                )
+                logger.error(f"PyPortfolioOpt {method} optimization error: {str(e)}")
                 results[method] = {"success": False, "error": str(e)}
 
         successful_methods = sum(1 for r in results.values() if r.get("success", False))
@@ -384,14 +388,28 @@ class FundTuneLabOrchestrator:
         }
 
     def _save_execution_summary(self):
-        """Save execution summary to file."""
+        """Save a serializable copy of the execution summary."""
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
         summary_file = RESULTS_DIR / "logs" / f"execution_summary_{timestamp}.json"
 
-        with open(summary_file, "w") as f:
-            json.dump(self.execution_state, f, indent=2, default=str)
+        # Create a serializable copy to avoid circular references
+        serializable_state = {
+            key: value
+            for key, value in self.execution_state.items()
+            if key != "results"  # Exclude potentially problematic parts
+        }
+        # Add a simplified version of results if needed for logging
+        serializable_state["results_summary"] = {
+            stage: {"success": data.get("success"), "duration": data.get("duration")}
+            for stage, data in self.execution_state.get("results", {}).items()
+        }
 
-        logger.info(f"Execution summary saved to {summary_file}")
+        try:
+            with open(summary_file, "w") as f:
+                json.dump(serializable_state, f, indent=2, default=str)
+            logger.info(f"Execution summary saved to {summary_file}")
+        except TypeError as e:
+            logger.error(f"Failed to serialize execution summary: {e}")
 
     def _print_final_summary(self):
         """Print final execution summary."""
@@ -423,9 +441,7 @@ class FundTuneLabOrchestrator:
         logger.info("=" * 70)
 
 
-def run_orchestrator(
-    skip_stages: Optional[List[str]] = None
-) -> Dict[str, Any]:
+def run_orchestrator(skip_stages: Optional[List[str]] = None) -> Dict[str, Any]:
     """
     Convenience function to run the full FundTuneLab workflow.
 

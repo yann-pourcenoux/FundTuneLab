@@ -6,7 +6,6 @@ allowing users to pass configuration options and control workflow execution.
 """
 
 import argparse
-from loguru import logger
 import sys
 from pathlib import Path
 from typing import List
@@ -144,8 +143,6 @@ def main():
     if args.list_stages:
         print_stages_info()
         sys.exit(0)
-
-
 
     # Validate skip stages
     skip_stages = validate_skip_stages(args.skip)

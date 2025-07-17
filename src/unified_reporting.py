@@ -138,10 +138,9 @@ class UnifiedReportGenerator:
                 self.metadata["files_processed"].append(str(json_file))
 
             except Exception as e:
-                logger.error(
-                    f"Failed to load portfolio data from {json_file}: {e}"
-                )
-                self.metadata["errors"].append(f"Portfolio data: {str(e)}")
+                error_message = f"Failed to load portfolio data from {json_file}: {e}"
+                logger.error(error_message)
+                self.metadata["errors"].append(error_message)
 
         # Collect CSV weight files
         csv_files = list(portfolios_dir.glob("*_weights.csv"))
@@ -186,9 +185,7 @@ class UnifiedReportGenerator:
                 self.metadata["files_processed"].append(str(comp_file))
 
             except Exception as e:
-                logger.error(
-                    f"Failed to load comparison data from {comp_file}: {e}"
-                )
+                logger.error(f"Failed to load comparison data from {comp_file}: {e}")
                 self.metadata["errors"].append(f"Comparison data: {str(e)}")
 
         # Collect comparison CSV files

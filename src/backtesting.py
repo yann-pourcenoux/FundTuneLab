@@ -252,9 +252,7 @@ class VectorBTBacktester:
                 price_series.name = symbol
 
                 price_dfs.append(price_series)
-                logger.info(
-                    f"Loaded {len(price_series)} price points for {symbol}"
-                )
+                logger.info(f"Loaded {len(price_series)} price points for {symbol}")
 
             # Combine all price series into a single DataFrame
             self.price_data = pd.concat(price_dfs, axis=1)
@@ -568,7 +566,6 @@ def backtest_all_portfolios(
         Dictionary mapping portfolio names to their backtest results
     """
 
-
     # Set up directories
     portfolios_path = (
         Path(portfolios_dir) if portfolios_dir else RESULTS_DIR / "portfolios"
@@ -743,7 +740,6 @@ def validate_backtest_results(
     Returns:
         Dictionary containing validation results and status
     """
-
 
     # Default validation thresholds (reasonable ranges for portfolio metrics)
     default_thresholds = {
@@ -963,7 +959,6 @@ def create_benchmark_portfolio(
         Benchmark portfolio results
     """
 
-
     try:
         if benchmark_type == "equal_weight":
             # Equal weight portfolio
@@ -1045,7 +1040,6 @@ def run_comprehensive_validation(
         Complete validation results
     """
 
-
     try:
         logger.info(f"Running comprehensive validation for {portfolio_file}")
 
@@ -1120,7 +1114,6 @@ def integrate_with_optimizer(
     Returns:
         Backtest results if run_backtest is True, None otherwise
     """
-
 
     if not run_backtest:
         return None

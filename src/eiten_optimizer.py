@@ -54,7 +54,6 @@ class EitenOptimizer:
         processed_data_dir: Optional[Path] = None,
         results_dir: Optional[Path] = None,
         risk_free_rate: float = 0.02,
-
     ):
         """
         Initialize the Eiten Optimizer.
@@ -84,8 +83,6 @@ class EitenOptimizer:
         self.optimization_results = {}
 
         logger.info("EitenOptimizer initialized successfully")
-
-
 
     def load_preprocessed_data(self, date_pattern: str = "20250714") -> pd.DataFrame:
         """
