@@ -11,6 +11,7 @@ from typing import Dict
 import os
 from datetime import datetime
 from dotenv import load_dotenv
+from loguru import logger
 
 # Load environment variables from .env file if it exists
 load_dotenv()
@@ -292,12 +293,10 @@ def get_api_key(provider: str) -> str:
     # Check if provider is enabled but no API key is provided
     if provider in DATA_PROVIDERS and DATA_PROVIDERS[provider].get("enabled", False):
         if not api_key:
-            import warnings
 
-            warnings.warn(
+            logger.warning(
                 f"Provider '{provider}' is enabled but no API key found. "
                 f"Please set {env_var} in your .env file.",
-                UserWarning,
             )
 
     return api_key

@@ -6,8 +6,7 @@ It loads preprocessed data, applies mean-variance optimization, calculates effic
 and generates portfolio weights in standardized JSON/CSV format.
 """
 
-import logging
-import warnings
+from loguru import logger
 from typing import Dict, Optional, Tuple, Any
 from datetime import datetime
 from pathlib import Path
@@ -19,10 +18,6 @@ from config.settings import PROCESSED_DATA_DIR, RESULTS_DIR, ensure_directories
 
 # PyPortfolioOpt imports
 from pypfopt import EfficientFrontier, expected_returns, risk_models
-
-# Suppress warnings for cleaner output
-warnings.filterwarnings("ignore", category=UserWarning)
-warnings.filterwarnings("ignore", category=FutureWarning)
 
 
 class PortfolioOptimizerError(Exception):
@@ -55,7 +50,7 @@ class PyPortfolioOptOptimizer:
         processed_data_dir: Optional[Path] = None,
         results_dir: Optional[Path] = None,
         risk_free_rate: float = 0.02,
-        log_level: int = logging.INFO,
+
     ):
         """
         Initialize the optimizer.
@@ -74,9 +69,6 @@ class PyPortfolioOptOptimizer:
         ensure_directories()
         self.results_dir.mkdir(parents=True, exist_ok=True)
 
-        # Setup logging
-        self.logger = self._setup_logging(log_level)
-
         # Data storage
         self.prices_df = None
         self.returns_df = None
@@ -89,22 +81,7 @@ class PyPortfolioOptOptimizer:
         self.performance = None
         self.efficient_frontier_data = None
 
-        self.logger.info("PyPortfolioOpt Optimizer initialized")
-
-    def _setup_logging(self, log_level: int) -> logging.Logger:
-        """Setup logging configuration."""
-        logger = logging.getLogger(__name__)
-        logger.setLevel(log_level)
-
-        if not logger.handlers:
-            handler = logging.StreamHandler()
-            formatter = logging.Formatter(
-                "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
-            )
-            handler.setFormatter(formatter)
-            logger.addHandler(handler)
-
-        return logger
+        logger.info("PyPortfolioOpt Optimizer initialized")
 
     def load_preprocessed_data(self, date_pattern: str = "20250714") -> pd.DataFrame:
         """
@@ -120,7 +97,7 @@ class PyPortfolioOptOptimizer:
             DataLoadError: If data loading fails
         """
         try:
-            self.logger.info(
+            logger.info(
                 f"Loading preprocessed data from {self.processed_data_dir}"
             )
 
@@ -134,14 +111,14 @@ class PyPortfolioOptOptimizer:
                     f"No processed CSV files found with pattern *processed_{date_pattern}.csv"
                 )
 
-            self.logger.info(f"Found {len(csv_files)} processed files")
+            logger.info(f"Found {len(csv_files)} processed files")
 
             # Load and combine data
             all_data = []
             symbols = []
 
             for csv_file in csv_files:
-                self.logger.debug(f"Loading {csv_file}")
+                logger.debug(f"Loading {csv_file}")
                 df = pd.read_csv(csv_file, parse_dates=["Date"])
 
                 # Extract symbol from filename if not in data
@@ -178,13 +155,13 @@ class PyPortfolioOptOptimizer:
             self.prices_df = prices_df
             self.assets = list(prices_df.columns)
 
-            self.logger.info(
+            logger.info(
                 f"Loaded data for {len(self.assets)} assets: {self.assets}"
             )
-            self.logger.info(
+            logger.info(
                 f"Date range: {prices_df.index.min()} to {prices_df.index.max()}"
             )
-            self.logger.info(f"Total observations: {len(prices_df)}")
+            logger.info(f"Total observations: {len(prices_df)}")
 
             # Validate data integrity
             self._validate_price_data()
@@ -201,12 +178,12 @@ class PyPortfolioOptOptimizer:
 
         # Check for negative or zero prices
         if (self.prices_df <= 0).any().any():
-            self.logger.warning("Found negative or zero prices in data")
+            logger.warning("Found negative or zero prices in data")
 
         # Check for missing data
         missing_pct = (self.prices_df.isnull().sum() / len(self.prices_df)) * 100
         if missing_pct.any():
-            self.logger.warning(
+            logger.warning(
                 f"Missing data percentage by asset:\n{missing_pct[missing_pct > 0]}"
             )
 
@@ -217,7 +194,7 @@ class PyPortfolioOptOptimizer:
                 f"Insufficient data: {len(self.prices_df)} observations (minimum {min_obs})"
             )
 
-        self.logger.info("Price data validation completed successfully")
+        logger.info("Price data validation completed successfully")
 
     def calculate_returns_and_statistics(self, frequency: int = 252):
         """
@@ -231,7 +208,7 @@ class PyPortfolioOptOptimizer:
                 "No price data loaded. Call load_preprocessed_data() first."
             )
 
-        self.logger.info("Calculating returns and statistics")
+        logger.info("Calculating returns and statistics")
 
         # Use PyPortfolioOpt functions
         self.expected_returns = expected_returns.mean_historical_return(
@@ -240,8 +217,8 @@ class PyPortfolioOptOptimizer:
         self.cov_matrix = risk_models.sample_cov(self.prices_df, frequency=frequency)
         self.returns_df = expected_returns.returns_from_prices(self.prices_df)
 
-        self.logger.info("Returns and statistics calculated successfully")
-        self.logger.info(f"Expected returns:\n{self.expected_returns}")
+        logger.info("Returns and statistics calculated successfully")
+        logger.info(f"Expected returns:\n{self.expected_returns}")
 
         return self.expected_returns, self.cov_matrix
 
@@ -274,7 +251,7 @@ class PyPortfolioOptOptimizer:
                 "Returns and covariance not calculated. Call calculate_returns_and_statistics() first."
             )
 
-        self.logger.info(f"Optimizing portfolio using method: {method}")
+        logger.info(f"Optimizing portfolio using method: {method}")
 
         try:
             # Use PyPortfolioOpt
@@ -308,14 +285,14 @@ class PyPortfolioOptOptimizer:
             )
 
             self.weights = weights
-            self.logger.info("Portfolio optimization completed successfully")
-            self.logger.info(f"Optimized weights:\n{weights}")
+            logger.info("Portfolio optimization completed successfully")
+            logger.info(f"Optimized weights:\n{weights}")
 
             if self.performance:
                 exp_ret, volatility, sharpe = self.performance
-                self.logger.info(f"Expected Return: {exp_ret:.4f}")
-                self.logger.info(f"Volatility: {volatility:.4f}")
-                self.logger.info(f"Sharpe Ratio: {sharpe:.4f}")
+                logger.info(f"Expected Return: {exp_ret:.4f}")
+                logger.info(f"Volatility: {volatility:.4f}")
+                logger.info(f"Sharpe Ratio: {sharpe:.4f}")
 
             return weights
 
@@ -335,7 +312,7 @@ class PyPortfolioOptOptimizer:
         if self.expected_returns is None or self.cov_matrix is None:
             raise OptimizationError("Returns and covariance not calculated")
 
-        self.logger.info(f"Calculating efficient frontier with {num_points} points")
+        logger.info(f"Calculating efficient frontier with {num_points} points")
 
         try:
             # Use PyPortfolioOpt implementation
@@ -370,7 +347,7 @@ class PyPortfolioOptOptimizer:
                     continue  # Skip infeasible points
 
             self.efficient_frontier_data = pd.DataFrame(frontier_data)
-            self.logger.info(
+            logger.info(
                 f"Calculated {len(self.efficient_frontier_data)} efficient frontier points"
             )
 
@@ -422,7 +399,7 @@ class PyPortfolioOptOptimizer:
             with open(json_path, "w") as f:
                 json.dump(results, f, indent=2, default=str)
             saved_files["json"] = json_path
-            self.logger.info(f"Results saved to JSON: {json_path}")
+            logger.info(f"Results saved to JSON: {json_path}")
 
             # Save CSV (weights)
             csv_path = self.results_dir / f"{base_filename}_weights.csv"
@@ -431,7 +408,7 @@ class PyPortfolioOptOptimizer:
             )
             weights_df.to_csv(csv_path, index=False)
             saved_files["csv"] = csv_path
-            self.logger.info(f"Weights saved to CSV: {csv_path}")
+            logger.info(f"Weights saved to CSV: {csv_path}")
 
             # Save efficient frontier if available
             if (
@@ -441,7 +418,7 @@ class PyPortfolioOptOptimizer:
                 ef_path = self.results_dir / f"{base_filename}_efficient_frontier.csv"
                 self.efficient_frontier_data.to_csv(ef_path, index=False)
                 saved_files["efficient_frontier"] = ef_path
-                self.logger.info(f"Efficient frontier saved to CSV: {ef_path}")
+                logger.info(f"Efficient frontier saved to CSV: {ef_path}")
 
             return saved_files
 

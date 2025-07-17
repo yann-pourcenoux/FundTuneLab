@@ -6,7 +6,7 @@ sequentially executing data collection, preprocessing, optimization modules for 
 three libraries, comparison engine, and backtesting analysis.
 """
 
-import logging
+from loguru import logger
 import time
 import json
 from datetime import datetime
@@ -47,15 +47,10 @@ class FundTuneLabOrchestrator:
     6. Report Generation
     """
 
-    def __init__(self, log_level: int = logging.INFO):
+    def __init__(self):
         """
         Initialize the orchestrator.
-
-        Args:
-            log_level: Logging level for the orchestrator
         """
-        self.setup_logging(log_level)
-        self.logger = logging.getLogger(__name__)
 
         # Ensure all required directories exist
         ensure_directories()
@@ -99,36 +94,7 @@ class FundTuneLabOrchestrator:
             ),
         ]
 
-    def setup_logging(self, log_level: int):
-        """Set up comprehensive logging for the orchestrator."""
-        # Create logs directory if it doesn't exist
-        logs_dir = RESULTS_DIR / "logs"
-        logs_dir.mkdir(exist_ok=True, parents=True)
 
-        # Create timestamped log file
-        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-        log_file = logs_dir / f"orchestrator_{timestamp}.log"
-
-        # Configure logging format
-        formatter = logging.Formatter(
-            "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
-        )
-
-        # File handler
-        file_handler = logging.FileHandler(log_file)
-        file_handler.setLevel(log_level)
-        file_handler.setFormatter(formatter)
-
-        # Console handler
-        console_handler = logging.StreamHandler()
-        console_handler.setLevel(log_level)
-        console_handler.setFormatter(formatter)
-
-        # Configure root logger
-        logger = logging.getLogger()
-        logger.setLevel(log_level)
-        logger.addHandler(file_handler)
-        logger.addHandler(console_handler)
 
     def run_full_workflow(
         self, skip_stages: Optional[List[str]] = None
@@ -142,19 +108,19 @@ class FundTuneLabOrchestrator:
         Returns:
             Dictionary containing execution results and metadata
         """
-        self.logger.info("=" * 70)
-        self.logger.info("STARTING FUNDTUNELAB FULL WORKFLOW")
-        self.logger.info("=" * 70)
+        logger.info("=" * 70)
+        logger.info("STARTING FUNDTUNELAB FULL WORKFLOW")
+        logger.info("=" * 70)
 
         self.execution_state["start_time"] = datetime.now()
         skip_stages = skip_stages or []
 
         for stage_id, stage_name, stage_func in self.stages:
             if stage_id in skip_stages:
-                self.logger.info(f"SKIPPING: {stage_name}")
+                logger.info(f"SKIPPING: {stage_name}")
                 continue
 
-            self.logger.info(f"STARTING: {stage_name}")
+            logger.info(f"STARTING: {stage_name}")
             stage_start = time.time()
 
             try:
@@ -168,7 +134,7 @@ class FundTuneLabOrchestrator:
                     "result": result,
                 }
 
-                self.logger.info(f"COMPLETED: {stage_name} in {stage_duration:.2f}s")
+                logger.info(f"COMPLETED: {stage_name} in {stage_duration:.2f}s")
 
             except Exception as e:
                 stage_duration = time.time() - stage_start
@@ -183,12 +149,12 @@ class FundTuneLabOrchestrator:
                     "traceback": traceback.format_exc(),
                 }
 
-                self.logger.error(error_msg)
-                self.logger.error(traceback.format_exc())
+                logger.error(error_msg)
+                logger.error(traceback.format_exc())
 
                 # Continue with next stage unless it's a critical dependency
                 if stage_id in ["data_collection", "data_preprocessing"]:
-                    self.logger.error("Critical stage failed. Stopping workflow.")
+                    logger.error("Critical stage failed. Stopping workflow.")
                     break
 
         self.execution_state["end_time"] = datetime.now()
@@ -203,13 +169,13 @@ class FundTuneLabOrchestrator:
 
     def _run_data_collection(self) -> Dict[str, Any]:
         """Execute data collection stage."""
-        self.logger.info("Downloading financial data for default assets...")
+        logger.info("Downloading financial data for default assets...")
         results = download_default_assets()
 
         successful = sum(1 for data in results.values() if data is not None)
         total = len(results)
 
-        self.logger.info(
+        logger.info(
             f"Data collection: {successful}/{total} assets downloaded successfully"
         )
 
@@ -222,10 +188,10 @@ class FundTuneLabOrchestrator:
 
     def _run_data_preprocessing(self) -> Dict[str, Any]:
         """Execute data preprocessing stage."""
-        self.logger.info("Preprocessing downloaded data...")
+        logger.info("Preprocessing downloaded data...")
         results = preprocess_all_data()
 
-        self.logger.info(
+        logger.info(
             f"Data preprocessing: {results['files_successful']}/{results['files_found']} files processed"
         )
 
@@ -233,7 +199,7 @@ class FundTuneLabOrchestrator:
 
     def _run_pypfopt_optimization(self) -> Dict[str, Any]:
         """Execute PyPortfolioOpt optimization stage."""
-        self.logger.info("Running PyPortfolioOpt optimization...")
+        logger.info("Running PyPortfolioOpt optimization...")
 
         # Run multiple optimization methods
         methods = ["max_sharpe", "min_volatility", "efficient_return"]
@@ -247,16 +213,16 @@ class FundTuneLabOrchestrator:
                 results[method] = result
 
                 if result["success"]:
-                    self.logger.info(
+                    logger.info(
                         f"PyPortfolioOpt {method} optimization completed successfully"
                     )
                 else:
-                    self.logger.warning(
+                    logger.warning(
                         f"PyPortfolioOpt {method} optimization failed: {result.get('error', 'Unknown error')}"
                     )
 
             except Exception as e:
-                self.logger.error(
+                logger.error(
                     f"PyPortfolioOpt {method} optimization error: {str(e)}"
                 )
                 results[method] = {"success": False, "error": str(e)}
@@ -271,47 +237,47 @@ class FundTuneLabOrchestrator:
 
     def _run_eiten_optimization(self) -> Dict[str, Any]:
         """Execute Eiten optimization stage."""
-        self.logger.info("Running Eiten optimization...")
+        logger.info("Running Eiten optimization...")
 
         try:
             results = optimize_eiten_portfolios()
 
             if results.get("success", False):
-                self.logger.info("Eiten optimization completed successfully")
+                logger.info("Eiten optimization completed successfully")
             else:
-                self.logger.warning(
+                logger.warning(
                     f"Eiten optimization failed: {results.get('error', 'Unknown error')}"
                 )
 
             return results
 
         except Exception as e:
-            self.logger.error(f"Eiten optimization error: {str(e)}")
+            logger.error(f"Eiten optimization error: {str(e)}")
             return {"success": False, "error": str(e)}
 
     def _run_riskfolio_optimization(self) -> Dict[str, Any]:
         """Execute Riskfolio-Lib optimization stage."""
-        self.logger.info("Running Riskfolio-Lib optimization...")
+        logger.info("Running Riskfolio-Lib optimization...")
 
         try:
             results = optimize_risk_parity_from_data()
 
             if results.get("success", False):
-                self.logger.info("Riskfolio-Lib optimization completed successfully")
+                logger.info("Riskfolio-Lib optimization completed successfully")
             else:
-                self.logger.warning(
+                logger.warning(
                     f"Riskfolio-Lib optimization failed: {results.get('error', 'Unknown error')}"
                 )
 
             return results
 
         except Exception as e:
-            self.logger.error(f"Riskfolio-Lib optimization error: {str(e)}")
+            logger.error(f"Riskfolio-Lib optimization error: {str(e)}")
             return {"success": False, "error": str(e)}
 
     def _run_portfolio_comparison(self) -> Dict[str, Any]:
         """Execute portfolio comparison stage."""
-        self.logger.info("Running portfolio comparison analysis...")
+        logger.info("Running portfolio comparison analysis...")
 
         try:
             # Load portfolios and run comparison
@@ -323,7 +289,7 @@ class FundTuneLabOrchestrator:
             # Generate visualizations
             saved_plots = comparison.generate_all_visualizations()
 
-            self.logger.info(
+            logger.info(
                 f"Portfolio comparison completed: {len(generated_reports)} reports, {len(saved_plots)} plots generated"
             )
 
@@ -336,32 +302,32 @@ class FundTuneLabOrchestrator:
             }
 
         except Exception as e:
-            self.logger.error(f"Portfolio comparison error: {str(e)}")
+            logger.error(f"Portfolio comparison error: {str(e)}")
             return {"success": False, "error": str(e)}
 
     def _run_backtesting(self) -> Dict[str, Any]:
         """Execute backtesting and validation stage."""
-        self.logger.info("Running comprehensive backtesting and validation...")
+        logger.info("Running comprehensive backtesting and validation...")
 
         try:
             results = run_comprehensive_validation()
 
             if results.get("success", False):
-                self.logger.info("Backtesting completed successfully")
+                logger.info("Backtesting completed successfully")
             else:
-                self.logger.warning(
+                logger.warning(
                     f"Backtesting failed: {results.get('error', 'Unknown error')}"
                 )
 
             return results
 
         except Exception as e:
-            self.logger.error(f"Backtesting error: {str(e)}")
+            logger.error(f"Backtesting error: {str(e)}")
             return {"success": False, "error": str(e)}
 
     def _run_report_generation(self) -> Dict[str, Any]:
         """Generate final consolidated reports."""
-        self.logger.info("Generating final consolidated reports...")
+        logger.info("Generating final consolidated reports...")
 
         try:
             # Generate unified reports in multiple formats
@@ -384,9 +350,9 @@ class FundTuneLabOrchestrator:
             # Add summary to generated files
             generated_files["master_summary"] = str(summary_file)
 
-            self.logger.info(f"Generated {len(generated_files)} report files:")
+            logger.info(f"Generated {len(generated_files)} report files:")
             for format_type, file_path in generated_files.items():
-                self.logger.info(f"  {format_type}: {file_path}")
+                logger.info(f"  {format_type}: {file_path}")
 
             return {
                 "success": True,
@@ -396,7 +362,7 @@ class FundTuneLabOrchestrator:
             }
 
         except Exception as e:
-            self.logger.error(f"Report generation error: {str(e)}")
+            logger.error(f"Report generation error: {str(e)}")
             return {"success": False, "error": str(e)}
 
     def _create_master_summary(self) -> Dict[str, Any]:
@@ -425,52 +391,51 @@ class FundTuneLabOrchestrator:
         with open(summary_file, "w") as f:
             json.dump(self.execution_state, f, indent=2, default=str)
 
-        self.logger.info(f"Execution summary saved to {summary_file}")
+        logger.info(f"Execution summary saved to {summary_file}")
 
     def _print_final_summary(self):
         """Print final execution summary."""
-        self.logger.info("=" * 70)
-        self.logger.info("WORKFLOW EXECUTION SUMMARY")
-        self.logger.info("=" * 70)
+        logger.info("=" * 70)
+        logger.info("WORKFLOW EXECUTION SUMMARY")
+        logger.info("=" * 70)
 
         total_stages = len(self.stages)
         completed = len(self.execution_state["stages_completed"])
         failed = len(self.execution_state["stages_failed"])
 
-        self.logger.info(
+        logger.info(
             f"Total Duration: {self.execution_state['total_duration']:.2f} seconds"
         )
-        self.logger.info(f"Stages Completed: {completed}/{total_stages}")
-        self.logger.info(f"Stages Failed: {failed}/{total_stages}")
+        logger.info(f"Stages Completed: {completed}/{total_stages}")
+        logger.info(f"Stages Failed: {failed}/{total_stages}")
 
         if self.execution_state["stages_completed"]:
-            self.logger.info("Completed Stages:")
+            logger.info("Completed Stages:")
             for stage in self.execution_state["stages_completed"]:
                 duration = self.execution_state["results"][stage]["duration"]
-                self.logger.info(f"  ✓ {stage} ({duration:.2f}s)")
+                logger.info(f"  ✓ {stage} ({duration:.2f}s)")
 
         if self.execution_state["stages_failed"]:
-            self.logger.info("Failed Stages:")
+            logger.info("Failed Stages:")
             for stage in self.execution_state["stages_failed"]:
-                self.logger.info(f"  ✗ {stage}")
+                logger.info(f"  ✗ {stage}")
 
-        self.logger.info("=" * 70)
+        logger.info("=" * 70)
 
 
 def run_orchestrator(
-    skip_stages: Optional[List[str]] = None, log_level: int = logging.INFO
+    skip_stages: Optional[List[str]] = None
 ) -> Dict[str, Any]:
     """
     Convenience function to run the full FundTuneLab workflow.
 
     Args:
         skip_stages: List of stage names to skip
-        log_level: Logging level
 
     Returns:
         Dictionary containing execution results
     """
-    orchestrator = FundTuneLabOrchestrator(log_level=log_level)
+    orchestrator = FundTuneLabOrchestrator()
     return orchestrator.run_full_workflow(skip_stages=skip_stages)
 
 

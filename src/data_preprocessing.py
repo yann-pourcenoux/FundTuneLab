@@ -6,8 +6,7 @@ including missing value handling, outlier detection and removal, date standardiz
 and data integrity validation.
 """
 
-import logging
-import warnings
+from loguru import logger
 from typing import Dict, Optional, Any
 from datetime import datetime
 from pathlib import Path
@@ -16,10 +15,6 @@ import pandas as pd
 import numpy as np
 
 from config.settings import RAW_DATA_DIR, ensure_directories
-
-# Suppress warnings for cleaner output
-warnings.filterwarnings("ignore", category=UserWarning)
-warnings.filterwarnings("ignore", category=FutureWarning)
 
 
 class DataPreprocessingError(Exception):
@@ -46,7 +41,7 @@ class DataPreprocessor:
         self,
         raw_data_dir: Optional[Path] = None,
         processed_data_dir: Optional[Path] = None,
-        log_level: int = logging.INFO,
+
     ):
         """
         Initialize the DataPreprocessor.
@@ -63,8 +58,7 @@ class DataPreprocessor:
         ensure_directories()
         self.processed_data_dir.mkdir(parents=True, exist_ok=True)
 
-        # Setup logging
-        self.logger = self._setup_logging(log_level)
+
 
         # Data quality statistics
         self.quality_stats = {
@@ -83,35 +77,9 @@ class DataPreprocessor:
         self.required_columns = ["Date", "Open", "High", "Low", "Close", "Volume"]
         self.price_columns = ["Open", "High", "Low", "Close"]
 
-        self.logger.info("DataPreprocessor initialized")
+        logger.info("DataPreprocessor initialized")
 
-    def _setup_logging(self, log_level: int) -> logging.Logger:
-        """Set up logging for the preprocessor."""
-        logger = logging.getLogger("data_preprocessor")
-        logger.setLevel(log_level)
 
-        # Create file handler if it doesn't exist
-        if not logger.handlers:
-            log_file = self.processed_data_dir / "preprocessing.log"
-            file_handler = logging.FileHandler(log_file)
-            file_handler.setLevel(log_level)
-
-            # Create console handler
-            console_handler = logging.StreamHandler()
-            console_handler.setLevel(log_level)
-
-            # Create formatter
-            formatter = logging.Formatter(
-                "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
-            )
-            file_handler.setFormatter(formatter)
-            console_handler.setFormatter(formatter)
-
-            # Add handlers to logger
-            logger.addHandler(file_handler)
-            logger.addHandler(console_handler)
-
-        return logger
 
     def identify_missing_values(self, df: pd.DataFrame, symbol: str) -> Dict[str, Any]:
         """
@@ -124,7 +92,7 @@ class DataPreprocessor:
         Returns:
             Dictionary with missing value analysis
         """
-        self.logger.info(f"Analyzing missing values for {symbol}")
+        logger.info(f"Analyzing missing values for {symbol}")
 
         # Count missing values per column
         missing_counts = df.isnull().sum()
@@ -152,15 +120,15 @@ class DataPreprocessor:
         self.quality_stats["missing_values_found"] += missing_counts.sum()
 
         if analysis["has_missing_data"]:
-            self.logger.warning(
+            logger.warning(
                 f"{symbol}: Found {missing_counts.sum()} missing values across {missing_counts[missing_counts > 0].count()} columns"
             )
             for col, count in critical_missing.items():
-                self.logger.warning(
+                logger.warning(
                     f"{symbol}: Critical column '{col}' has {count} missing values ({missing_percentages[col]:.2f}%)"
                 )
         else:
-            self.logger.info(f"{symbol}: No missing values found")
+            logger.info(f"{symbol}: No missing values found")
 
         return analysis
 
@@ -179,7 +147,7 @@ class DataPreprocessor:
         Returns:
             DataFrame with missing values handled
         """
-        self.logger.info(
+        logger.info(
             f"Handling missing values for {symbol} using strategy: {strategy}"
         )
 
@@ -190,7 +158,7 @@ class DataPreprocessor:
         empty_rows = df_cleaned.isnull().all(axis=1).sum()
         if empty_rows > 0:
             df_cleaned = df_cleaned.dropna(how="all")
-            self.logger.info(f"{symbol}: Removed {empty_rows} completely empty rows")
+            logger.info(f"{symbol}: Removed {empty_rows} completely empty rows")
 
         # Handle missing values in price columns
         for col in self.price_columns:
@@ -201,14 +169,14 @@ class DataPreprocessor:
             if missing_count == 0:
                 continue
 
-            self.logger.info(
+            logger.info(
                 f"{symbol}: Handling {missing_count} missing values in {col}"
             )
 
             if strategy == "auto":
                 # Auto strategy: use forward fill for small gaps, drop for large gaps
                 if missing_count / len(df_cleaned) > 0.1:  # More than 10% missing
-                    self.logger.warning(
+                    logger.warning(
                         f"{symbol}: High missing rate ({missing_count / len(df_cleaned) * 100:.1f}%) in {col}, using interpolation"
                     )
                     df_cleaned[col] = df_cleaned[col].interpolate(
@@ -238,7 +206,7 @@ class DataPreprocessor:
             # Fill with median volume
             median_volume = df_cleaned["Volume"].median()
             df_cleaned["Volume"] = df_cleaned["Volume"].fillna(median_volume)
-            self.logger.info(
+            logger.info(
                 f"{symbol}: Filled {missing_vol} missing Volume values with median ({median_volume:,.0f})"
             )
 
@@ -248,14 +216,14 @@ class DataPreprocessor:
         removed_final = before_final_cleanup - len(df_cleaned)
 
         if removed_final > 0:
-            self.logger.warning(
+            logger.warning(
                 f"{symbol}: Removed {removed_final} rows with remaining missing critical data"
             )
 
         rows_removed = original_length - len(df_cleaned)
         self.quality_stats["missing_values_handled"] += rows_removed
 
-        self.logger.info(
+        logger.info(
             f"{symbol}: Missing value handling complete. Removed {rows_removed} rows ({rows_removed / original_length * 100:.2f}%)"
         )
 
@@ -276,7 +244,7 @@ class DataPreprocessor:
         Returns:
             Dictionary with outlier analysis
         """
-        self.logger.info(f"Detecting outliers for {symbol} using {method} method")
+        logger.info(f"Detecting outliers for {symbol} using {method} method")
 
         outlier_info = {
             "method": method,
@@ -333,7 +301,7 @@ class DataPreprocessor:
             outlier_info["outlier_indices"].update(outliers)
 
             if len(outliers) > 0:
-                self.logger.info(
+                logger.info(
                     f"{symbol}: Found {len(outliers)} outliers in {col} ({len(outliers) / len(df) * 100:.2f}%)"
                 )
 
@@ -363,12 +331,12 @@ class DataPreprocessor:
         Returns:
             DataFrame with outliers handled
         """
-        self.logger.info(f"Filtering outliers for {symbol}")
+        logger.info(f"Filtering outliers for {symbol}")
 
         outlier_info = self.detect_outliers(df, symbol, method, threshold)
 
         if outlier_info["total_outliers"] == 0:
-            self.logger.info(f"{symbol}: No outliers detected")
+            logger.info(f"{symbol}: No outliers detected")
             return df
 
         df_filtered = df.copy()
@@ -379,7 +347,7 @@ class DataPreprocessor:
             df_filtered = df_filtered.drop(outlier_indices)
             removed_count = len(outlier_indices)
 
-            self.logger.info(
+            logger.info(
                 f"{symbol}: Removed {removed_count} rows with outliers ({removed_count / len(df) * 100:.2f}%)"
             )
             self.quality_stats["outliers_removed"] += removed_count
@@ -405,7 +373,7 @@ class DataPreprocessor:
                 )
 
                 if capped_count > 0:
-                    self.logger.info(
+                    logger.info(
                         f"{symbol}: Capped {capped_count} outliers in {col}"
                     )
 
@@ -422,7 +390,7 @@ class DataPreprocessor:
         Returns:
             DataFrame with standardized dates
         """
-        self.logger.info(f"Standardizing date formats for {symbol}")
+        logger.info(f"Standardizing date formats for {symbol}")
 
         df_standardized = df.copy()
 
@@ -441,7 +409,7 @@ class DataPreprocessor:
             ]  # Assume first column after reset is date
 
         if date_column is None:
-            self.logger.error(f"{symbol}: No date column found")
+            logger.error(f"{symbol}: No date column found")
             self.quality_stats["date_format_issues"] += 1
             raise DataPreprocessingError(f"No date column found in {symbol} data")
 
@@ -457,7 +425,7 @@ class DataPreprocessor:
                 df_standardized[date_column] = df_standardized[
                     date_column
                 ].dt.tz_localize(None)
-                self.logger.info(f"{symbol}: Removed timezone information from dates")
+                logger.info(f"{symbol}: Removed timezone information from dates")
 
             # Sort by date
             df_standardized = df_standardized.sort_values(date_column)
@@ -468,7 +436,7 @@ class DataPreprocessor:
             # Check for duplicate dates
             duplicate_dates = df_standardized.index.duplicated().sum()
             if duplicate_dates > 0:
-                self.logger.warning(
+                logger.warning(
                     f"{symbol}: Found {duplicate_dates} duplicate dates, keeping last occurrence"
                 )
                 df_standardized = df_standardized[
@@ -481,16 +449,16 @@ class DataPreprocessor:
                 date_diff > pd.Timedelta(days=7)
             ).sum()  # More than a week gap
             if large_gaps > 0:
-                self.logger.warning(
+                logger.warning(
                     f"{symbol}: Found {large_gaps} large gaps (>7 days) in date sequence"
                 )
 
-            self.logger.info(
+            logger.info(
                 f"{symbol}: Date standardization complete. Date range: {df_standardized.index.min()} to {df_standardized.index.max()}"
             )
 
         except Exception as e:
-            self.logger.error(f"{symbol}: Error standardizing dates: {str(e)}")
+            logger.error(f"{symbol}: Error standardizing dates: {str(e)}")
             self.quality_stats["date_format_issues"] += 1
             raise DataPreprocessingError(
                 f"Date standardization failed for {symbol}: {str(e)}"
@@ -509,7 +477,7 @@ class DataPreprocessor:
         Returns:
             Dictionary with validation results
         """
-        self.logger.info(f"Validating data integrity for {symbol}")
+        logger.info(f"Validating data integrity for {symbol}")
 
         validation_results = {
             "symbol": symbol,
@@ -628,15 +596,15 @@ class DataPreprocessor:
 
         if validation_results["errors"]:
             self.quality_stats["integrity_checks_failed"] += 1
-            self.logger.error(
+            logger.error(
                 f"{symbol}: Data integrity validation FAILED with {len(validation_results['errors'])} errors"
             )
         elif validation_results["warnings"]:
-            self.logger.warning(
+            logger.warning(
                 f"{symbol}: Data integrity validation passed with {len(validation_results['warnings'])} warnings"
             )
         else:
-            self.logger.info(f"{symbol}: Data integrity validation PASSED (100%)")
+            logger.info(f"{symbol}: Data integrity validation PASSED (100%)")
 
         return validation_results
 
@@ -654,7 +622,7 @@ class DataPreprocessor:
         Returns:
             Path to saved file
         """
-        self.logger.info(f"Saving processed data for {symbol}")
+        logger.info(f"Saving processed data for {symbol}")
 
         # Perform final integrity check
         validation_results = self.validate_data_integrity(df, symbol)
@@ -698,15 +666,15 @@ class DataPreprocessor:
             with open(metadata_path, "w") as f:
                 json.dump(metadata, f, indent=2, default=str)
 
-            self.logger.info(f"Saved processed data: {file_path}")
-            self.logger.info(f"Saved metadata: {metadata_path}")
+            logger.info(f"Saved processed data: {file_path}")
+            logger.info(f"Saved metadata: {metadata_path}")
 
             self.quality_stats["files_processed"] += 1
 
             return file_path
 
         except Exception as e:
-            self.logger.error(f"Failed to save processed data for {symbol}: {str(e)}")
+            logger.error(f"Failed to save processed data for {symbol}: {str(e)}")
             raise DataPreprocessingError(
                 f"Could not save processed data for {symbol}: {str(e)}"
             )
@@ -730,7 +698,7 @@ class DataPreprocessor:
         Returns:
             Dictionary with processing results
         """
-        self.logger.info(f"Processing file: {file_path}")
+        logger.info(f"Processing file: {file_path}")
 
         # Extract symbol from filename
         symbol = file_path.stem.split("_")[0]
@@ -741,7 +709,7 @@ class DataPreprocessor:
             original_rows = len(df)
             self.quality_stats["total_rows_input"] += original_rows
 
-            self.logger.info(
+            logger.info(
                 f"Loaded {symbol}: {original_rows} rows, {df.shape[1]} columns"
             )
 
@@ -776,14 +744,14 @@ class DataPreprocessor:
                 "processing_date": datetime.now().isoformat(),
             }
 
-            self.logger.info(
+            logger.info(
                 f"Successfully processed {symbol}: {original_rows} → {final_rows} rows ({processing_results['removal_percentage']:.2f}% removed)"
             )
 
             return processing_results
 
         except Exception as e:
-            self.logger.error(f"Error processing {file_path}: {str(e)}")
+            logger.error(f"Error processing {file_path}: {str(e)}")
             return {
                 "symbol": symbol,
                 "status": "error",
@@ -811,16 +779,16 @@ class DataPreprocessor:
         Returns:
             Dictionary with batch processing results
         """
-        self.logger.info(f"Starting batch processing of files matching: {file_pattern}")
+        logger.info(f"Starting batch processing of files matching: {file_pattern}")
 
         # Find all matching files
         raw_files = list(self.raw_data_dir.glob(file_pattern))
 
         if not raw_files:
-            self.logger.warning(f"No files found matching pattern: {file_pattern}")
+            logger.warning(f"No files found matching pattern: {file_pattern}")
             return {"status": "no_files", "files_processed": 0}
 
-        self.logger.info(f"Found {len(raw_files)} files to process")
+        logger.info(f"Found {len(raw_files)} files to process")
 
         # Reset stats for this batch
         batch_start_time = datetime.now()
@@ -855,7 +823,7 @@ class DataPreprocessor:
                     results["errors"].append(result.get("error", "Unknown error"))
 
             except Exception as e:
-                self.logger.error(f"Unexpected error processing {file_path}: {str(e)}")
+                logger.error(f"Unexpected error processing {file_path}: {str(e)}")
                 results["files_failed"] += 1
                 results["errors"].append(str(e))
 
@@ -878,11 +846,11 @@ class DataPreprocessor:
 
             with open(report_path, "w") as f:
                 json.dump(results, f, indent=2, default=str)
-            self.logger.info(f"Saved batch processing report: {report_path}")
+            logger.info(f"Saved batch processing report: {report_path}")
         except Exception as e:
-            self.logger.error(f"Failed to save batch report: {str(e)}")
+            logger.error(f"Failed to save batch report: {str(e)}")
 
-        self.logger.info(
+        logger.info(
             f"Batch processing complete: {results['files_successful']}/{len(raw_files)} files successful ({results['success_rate']:.1f}%)"
         )
 

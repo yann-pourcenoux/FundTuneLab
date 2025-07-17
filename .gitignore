@@ -215,6 +215,10 @@ dev-debug.log
 # Dependency directories
 node_modules/
 # Environment variables
+.env
+
+# Results and logs
+results/
 # Editor directories and files
 .idea
 .vscode

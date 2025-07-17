@@ -6,7 +6,7 @@ allowing users to pass configuration options and control workflow execution.
 """
 
 import argparse
-import logging
+from loguru import logger
 import sys
 from pathlib import Path
 from typing import List
@@ -145,13 +145,7 @@ def main():
         print_stages_info()
         sys.exit(0)
 
-    # Set up logging level
-    if args.verbose:
-        log_level = logging.DEBUG
-    elif args.quiet:
-        log_level = logging.WARNING
-    else:
-        log_level = logging.INFO
+
 
     # Validate skip stages
     skip_stages = validate_skip_stages(args.skip)
@@ -171,7 +165,7 @@ def main():
 
     try:
         # Run the orchestrator
-        results = run_orchestrator(skip_stages=skip_stages, log_level=log_level)
+        results = run_orchestrator(skip_stages=skip_stages)
 
         # Print final status
         completed = len(results["stages_completed"])

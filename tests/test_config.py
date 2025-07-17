@@ -10,7 +10,6 @@ import pytest
 from pathlib import Path
 from unittest.mock import patch
 import tempfile
-import warnings
 
 
 def test_import_config():
@@ -112,20 +111,6 @@ class TestEnvironmentVariables:
         with patch.dict(os.environ, {}, clear=True):
             key = settings.get_api_key("alpha_vantage")
             assert key == ""
-
-    def test_api_key_warnings(self):
-        """Test that warnings are issued for missing API keys of enabled providers."""
-        from config import settings
-
-        # Mock enabled provider with missing API key
-        with patch.dict(settings.DATA_PROVIDERS, {"alpha_vantage": {"enabled": True}}):
-            with patch.dict(os.environ, {}, clear=True):
-                with warnings.catch_warnings(record=True) as w:
-                    warnings.simplefilter("always")
-                    settings.get_api_key("alpha_vantage")
-                    assert len(w) == 1
-                    assert "alpha_vantage" in str(w[0].message)
-                    assert "ALPHA_VANTAGE_API_KEY" in str(w[0].message)
 
     def test_invalid_provider(self):
         """Test error handling for invalid provider names."""

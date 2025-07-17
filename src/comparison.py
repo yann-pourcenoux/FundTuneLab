@@ -14,11 +14,7 @@ import seaborn as sns
 from pathlib import Path
 from typing import Dict, List, Tuple, Optional, Any
 from datetime import datetime
-import logging
-
-# Configure logging
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(__name__)
+from loguru import logger
 
 
 class PortfolioComparison:

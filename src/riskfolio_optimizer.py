@@ -6,8 +6,7 @@ It loads preprocessed data, applies risk parity optimization, and generates port
 in standardized JSON/CSV format to match other optimizers in the project.
 """
 
-import logging
-import warnings
+from loguru import logger
 from typing import Dict, List, Optional, Tuple, Any
 from datetime import datetime
 from pathlib import Path
@@ -19,10 +18,6 @@ from config.settings import PROCESSED_DATA_DIR, RESULTS_DIR, ensure_directories
 
 # Riskfolio-Lib imports
 import riskfolio as rp
-
-# Suppress warnings for cleaner output
-warnings.filterwarnings("ignore", category=UserWarning)
-warnings.filterwarnings("ignore", category=FutureWarning)
 
 
 class PortfolioOptimizerError(Exception):
@@ -59,7 +54,7 @@ class RiskfolioOptimizer:
         processed_data_dir: Optional[Path] = None,
         results_dir: Optional[Path] = None,
         risk_free_rate: float = 0.02,
-        log_level: int = logging.INFO,
+
     ):
         """
         Initialize the RiskfolioOptimizer.
@@ -94,27 +89,11 @@ class RiskfolioOptimizer:
         self.performance: Optional[Dict[str, float]] = None
         self.risk_contributions: Optional[pd.Series] = None
 
-        # Set up logging
-        self.logger = self._setup_logging(log_level)
 
-        self.logger.info("RiskfolioOptimizer initialized")
-        self.logger.info(f"Processed data directory: {self.processed_data_dir}")
-        self.logger.info(f"Results directory: {self.results_dir}")
+        logger.info("RiskfolioOptimizer initialized")
+        logger.info(f"Processed data directory: {self.processed_data_dir}")
+        logger.info(f"Results directory: {self.results_dir}")
 
-    def _setup_logging(self, log_level: int) -> logging.Logger:
-        """Set up logging configuration."""
-        logger = logging.getLogger(__name__)
-        logger.setLevel(log_level)
-
-        if not logger.handlers:
-            handler = logging.StreamHandler()
-            formatter = logging.Formatter(
-                "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
-            )
-            handler.setFormatter(formatter)
-            logger.addHandler(handler)
-
-        return logger
 
     def load_preprocessed_data(self, date_pattern: str = "20250714") -> pd.DataFrame:
         """
@@ -132,7 +111,7 @@ class RiskfolioOptimizer:
             DataLoadError: If data loading fails
         """
         try:
-            self.logger.info(
+            logger.info(
                 f"Loading preprocessed data from {self.processed_data_dir}"
             )
 
@@ -146,14 +125,14 @@ class RiskfolioOptimizer:
                     f"No processed CSV files found with pattern *processed_{date_pattern}.csv"
                 )
 
-            self.logger.info(f"Found {len(csv_files)} processed files")
+            logger.info(f"Found {len(csv_files)} processed files")
 
             # Load and combine data
             all_data = []
             symbols = []
 
             for csv_file in csv_files:
-                self.logger.debug(f"Loading {csv_file}")
+                logger.debug(f"Loading {csv_file}")
                 df = pd.read_csv(csv_file, parse_dates=["Date"])
 
                 # Extract symbol from filename if not in data
@@ -190,13 +169,13 @@ class RiskfolioOptimizer:
             self.prices_df = prices_df
             self.assets = list(prices_df.columns)
 
-            self.logger.info(
+            logger.info(
                 f"Loaded data for {len(self.assets)} assets: {self.assets}"
             )
-            self.logger.info(
+            logger.info(
                 f"Date range: {prices_df.index.min()} to {prices_df.index.max()}"
             )
-            self.logger.info(f"Total observations: {len(prices_df)}")
+            logger.info(f"Total observations: {len(prices_df)}")
 
             # Validate data integrity
             self._validate_price_data()
@@ -219,12 +198,12 @@ class RiskfolioOptimizer:
         if self.prices_df is None:
             raise DataLoadError("No price data loaded to validate")
 
-        self.logger.info("Validating price data integrity...")
+        logger.info("Validating price data integrity...")
 
         # Check for missing values
         missing_count = self.prices_df.isnull().sum().sum()
         if missing_count > 0:
-            self.logger.warning(f"Found {missing_count} missing values in price data")
+            logger.warning(f"Found {missing_count} missing values in price data")
 
         # Check for negative or zero prices
         invalid_prices = (self.prices_df <= 0).sum().sum()
@@ -233,7 +212,7 @@ class RiskfolioOptimizer:
 
         # Check date consistency (should be sorted and no duplicates)
         if not self.prices_df.index.is_monotonic_increasing:
-            self.logger.warning("Date index is not monotonically increasing")
+            logger.warning("Date index is not monotonically increasing")
 
         if self.prices_df.index.duplicated().any():
             raise DataLoadError("Found duplicate dates in price data")
@@ -244,18 +223,18 @@ class RiskfolioOptimizer:
 
             # Check for sufficient data points
             if len(asset_prices) < 50:  # Minimum 50 observations
-                self.logger.warning(
+                logger.warning(
                     f"Asset {asset} has only {len(asset_prices)} observations"
                 )
 
             # Check for reasonable price range (basic sanity check)
             price_ratio = asset_prices.max() / asset_prices.min()
             if price_ratio > 100:  # Prices vary by more than 100x
-                self.logger.warning(
+                logger.warning(
                     f"Asset {asset} has extreme price range (ratio: {price_ratio:.2f})"
                 )
 
-        self.logger.info("Price data validation completed successfully")
+        logger.info("Price data validation completed successfully")
 
     def calculate_returns_and_statistics(self, frequency: int = 252):
         """
@@ -269,18 +248,18 @@ class RiskfolioOptimizer:
                 "No price data loaded. Call load_preprocessed_data() first."
             )
 
-        self.logger.info("Calculating returns and statistics...")
+        logger.info("Calculating returns and statistics...")
 
         # Calculate returns
         self.returns_df = self.prices_df.pct_change().dropna()
 
-        self.logger.info(f"Calculated returns for {len(self.returns_df)} periods")
-        self.logger.info(f"Returns data shape: {self.returns_df.shape}")
+        logger.info(f"Calculated returns for {len(self.returns_df)} periods")
+        logger.info(f"Returns data shape: {self.returns_df.shape}")
 
         # Log basic return statistics
         for asset in self.assets:
             asset_returns = self.returns_df[asset]
-            self.logger.debug(
+            logger.debug(
                 f"{asset} - Mean return: {asset_returns.mean():.4f}, "
                 f"Volatility: {asset_returns.std():.4f}"
             )
@@ -315,13 +294,13 @@ class RiskfolioOptimizer:
             )
 
         try:
-            self.logger.info("Starting risk parity optimization with Riskfolio-Lib...")
+            logger.info("Starting risk parity optimization with Riskfolio-Lib...")
 
             # Initialize Riskfolio Portfolio object
             self.portfolio = rp.Portfolio(returns=self.returns_df)
 
             # Calculate asset statistics (expected returns and covariance matrix)
-            self.logger.info(
+            logger.info(
                 f"Calculating asset statistics using method_mu='{method_mu}', method_cov='{method_cov}'"
             )
             self.portfolio.assets_stats(method_mu=method_mu, method_cov=method_cov)
@@ -330,21 +309,21 @@ class RiskfolioOptimizer:
             self._fix_covariance_matrix()
 
             # Set constraints
-            self.logger.info(f"Setting weight bounds: {weight_bounds}")
+            logger.info(f"Setting weight bounds: {weight_bounds}")
 
             # Configure optimization parameters
             model = kwargs.get("model", "Classic")
             rm = kwargs.get("rm", "MV")  # Risk measure: Mean Variance
             rf = kwargs.get("rf", self.risk_free_rate)  # Risk-free rate
 
-            self.logger.info(
+            logger.info(
                 f"Optimization parameters - Model: {model}, Risk Measure: {rm}, Risk-free rate: {rf}"
             )
 
             # Perform risk parity optimization
             # Note: In newer versions of Riskfolio-Lib, risk parity is achieved through
             # the equal risk contribution (ERC) objective
-            self.logger.info(
+            logger.info(
                 "Performing risk parity (Equal Risk Contribution) optimization..."
             )
 
@@ -360,13 +339,13 @@ class RiskfolioOptimizer:
                 )
 
                 if weights is not None and not weights.empty:
-                    self.logger.info("Successfully optimized using ERC objective")
+                    logger.info("Successfully optimized using ERC objective")
                 else:
                     raise OptimizationError("ERC optimization returned empty weights")
 
             except Exception as erc_error:
-                self.logger.warning(f"ERC optimization failed: {erc_error}")
-                self.logger.info("Trying alternative risk parity method...")
+                logger.warning(f"ERC optimization failed: {erc_error}")
+                logger.info("Trying alternative risk parity method...")
 
                 try:
                     # Alternative: Use risk budgeting with equal risk budgets
@@ -384,7 +363,7 @@ class RiskfolioOptimizer:
                     )
 
                     if weights is not None and not weights.empty:
-                        self.logger.info(
+                        logger.info(
                             "Successfully optimized using risk budgeting method"
                         )
                     else:
@@ -393,15 +372,15 @@ class RiskfolioOptimizer:
                         )
 
                 except Exception as rp_error:
-                    self.logger.warning(
+                    logger.warning(
                         f"Risk budgeting optimization also failed: {rp_error}"
                     )
-                    self.logger.info("Using equal weights as final fallback...")
+                    logger.info("Using equal weights as final fallback...")
 
                     # Final fallback: equal weights
                     n_assets = len(self.assets)
                     weights = pd.Series([1 / n_assets] * n_assets, index=self.assets)
-                    self.logger.info("Using equal weights portfolio as fallback")
+                    logger.info("Using equal weights portfolio as fallback")
 
             # Validate optimization results
             if weights is None or weights.empty:
@@ -421,8 +400,8 @@ class RiskfolioOptimizer:
             # Calculate performance metrics
             self._calculate_performance_metrics()
 
-            self.logger.info("Risk parity optimization completed successfully")
-            self.logger.info(f"Portfolio weights: {dict(weights)}")
+            logger.info("Risk parity optimization completed successfully")
+            logger.info(f"Portfolio weights: {dict(weights)}")
 
             return weights
 
@@ -445,10 +424,10 @@ class RiskfolioOptimizer:
             # Check if covariance matrix is positive definite
             try:
                 cholesky(self.portfolio.cov.values)
-                self.logger.info("Covariance matrix is already positive definite")
+                logger.info("Covariance matrix is already positive definite")
                 return
             except np.linalg.LinAlgError:
-                self.logger.warning(
+                logger.warning(
                     "Covariance matrix is not positive definite, applying regularization..."
                 )
 
@@ -470,7 +449,7 @@ class RiskfolioOptimizer:
                         self.portfolio.cov.values
                         + regularization * np.eye(len(self.portfolio.cov))
                     )
-                    self.logger.warning(
+                    logger.warning(
                         f"Attempt {attempt + 1}: Increasing regularization to {regularization}"
                     )
 
@@ -481,17 +460,17 @@ class RiskfolioOptimizer:
                 columns=self.portfolio.cov.columns,
             )
 
-            self.logger.info(
+            logger.info(
                 f"Successfully regularized covariance matrix with parameter {regularization}"
             )
 
         except Exception as e:
-            self.logger.error(f"Failed to fix covariance matrix: {e}")
+            logger.error(f"Failed to fix covariance matrix: {e}")
 
     def _calculate_risk_contributions(self):
         """Calculate individual risk contributions for each asset."""
         if self.portfolio is None or self.weights is None:
-            self.logger.warning(
+            logger.warning(
                 "Cannot calculate risk contributions: missing portfolio or weights"
             )
             return
@@ -503,18 +482,18 @@ class RiskfolioOptimizer:
                 rm="MV",  # Mean Variance risk measure
             )
 
-            self.logger.info("Risk contributions calculated:")
+            logger.info("Risk contributions calculated:")
             for asset, contrib in self.risk_contributions.items():
-                self.logger.info(f"  {asset}: {contrib:.4f}")
+                logger.info(f"  {asset}: {contrib:.4f}")
 
         except Exception as e:
-            self.logger.warning(f"Failed to calculate risk contributions: {e}")
+            logger.warning(f"Failed to calculate risk contributions: {e}")
             self.risk_contributions = None
 
     def _calculate_performance_metrics(self):
         """Calculate portfolio performance metrics."""
         if self.portfolio is None or self.weights is None:
-            self.logger.warning(
+            logger.warning(
                 "Cannot calculate performance: missing portfolio or weights"
             )
             return
@@ -540,13 +519,13 @@ class RiskfolioOptimizer:
                 "sharpe_ratio": float(sharpe_ratio),
             }
 
-            self.logger.info("Performance metrics calculated:")
-            self.logger.info(f"  Expected Return: {expected_return:.4f}")
-            self.logger.info(f"  Volatility: {portfolio_volatility:.4f}")
-            self.logger.info(f"  Sharpe Ratio: {sharpe_ratio:.4f}")
+            logger.info("Performance metrics calculated:")
+            logger.info(f"  Expected Return: {expected_return:.4f}")
+            logger.info(f"  Volatility: {portfolio_volatility:.4f}")
+            logger.info(f"  Sharpe Ratio: {sharpe_ratio:.4f}")
 
         except Exception as e:
-            self.logger.warning(f"Failed to calculate performance metrics: {e}")
+            logger.warning(f"Failed to calculate performance metrics: {e}")
             self.performance = None
 
     def save_results(
@@ -601,7 +580,7 @@ class RiskfolioOptimizer:
             with open(json_path, "w") as f:
                 json.dump(results, f, indent=2, default=str)
             saved_files["json"] = json_path
-            self.logger.info(f"Results saved to JSON: {json_path}")
+            logger.info(f"Results saved to JSON: {json_path}")
 
             # Save CSV (weights)
             csv_path = self.results_dir / f"{base_filename}_weights.csv"
@@ -610,7 +589,7 @@ class RiskfolioOptimizer:
             )
             weights_df.to_csv(csv_path, index=False)
             saved_files["csv"] = csv_path
-            self.logger.info(f"Weights saved to CSV: {csv_path}")
+            logger.info(f"Weights saved to CSV: {csv_path}")
 
             # Save risk contributions if available
             if (
@@ -626,7 +605,7 @@ class RiskfolioOptimizer:
                 )
                 risk_contrib_df.to_csv(risk_contrib_path, index=False)
                 saved_files["risk_contributions"] = risk_contrib_path
-                self.logger.info(
+                logger.info(
                     f"Risk contributions saved to CSV: {risk_contrib_path}"
                 )
 
@@ -674,9 +653,9 @@ class RiskfolioOptimizer:
                 }
             )
 
-        self.logger.info("Risk parity validation results:")
+        logger.info("Risk parity validation results:")
         for key, value in validation_results.items():
-            self.logger.info(f"  {key}: {value}")
+            logger.info(f"  {key}: {value}")
 
         return validation_results
 

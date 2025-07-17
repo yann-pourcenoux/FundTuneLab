@@ -6,8 +6,7 @@ It includes robust error handling, rate limiting, and comprehensive logging.
 """
 
 import time
-import logging
-import warnings
+from loguru import logger
 from typing import List, Dict, Optional
 from datetime import datetime
 
@@ -23,10 +22,6 @@ from config.settings import (
     RAW_DATA_DIR,
     ensure_directories,
 )
-
-# Suppress yfinance warnings for cleaner output
-warnings.filterwarnings("ignore", category=UserWarning, module="yfinance")
-
 
 class DataCollectionError(Exception):
     """Custom exception for data collection errors."""
@@ -94,41 +89,11 @@ class DataCollector:
             "validation_errors": 0,
         }
 
-        # Setup logging
-        self.logger = self._setup_logging()
 
         # Ensure data directories exist
         ensure_directories()
 
-        self.logger.info(f"DataCollector initialized with provider: {provider}")
-
-    def _setup_logging(self) -> logging.Logger:
-        """Set up logging for the data collector."""
-        logger = logging.getLogger(f"data_collector_{self.provider}")
-        logger.setLevel(logging.INFO)
-
-        # Create file handler if it doesn't exist
-        if not logger.handlers:
-            log_file = RAW_DATA_DIR / "data_collection.log"
-            file_handler = logging.FileHandler(log_file)
-            file_handler.setLevel(logging.INFO)
-
-            # Create console handler
-            console_handler = logging.StreamHandler()
-            console_handler.setLevel(logging.INFO)
-
-            # Create formatter
-            formatter = logging.Formatter(
-                "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
-            )
-            file_handler.setFormatter(formatter)
-            console_handler.setFormatter(formatter)
-
-            # Add handlers to logger
-            logger.addHandler(file_handler)
-            logger.addHandler(console_handler)
-
-        return logger
+        logger.info(f"DataCollector initialized with provider: {provider}")
 
     def _enforce_rate_limit(self):
         """Enforce rate limiting based on provider configuration."""
@@ -144,7 +109,7 @@ class DataCollector:
         if len(self.request_timestamps) >= self.rate_limit * 0.9:  # 90% of limit
             sleep_time = 3601 - (current_time - min(self.request_timestamps))
             if sleep_time > 0:
-                self.logger.warning(
+                logger.warning(
                     f"Rate limit approaching, sleeping for {sleep_time:.1f} seconds"
                 )
                 time.sleep(sleep_time)
@@ -173,7 +138,7 @@ class DataCollector:
             and current_time - self.circuit_breaker_last_failure
             > self.circuit_breaker_timeout
         ):
-            self.logger.info("Circuit breaker reset - allowing requests again")
+            logger.info("Circuit breaker reset - allowing requests again")
             self.circuit_breaker_failures = 0
             self.circuit_breaker_last_failure = 0
             return True
@@ -183,7 +148,7 @@ class DataCollector:
             remaining_time = self.circuit_breaker_timeout - (
                 current_time - self.circuit_breaker_last_failure
             )
-            self.logger.warning(
+            logger.warning(
                 f"Circuit breaker OPEN - blocking requests for {remaining_time:.1f} more seconds"
             )
             return False
@@ -196,7 +161,7 @@ class DataCollector:
         self.error_stats["successful_requests"] += 1
         # Reset circuit breaker on success
         if self.circuit_breaker_failures > 0:
-            self.logger.info("Resetting circuit breaker after successful request")
+            logger.info("Resetting circuit breaker after successful request")
             self.circuit_breaker_failures = 0
             self.circuit_breaker_last_failure = 0
 
@@ -217,7 +182,7 @@ class DataCollector:
         self.circuit_breaker_last_failure = time.time()
 
         if self.circuit_breaker_failures >= self.circuit_breaker_threshold:
-            self.logger.error(
+            logger.error(
                 f"Circuit breaker OPENED after {self.circuit_breaker_failures} consecutive failures"
             )
 
@@ -258,13 +223,13 @@ class DataCollector:
 
         except (RequestException, Timeout, ConnectionError) as e:
             self._record_failure("network")
-            self.logger.warning(
+            logger.warning(
                 f"Network error during symbol validation for {symbol}: {str(e)}"
             )
             return False
         except Exception as e:
             self._record_failure("general")
-            self.logger.warning(f"Symbol validation failed for {symbol}: {str(e)}")
+            logger.warning(f"Symbol validation failed for {symbol}: {str(e)}")
             return False
 
     def download_symbol_data(
@@ -300,7 +265,7 @@ class DataCollector:
 
             try:
                 self._enforce_rate_limit()
-                self.logger.info(
+                logger.info(
                     f"Downloading data for {symbol} (attempt {retries + 1})"
                 )
 
@@ -329,7 +294,7 @@ class DataCollector:
                     self._save_data_to_csv(data, symbol)
 
                 self._record_success()
-                self.logger.info(
+                logger.info(
                     f"Successfully downloaded {len(data)} rows for {symbol}"
                 )
                 return data
@@ -340,13 +305,13 @@ class DataCollector:
                 retries += 1
                 if retries <= max_retries:
                     wait_time = min(2**retries, 30)  # Exponential backoff, max 30s
-                    self.logger.warning(
+                    logger.warning(
                         f"Network error downloading {symbol} (attempt {retries}): {str(e)}. "
                         f"Retrying in {wait_time} seconds..."
                     )
                     time.sleep(wait_time)
                 else:
-                    self.logger.error(
+                    logger.error(
                         f"Failed to download {symbol} after {max_retries} retries: {str(e)}"
                     )
 
@@ -356,13 +321,13 @@ class DataCollector:
                 retries += 1
                 if retries <= max_retries:
                     wait_time = min(2**retries, 30)
-                    self.logger.warning(
+                    logger.warning(
                         f"Data validation error downloading {symbol} (attempt {retries}): {str(e)}. "
                         f"Retrying in {wait_time} seconds..."
                     )
                     time.sleep(wait_time)
                 else:
-                    self.logger.error(
+                    logger.error(
                         f"Failed to download {symbol} after {max_retries} retries: {str(e)}"
                     )
 
@@ -372,18 +337,18 @@ class DataCollector:
                 retries += 1
                 if retries <= max_retries:
                     wait_time = min(2**retries, 30)
-                    self.logger.warning(
+                    logger.warning(
                         f"Error downloading {symbol} (attempt {retries}): {str(e)}. "
                         f"Retrying in {wait_time} seconds..."
                     )
                     time.sleep(wait_time)
                 else:
-                    self.logger.error(
+                    logger.error(
                         f"Failed to download {symbol} after {max_retries} retries: {str(e)}"
                     )
 
         # All retries exhausted
-        self.logger.error(f"Unable to download data for {symbol}: {str(last_error)}")
+        logger.error(f"Unable to download data for {symbol}: {str(last_error)}")
         return None
 
     def _clean_data(self, data: pd.DataFrame, symbol: str) -> pd.DataFrame:
@@ -421,7 +386,7 @@ class DataCollector:
         # Log data quality information
         rows_removed = original_length - len(data)
         if rows_removed > 0:
-            self.logger.info(f"Removed {rows_removed} invalid rows from {symbol} data")
+            logger.info(f"Removed {rows_removed} invalid rows from {symbol} data")
 
         # Sort by date to ensure chronological order
         data = data.sort_index()
@@ -445,10 +410,10 @@ class DataCollector:
 
             # Save with date index
             data.to_csv(file_path, index=True)
-            self.logger.info(f"Saved {symbol} data to {file_path}")
+            logger.info(f"Saved {symbol} data to {file_path}")
 
         except Exception as e:
-            self.logger.error(f"Failed to save data for {symbol}: {str(e)}")
+            logger.error(f"Failed to save data for {symbol}: {str(e)}")
             raise DataCollectionError(f"Could not save data for {symbol}: {str(e)}")
 
     def download_multiple_symbols(
@@ -472,25 +437,25 @@ class DataCollector:
         Returns:
             Dict[str, Optional[pd.DataFrame]]: Dictionary of symbol -> data
         """
-        self.logger.info(f"Starting download for {len(symbols)} symbols")
+        logger.info(f"Starting download for {len(symbols)} symbols")
 
         # Validate symbols if requested
         if validate_symbols:
-            self.logger.info("Validating symbols...")
+            logger.info("Validating symbols...")
             valid_symbols = []
             for symbol in symbols:
                 if self._validate_symbol(symbol):
                     valid_symbols.append(symbol)
-                    self.logger.info(f"✓ {symbol} validated")
+                    logger.info(f"✓ {symbol} validated")
                 else:
-                    self.logger.warning(f"✗ {symbol} failed validation, skipping")
+                    logger.warning(f"✗ {symbol} failed validation, skipping")
             symbols = valid_symbols
 
         results = {}
         failed_symbols = []
 
         for i, symbol in enumerate(symbols, 1):
-            self.logger.info(f"Processing {symbol} ({i}/{len(symbols)})")
+            logger.info(f"Processing {symbol} ({i}/{len(symbols)})")
 
             try:
                 data = self.download_symbol_data(
@@ -502,24 +467,24 @@ class DataCollector:
                 results[symbol] = data
 
                 if data is not None:
-                    self.logger.info(f"✓ Successfully downloaded {symbol}")
+                    logger.info(f"✓ Successfully downloaded {symbol}")
                 else:
                     failed_symbols.append(symbol)
-                    self.logger.error(f"✗ Failed to download {symbol}")
+                    logger.error(f"✗ Failed to download {symbol}")
 
             except Exception as e:
-                self.logger.error(f"✗ Exception downloading {symbol}: {str(e)}")
+                logger.error(f"✗ Exception downloading {symbol}: {str(e)}")
                 failed_symbols.append(symbol)
                 results[symbol] = None
 
         # Summary
         successful_count = sum(1 for data in results.values() if data is not None)
-        self.logger.info(
+        logger.info(
             f"Download complete: {successful_count}/{len(symbols)} symbols successful"
         )
 
         if failed_symbols:
-            self.logger.warning(f"Failed symbols: {', '.join(failed_symbols)}")
+            logger.warning(f"Failed symbols: {', '.join(failed_symbols)}")
 
         return results
 
@@ -536,7 +501,7 @@ class DataCollector:
         Returns:
             Dict[str, Optional[pd.DataFrame]]: Latest data for each symbol
         """
-        self.logger.info(f"Getting latest data for {len(symbols)} symbols")
+        logger.info(f"Getting latest data for {len(symbols)} symbols")
 
         results = {}
 
@@ -549,13 +514,13 @@ class DataCollector:
                 if not data.empty:
                     data = self._clean_data(data, symbol)
                     results[symbol] = data
-                    self.logger.info(f"✓ Got latest data for {symbol}")
+                    logger.info(f"✓ Got latest data for {symbol}")
                 else:
                     results[symbol] = None
-                    self.logger.warning(f"✗ No latest data for {symbol}")
+                    logger.warning(f"✗ No latest data for {symbol}")
 
             except Exception as e:
-                self.logger.error(f"✗ Error getting latest data for {symbol}: {str(e)}")
+                logger.error(f"✗ Error getting latest data for {symbol}: {str(e)}")
                 results[symbol] = None
 
         return results

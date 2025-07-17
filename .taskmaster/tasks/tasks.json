@@ -574,11 +574,22 @@
             "testStrategy": ""
           }
         ]
+      },
+      {
+        "id": 11,
+        "title": "Replace logging & warnings with loguru",
+        "description": "Refactor codebase to substitute existing standard logging and warnings usage with the loguru package for improved logging flexibility and readability.",
+        "details": "",
+        "testStrategy": "",
+        "status": "done",
+        "dependencies": [],
+        "priority": "medium",
+        "subtasks": []
       }
     ],
     "metadata": {
       "created": "2025-07-14T11:38:03.937Z",
-      "updated": "2025-07-15T08:33:29.954Z",
+      "updated": "2025-07-17T19:36:20.022Z",
       "description": "Tasks for master context"
     }
   }

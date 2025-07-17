@@ -10,16 +10,13 @@ import pandas as pd
 from datetime import datetime
 from pathlib import Path
 from typing import Dict, List, Optional, Any
-import logging
-import warnings
+from loguru import logger
 
 from config.settings import (
     RESULTS_DIR,
     REPORTS_DIR,
     PLOTS_DIR,
 )
-
-warnings.filterwarnings("ignore", category=FutureWarning)
 
 
 class UnifiedReportGenerator:
@@ -36,7 +33,6 @@ class UnifiedReportGenerator:
             output_dir: Directory for saving unified reports (defaults to REPORTS_DIR)
         """
         self.output_dir = output_dir or REPORTS_DIR
-        self.logger = logging.getLogger(__name__)
 
         # Ensure output directory exists
         self.output_dir.mkdir(exist_ok=True, parents=True)
@@ -67,7 +63,7 @@ class UnifiedReportGenerator:
         Returns:
             Dictionary mapping format types to generated file paths
         """
-        self.logger.info("Starting comprehensive unified report generation...")
+        logger.info("Starting comprehensive unified report generation...")
 
         # Step 1: Collect all data
         self._collect_portfolio_data()
@@ -96,14 +92,14 @@ class UnifiedReportGenerator:
                         unified_data, timestamp, include_plots
                     )
                 else:
-                    self.logger.warning(f"Unsupported format type: {format_type}")
+                    logger.warning(f"Unsupported format type: {format_type}")
                     continue
 
                 generated_files[format_type] = str(file_path)
-                self.logger.info(f"Generated {format_type} report: {file_path}")
+                logger.info(f"Generated {format_type} report: {file_path}")
 
             except Exception as e:
-                self.logger.error(f"Failed to generate {format_type} report: {e}")
+                logger.error(f"Failed to generate {format_type} report: {e}")
                 self.metadata["errors"].append(f"{format_type}: {str(e)}")
 
         return generated_files
@@ -113,7 +109,7 @@ class UnifiedReportGenerator:
         portfolios_dir = RESULTS_DIR / "portfolios"
 
         if not portfolios_dir.exists():
-            self.logger.warning("Portfolios directory not found")
+            logger.warning("Portfolios directory not found")
             return
 
         # Collect JSON files (main portfolio data)
@@ -142,7 +138,7 @@ class UnifiedReportGenerator:
                 self.metadata["files_processed"].append(str(json_file))
 
             except Exception as e:
-                self.logger.error(
+                logger.error(
                     f"Failed to load portfolio data from {json_file}: {e}"
                 )
                 self.metadata["errors"].append(f"Portfolio data: {str(e)}")
@@ -167,14 +163,14 @@ class UnifiedReportGenerator:
                 self.metadata["files_processed"].append(str(csv_file))
 
             except Exception as e:
-                self.logger.error(f"Failed to load weights from {csv_file}: {e}")
+                logger.error(f"Failed to load weights from {csv_file}: {e}")
 
     def _collect_comparison_data(self):
         """Collect portfolio comparison analysis results."""
         reports_dir = RESULTS_DIR / "reports"
 
         if not reports_dir.exists():
-            self.logger.warning("Reports directory not found")
+            logger.warning("Reports directory not found")
             return
 
         # Look for comparison JSON files
@@ -190,7 +186,7 @@ class UnifiedReportGenerator:
                 self.metadata["files_processed"].append(str(comp_file))
 
             except Exception as e:
-                self.logger.error(
+                logger.error(
                     f"Failed to load comparison data from {comp_file}: {e}"
                 )
                 self.metadata["errors"].append(f"Comparison data: {str(e)}")
@@ -224,7 +220,7 @@ class UnifiedReportGenerator:
                     self.metadata["files_processed"].append(str(csv_file))
 
                 except Exception as e:
-                    self.logger.error(
+                    logger.error(
                         f"Failed to load CSV comparison data from {csv_file}: {e}"
                     )
 
@@ -233,7 +229,7 @@ class UnifiedReportGenerator:
         backtests_dir = RESULTS_DIR / "backtests"
 
         if not backtests_dir.exists():
-            self.logger.warning("Backtests directory not found")
+            logger.warning("Backtests directory not found")
             return
 
         # Collect backtest JSON files
@@ -249,7 +245,7 @@ class UnifiedReportGenerator:
                 self.metadata["files_processed"].append(str(bt_file))
 
             except Exception as e:
-                self.logger.error(f"Failed to load backtest data from {bt_file}: {e}")
+                logger.error(f"Failed to load backtest data from {bt_file}: {e}")
                 self.metadata["errors"].append(f"Backtest data: {str(e)}")
 
     def _create_unified_data_structure(self) -> Dict[str, Any]:

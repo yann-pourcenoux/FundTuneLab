@@ -12,7 +12,7 @@ import json
 import pandas as pd
 from pathlib import Path
 from unittest.mock import patch, MagicMock
-import logging
+from loguru import logger
 
 # Import from the installed package
 from src.orchestrator import FundTuneLabOrchestrator, run_orchestrator
@@ -58,7 +58,7 @@ class TestEndToEndWorkflow:
 
     def test_orchestrator_initialization(self, mock_results_dir):
         """Test that the orchestrator initializes correctly."""
-        orchestrator = FundTuneLabOrchestrator(log_level=logging.WARNING)
+        orchestrator = FundTuneLabOrchestrator()
 
         assert orchestrator is not None
         assert orchestrator.logger is not None
@@ -68,7 +68,7 @@ class TestEndToEndWorkflow:
 
     def test_orchestrator_stage_definition(self):
         """Test that all expected stages are defined."""
-        orchestrator = FundTuneLabOrchestrator(log_level=logging.WARNING)
+        orchestrator = FundTuneLabOrchestrator()
 
         expected_stages = [
             "data_collection",
@@ -94,7 +94,7 @@ class TestEndToEndWorkflow:
             "VTI": None,  # Simulate one failure
         }
 
-        orchestrator = FundTuneLabOrchestrator(log_level=logging.WARNING)
+        orchestrator = FundTuneLabOrchestrator()
         result = orchestrator._run_data_collection()
 
         assert result["total_assets"] == 3
@@ -114,7 +114,7 @@ class TestEndToEndWorkflow:
             "processing_time": 10.5,
         }
 
-        orchestrator = FundTuneLabOrchestrator(log_level=logging.WARNING)
+        orchestrator = FundTuneLabOrchestrator()
         result = orchestrator._run_data_preprocessing()
 
         assert result["files_found"] == 5
@@ -135,7 +135,7 @@ class TestEndToEndWorkflow:
             },
         ]
 
-        orchestrator = FundTuneLabOrchestrator(log_level=logging.WARNING)
+        orchestrator = FundTuneLabOrchestrator()
         result = orchestrator._run_pypfopt_optimization()
 
         assert result["total_methods"] == 3
@@ -152,7 +152,7 @@ class TestEndToEndWorkflow:
             "markdown": str(mock_results_dir / "reports" / "unified_report.md"),
         }
 
-        orchestrator = FundTuneLabOrchestrator(log_level=logging.WARNING)
+        orchestrator = FundTuneLabOrchestrator()
         result = orchestrator._run_report_generation()
 
         assert result["success"] is True
@@ -170,7 +170,7 @@ class TestEndToEndWorkflow:
             ),
             generate_unified_report=MagicMock(return_value={}),
         ):
-            orchestrator = FundTuneLabOrchestrator(log_level=logging.WARNING)
+            orchestrator = FundTuneLabOrchestrator()
             result = orchestrator.run_full_workflow(
                 skip_stages=["pypfopt_optimization", "eiten_optimization"]
             )
@@ -187,7 +187,7 @@ class TestEndToEndWorkflow:
             "src.orchestrator.download_default_assets",
             side_effect=Exception("Network error"),
         ):
-            orchestrator = FundTuneLabOrchestrator(log_level=logging.WARNING)
+            orchestrator = FundTuneLabOrchestrator()
             result = orchestrator.run_full_workflow()
 
             # Should stop after data collection failure (critical stage)
@@ -205,7 +205,7 @@ class TestEndToEndWorkflow:
             ),
             generate_unified_report=MagicMock(return_value={}),
         ):
-            orchestrator = FundTuneLabOrchestrator(log_level=logging.WARNING)
+            orchestrator = FundTuneLabOrchestrator()
             result = orchestrator.run_full_workflow(
                 skip_stages=[
                     "pypfopt_optimization",
@@ -407,7 +407,7 @@ class TestWorkflowValidation:
 
             run_orchestrator(skip_stages=["backtesting"])
 
-            mock_orchestrator_class.assert_called_once_with(log_level=logging.INFO)
+            mock_orchestrator_class.assert_called_once_with()
             mock_orchestrator.run_full_workflow.assert_called_once_with(
                 skip_stages=["backtesting"]
             )

@@ -7,22 +7,16 @@ then calculates performance metrics including returns, volatility,
 Sharpe ratio, and maximum drawdown.
 """
 
-import logging
-import warnings
 from typing import Dict, List, Optional, Any, Union
 from datetime import datetime
 from pathlib import Path
 import json
-
+from loguru import logger
 import pandas as pd
 import numpy as np
 import vectorbt as vbt
 
 from config.settings import PROCESSED_DATA_DIR, RESULTS_DIR, ensure_directories
-
-# Suppress warnings for cleaner output
-warnings.filterwarnings("ignore", category=UserWarning)
-warnings.filterwarnings("ignore", category=FutureWarning)
 
 
 class BacktestingError(Exception):
@@ -73,9 +67,6 @@ class VectorBTBacktester:
             rebalancing_frequency: Frequency for portfolio rebalancing ('D', 'W', 'M', 'Q', 'Y')
             initial_capital: Initial portfolio capital for backtesting
         """
-        # Setup logging
-        self.logger = logging.getLogger(__name__)
-        self.logger.setLevel(logging.INFO)
 
         # Directory setup
         self.processed_data_dir = processed_data_dir or PROCESSED_DATA_DIR
@@ -96,12 +87,12 @@ class VectorBTBacktester:
         self.portfolio_metadata: Optional[Dict[str, Any]] = None
         self.backtest_results: Optional[Dict[str, Any]] = None
 
-        self.logger.info("VectorBT Backtester initialized")
-        self.logger.info(f"Processed data directory: {self.processed_data_dir}")
-        self.logger.info(f"Results directory: {self.results_dir}")
-        self.logger.info(f"Risk-free rate: {self.risk_free_rate}")
-        self.logger.info(f"Rebalancing frequency: {self.rebalancing_frequency}")
-        self.logger.info(f"Initial capital: ${self.initial_capital:,.2f}")
+        logger.info("VectorBT Backtester initialized")
+        logger.info(f"Processed data directory: {self.processed_data_dir}")
+        logger.info(f"Results directory: {self.results_dir}")
+        logger.info(f"Risk-free rate: {self.risk_free_rate}")
+        logger.info(f"Rebalancing frequency: {self.rebalancing_frequency}")
+        logger.info(f"Initial capital: ${self.initial_capital:,.2f}")
 
     def load_portfolio_weights(
         self, portfolio_file: Union[str, Path]
@@ -153,7 +144,7 @@ class VectorBTBacktester:
                                 "sharpe_ratio": strategy_data.get("sharpe_ratio"),
                             },
                         }
-                        self.logger.info(f"Using Eiten strategy: {first_strategy}")
+                        logger.info(f"Using Eiten strategy: {first_strategy}")
                     else:
                         raise ValueError(
                             "No optimization results found in Eiten format"
@@ -190,7 +181,7 @@ class VectorBTBacktester:
             # Normalize weights to ensure they sum to 1
             total_weight = sum(self.portfolio_weights.values())
             if abs(total_weight - 1.0) > 1e-6:
-                self.logger.warning(
+                logger.warning(
                     f"Portfolio weights sum to {total_weight:.6f}, normalizing to 1.0"
                 )
                 self.portfolio_weights = {
@@ -198,10 +189,10 @@ class VectorBTBacktester:
                     for asset, weight in self.portfolio_weights.items()
                 }
 
-            self.logger.info(
+            logger.info(
                 f"Loaded portfolio weights for {len(self.portfolio_weights)} assets"
             )
-            self.logger.info(f"Assets: {list(self.portfolio_weights.keys())}")
+            logger.info(f"Assets: {list(self.portfolio_weights.keys())}")
 
             return self.portfolio_weights
 
@@ -209,7 +200,7 @@ class VectorBTBacktester:
             error_msg = (
                 f"Failed to load portfolio weights from {portfolio_file}: {str(e)}"
             )
-            self.logger.error(error_msg)
+            logger.error(error_msg)
             raise DataLoadError(error_msg)
 
     def load_price_data(self, symbols: Optional[List[str]] = None) -> pd.DataFrame:
@@ -261,7 +252,7 @@ class VectorBTBacktester:
                 price_series.name = symbol
 
                 price_dfs.append(price_series)
-                self.logger.info(
+                logger.info(
                     f"Loaded {len(price_series)} price points for {symbol}"
                 )
 
@@ -271,8 +262,8 @@ class VectorBTBacktester:
             # Forward fill missing values and drop any remaining NaN rows
             self.price_data = self.price_data.fillna(method="ffill").dropna()
 
-            self.logger.info(f"Combined price data shape: {self.price_data.shape}")
-            self.logger.info(
+            logger.info(f"Combined price data shape: {self.price_data.shape}")
+            logger.info(
                 f"Date range: {self.price_data.index.min()} to {self.price_data.index.max()}"
             )
 
@@ -280,7 +271,7 @@ class VectorBTBacktester:
 
         except Exception as e:
             error_msg = f"Failed to load price data: {str(e)}"
-            self.logger.error(error_msg)
+            logger.error(error_msg)
             raise DataLoadError(error_msg)
 
     def calculate_portfolio_returns(self) -> pd.Series:
@@ -315,7 +306,7 @@ class VectorBTBacktester:
 
             portfolio_returns.name = "Portfolio Returns"
 
-            self.logger.info(
+            logger.info(
                 f"Calculated {len(portfolio_returns)} portfolio return observations"
             )
 
@@ -323,7 +314,7 @@ class VectorBTBacktester:
 
         except Exception as e:
             error_msg = f"Failed to calculate portfolio returns: {str(e)}"
-            self.logger.error(error_msg)
+            logger.error(error_msg)
             raise PerformanceCalculationError(error_msg)
 
     def run_backtest(self, portfolio_file: Union[str, Path]) -> Dict[str, Any]:
@@ -340,7 +331,7 @@ class VectorBTBacktester:
             BacktestingError: If backtesting fails
         """
         try:
-            self.logger.info(f"Starting backtest for portfolio: {portfolio_file}")
+            logger.info(f"Starting backtest for portfolio: {portfolio_file}")
 
             # Load portfolio weights
             self.load_portfolio_weights(portfolio_file)
@@ -388,12 +379,12 @@ class VectorBTBacktester:
                 },
             }
 
-            self.logger.info("Backtest completed successfully")
+            logger.info("Backtest completed successfully")
             return self.backtest_results
 
         except Exception as e:
             error_msg = f"Backtest failed: {str(e)}"
-            self.logger.error(error_msg)
+            logger.error(error_msg)
             raise BacktestingError(error_msg)
 
     def _calculate_rebalancing_orders(self) -> pd.DataFrame:
@@ -465,7 +456,7 @@ class VectorBTBacktester:
                     "max_drawdown_vbt": float(portfolio.max_drawdown()),
                 }
             except Exception as e:
-                self.logger.warning(f"Could not calculate VectorBT metrics: {e}")
+                logger.warning(f"Could not calculate VectorBT metrics: {e}")
 
             # Combine all metrics
             metrics = {
@@ -481,7 +472,7 @@ class VectorBTBacktester:
             return metrics
 
         except Exception as e:
-            self.logger.error(f"Error calculating performance metrics: {e}")
+            logger.error(f"Error calculating performance metrics: {e}")
             return {}
 
     def save_results(self, filename_prefix: str = "backtest") -> Dict[str, Path]:
@@ -506,7 +497,7 @@ class VectorBTBacktester:
         with open(json_path, "w") as f:
             json.dump(self.backtest_results, f, indent=2, default=str)
 
-        self.logger.info(f"Saved backtest results to {json_path}")
+        logger.info(f"Saved backtest results to {json_path}")
 
         return {"json": json_path}
 
@@ -576,7 +567,7 @@ def backtest_all_portfolios(
     Returns:
         Dictionary mapping portfolio names to their backtest results
     """
-    logger = logging.getLogger(__name__)
+
 
     # Set up directories
     portfolios_path = (
@@ -752,7 +743,7 @@ def validate_backtest_results(
     Returns:
         Dictionary containing validation results and status
     """
-    logger = logging.getLogger(__name__)
+
 
     # Default validation thresholds (reasonable ranges for portfolio metrics)
     default_thresholds = {
@@ -971,7 +962,7 @@ def create_benchmark_portfolio(
     Returns:
         Benchmark portfolio results
     """
-    logger = logging.getLogger(__name__)
+
 
     try:
         if benchmark_type == "equal_weight":
@@ -1053,7 +1044,7 @@ def run_comprehensive_validation(
     Returns:
         Complete validation results
     """
-    logger = logging.getLogger(__name__)
+
 
     try:
         logger.info(f"Running comprehensive validation for {portfolio_file}")
@@ -1129,7 +1120,7 @@ def integrate_with_optimizer(
     Returns:
         Backtest results if run_backtest is True, None otherwise
     """
-    logger = logging.getLogger(__name__)
+
 
     if not run_backtest:
         return None

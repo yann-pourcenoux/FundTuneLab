@@ -6,8 +6,7 @@ inspired by the Eiten library. It implements Eigen Portfolios, Minimum Variance,
 Maximum Sharpe Ratio, and Genetic Algorithm-based portfolio optimization.
 """
 
-import logging
-import warnings
+from loguru import logger
 from typing import Dict, Optional, Tuple, Any
 from datetime import datetime
 from pathlib import Path
@@ -18,10 +17,6 @@ import numpy as np
 from scipy import linalg
 from scipy.optimize import minimize, differential_evolution
 from config.settings import PROCESSED_DATA_DIR, RESULTS_DIR, ensure_directories
-
-# Suppress warnings for cleaner output
-warnings.filterwarnings("ignore", category=UserWarning)
-warnings.filterwarnings("ignore", category=FutureWarning)
 
 
 class PortfolioOptimizerError(Exception):
@@ -59,7 +54,7 @@ class EitenOptimizer:
         processed_data_dir: Optional[Path] = None,
         results_dir: Optional[Path] = None,
         risk_free_rate: float = 0.02,
-        log_level: int = logging.INFO,
+
     ):
         """
         Initialize the Eiten Optimizer.
@@ -77,9 +72,6 @@ class EitenOptimizer:
         # Ensure directories exist
         ensure_directories()
 
-        # Setup logging
-        self.logger = self._setup_logging(log_level)
-
         # Initialize data containers
         self.price_data = None
         self.returns = None
@@ -91,22 +83,9 @@ class EitenOptimizer:
         # Results storage
         self.optimization_results = {}
 
-        self.logger.info("EitenOptimizer initialized successfully")
+        logger.info("EitenOptimizer initialized successfully")
 
-    def _setup_logging(self, log_level: int) -> logging.Logger:
-        """Setup logging configuration."""
-        logger = logging.getLogger(f"{__name__}.{self.__class__.__name__}")
-        logger.setLevel(log_level)
 
-        if not logger.handlers:
-            handler = logging.StreamHandler()
-            formatter = logging.Formatter(
-                "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
-            )
-            handler.setFormatter(formatter)
-            logger.addHandler(handler)
-
-        return logger
 
     def load_preprocessed_data(self, date_pattern: str = "20250714") -> pd.DataFrame:
         """
@@ -122,7 +101,7 @@ class EitenOptimizer:
             DataLoadError: If no data files found or loading fails
         """
         try:
-            self.logger.info(f"Loading preprocessed data with pattern: {date_pattern}")
+            logger.info(f"Loading preprocessed data with pattern: {date_pattern}")
 
             # Find all processed CSV files matching the date pattern
             data_files = list(
@@ -134,14 +113,14 @@ class EitenOptimizer:
                     f"No processed data files found with pattern: {date_pattern}"
                 )
 
-            self.logger.info(f"Found {len(data_files)} data files")
+            logger.info(f"Found {len(data_files)} data files")
 
             # Load and combine data
             combined_data = []
             symbols = []
 
             for file_path in data_files:
-                self.logger.debug(f"Loading file: {file_path}")
+                logger.debug(f"Loading file: {file_path}")
                 df = pd.read_csv(file_path)
 
                 # Extract symbol from filename or Symbol column
@@ -170,7 +149,7 @@ class EitenOptimizer:
             final_rows = len(self.price_data)
 
             if final_rows < initial_rows:
-                self.logger.warning(
+                logger.warning(
                     f"Removed {initial_rows - final_rows} rows with missing data"
                 )
 
@@ -179,17 +158,17 @@ class EitenOptimizer:
                     "Insufficient data points after cleaning (< 10 observations)"
                 )
 
-            self.logger.info(f"Successfully loaded data for {len(self.symbols)} assets")
-            self.logger.info(
+            logger.info(f"Successfully loaded data for {len(self.symbols)} assets")
+            logger.info(
                 f"Date range: {self.price_data.index.min()} to {self.price_data.index.max()}"
             )
-            self.logger.info(f"Total observations: {len(self.price_data)}")
+            logger.info(f"Total observations: {len(self.price_data)}")
 
             return self.price_data
 
         except Exception as e:
             error_msg = f"Failed to load preprocessed data: {str(e)}"
-            self.logger.error(error_msg)
+            logger.error(error_msg)
             raise DataLoadError(error_msg)
 
     def _validate_price_data(self):
@@ -215,7 +194,7 @@ class EitenOptimizer:
         self._validate_price_data()
 
         try:
-            self.logger.info("Calculating returns and statistics")
+            logger.info("Calculating returns and statistics")
 
             # Calculate returns
             self.returns = self.price_data.pct_change().dropna()
@@ -226,14 +205,14 @@ class EitenOptimizer:
             # Calculate covariance matrix (annualized)
             self.cov_matrix = self.returns.cov() * frequency
 
-            self.logger.info(f"Calculated returns for {len(self.symbols)} assets")
-            self.logger.info(
+            logger.info(f"Calculated returns for {len(self.symbols)} assets")
+            logger.info(
                 f"Mean returns range: {self.mean_returns.min():.4f} to {self.mean_returns.max():.4f}"
             )
 
         except Exception as e:
             error_msg = f"Failed to calculate returns and statistics: {str(e)}"
-            self.logger.error(error_msg)
+            logger.error(error_msg)
             raise OptimizationError(error_msg)
 
     def apply_noise_filtering(self, apply_filtering: bool = True):
@@ -248,7 +227,7 @@ class EitenOptimizer:
             return
 
         try:
-            self.logger.info("Applying noise filtering using Random Matrix Theory")
+            logger.info("Applying noise filtering using Random Matrix Theory")
 
             # Get eigenvalues and eigenvectors
             eigenvals, eigenvecs = linalg.eigh(self.cov_matrix.values)
@@ -289,12 +268,12 @@ class EitenOptimizer:
                 columns=self.cov_matrix.columns,
             )
 
-            self.logger.info(
+            logger.info(
                 f"Noise filtering complete. Signal eigenvalues: {len(signal_eigenvals)}"
             )
 
         except Exception as e:
-            self.logger.warning(
+            logger.warning(
                 f"Noise filtering failed: {str(e)}. Using original covariance matrix."
             )
             self.filtered_cov_matrix = self.cov_matrix.copy()
@@ -310,7 +289,7 @@ class EitenOptimizer:
             Dictionary with asset weights
         """
         try:
-            self.logger.info(f"Calculating Eigen Portfolio #{portfolio_number}")
+            logger.info(f"Calculating Eigen Portfolio #{portfolio_number}")
 
             if self.filtered_cov_matrix is None:
                 self.apply_noise_filtering(True)
@@ -356,16 +335,16 @@ class EitenOptimizer:
 
             self.optimization_results["eigen_portfolio"] = results
 
-            self.logger.info(f"Eigen Portfolio #{portfolio_number} completed")
-            self.logger.info(f"Expected Return: {portfolio_return:.4f}")
-            self.logger.info(f"Volatility: {portfolio_vol:.4f}")
-            self.logger.info(f"Sharpe Ratio: {sharpe_ratio:.4f}")
+            logger.info(f"Eigen Portfolio #{portfolio_number} completed")
+            logger.info(f"Expected Return: {portfolio_return:.4f}")
+            logger.info(f"Volatility: {portfolio_vol:.4f}")
+            logger.info(f"Sharpe Ratio: {sharpe_ratio:.4f}")
 
             return portfolio_weights
 
         except Exception as e:
             error_msg = f"Failed to calculate Eigen Portfolio: {str(e)}"
-            self.logger.error(error_msg)
+            logger.error(error_msg)
             raise OptimizationError(error_msg)
 
     def optimize_minimum_variance(
@@ -381,7 +360,7 @@ class EitenOptimizer:
             Dictionary with asset weights
         """
         try:
-            self.logger.info("Optimizing Minimum Variance Portfolio")
+            logger.info("Optimizing Minimum Variance Portfolio")
 
             if self.filtered_cov_matrix is None:
                 self.apply_noise_filtering(True)
@@ -431,16 +410,16 @@ class EitenOptimizer:
 
             self.optimization_results["minimum_variance"] = results
 
-            self.logger.info("Minimum Variance Portfolio optimization completed")
-            self.logger.info(f"Expected Return: {portfolio_return:.4f}")
-            self.logger.info(f"Volatility: {portfolio_vol:.4f}")
-            self.logger.info(f"Sharpe Ratio: {sharpe_ratio:.4f}")
+            logger.info("Minimum Variance Portfolio optimization completed")
+            logger.info(f"Expected Return: {portfolio_return:.4f}")
+            logger.info(f"Volatility: {portfolio_vol:.4f}")
+            logger.info(f"Sharpe Ratio: {sharpe_ratio:.4f}")
 
             return portfolio_weights
 
         except Exception as e:
             error_msg = f"Failed to optimize Minimum Variance Portfolio: {str(e)}"
-            self.logger.error(error_msg)
+            logger.error(error_msg)
             raise OptimizationError(error_msg)
 
     def optimize_max_sharpe(
@@ -456,7 +435,7 @@ class EitenOptimizer:
             Dictionary with asset weights
         """
         try:
-            self.logger.info("Optimizing Maximum Sharpe Ratio Portfolio")
+            logger.info("Optimizing Maximum Sharpe Ratio Portfolio")
 
             if self.filtered_cov_matrix is None:
                 self.apply_noise_filtering(True)
@@ -514,16 +493,16 @@ class EitenOptimizer:
 
             self.optimization_results["max_sharpe"] = results
 
-            self.logger.info("Maximum Sharpe Ratio Portfolio optimization completed")
-            self.logger.info(f"Expected Return: {portfolio_return:.4f}")
-            self.logger.info(f"Volatility: {portfolio_vol:.4f}")
-            self.logger.info(f"Sharpe Ratio: {sharpe_ratio:.4f}")
+            logger.info("Maximum Sharpe Ratio Portfolio optimization completed")
+            logger.info(f"Expected Return: {portfolio_return:.4f}")
+            logger.info(f"Volatility: {portfolio_vol:.4f}")
+            logger.info(f"Sharpe Ratio: {sharpe_ratio:.4f}")
 
             return portfolio_weights
 
         except Exception as e:
             error_msg = f"Failed to optimize Maximum Sharpe Ratio Portfolio: {str(e)}"
-            self.logger.error(error_msg)
+            logger.error(error_msg)
             raise OptimizationError(error_msg)
 
     def optimize_genetic_algorithm(
@@ -546,7 +525,7 @@ class EitenOptimizer:
             Dictionary with asset weights
         """
         try:
-            self.logger.info("Optimizing portfolio using Genetic Algorithm")
+            logger.info("Optimizing portfolio using Genetic Algorithm")
 
             if self.filtered_cov_matrix is None:
                 self.apply_noise_filtering(True)
@@ -583,7 +562,7 @@ class EitenOptimizer:
             )
 
             if not result.success:
-                self.logger.warning(
+                logger.warning(
                     f"Genetic algorithm optimization warning: {result.message}"
                 )
 
@@ -609,11 +588,11 @@ class EitenOptimizer:
 
             self.optimization_results["genetic_algorithm"] = results
 
-            self.logger.info("Genetic Algorithm optimization completed")
-            self.logger.info(f"Expected Return: {portfolio_return:.4f}")
-            self.logger.info(f"Volatility: {portfolio_vol:.4f}")
-            self.logger.info(f"Sharpe Ratio: {sharpe_ratio:.4f}")
-            self.logger.info(
+            logger.info("Genetic Algorithm optimization completed")
+            logger.info(f"Expected Return: {portfolio_return:.4f}")
+            logger.info(f"Volatility: {portfolio_vol:.4f}")
+            logger.info(f"Sharpe Ratio: {sharpe_ratio:.4f}")
+            logger.info(
                 f"Iterations: {result.nit}, Function evaluations: {result.nfev}"
             )
 
@@ -621,7 +600,7 @@ class EitenOptimizer:
 
         except Exception as e:
             error_msg = f"Failed to optimize using Genetic Algorithm: {str(e)}"
-            self.logger.error(error_msg)
+            logger.error(error_msg)
             raise OptimizationError(error_msg)
 
     def save_results(self, filename_prefix: str = "eiten_optimizer") -> Dict[str, Path]:
@@ -658,7 +637,7 @@ class EitenOptimizer:
             with open(json_path, "w") as f:
                 json.dump(save_data, f, indent=2, default=str)
 
-            self.logger.info(f"Results saved to {json_path}")
+            logger.info(f"Results saved to {json_path}")
 
             # Save CSV files for each optimization method
             csv_paths = {}
@@ -685,13 +664,13 @@ class EitenOptimizer:
                     weights_df.to_csv(csv_path)
                     csv_paths[method] = csv_path
 
-                    self.logger.info(f"Weights for {method} saved to {csv_path}")
+                    logger.info(f"Weights for {method} saved to {csv_path}")
 
             return {"json": json_path, **csv_paths}
 
         except Exception as e:
             error_msg = f"Failed to save results: {str(e)}"
-            self.logger.error(error_msg)
+            logger.error(error_msg)
             raise PortfolioOptimizerError(error_msg)
 
 
