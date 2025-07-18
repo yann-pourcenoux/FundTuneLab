@@ -1,0 +1,47 @@
+{
+  "symbol": "DBC",
+  "processing_date": "2025-07-16T14:18:16.073928",
+  "total_rows": 20,
+  "date_range": {
+    "start": "2024-12-02T00:00:00",
+    "end": "2024-12-30T00:00:00"
+  },
+  "validation_results": {
+    "symbol": "DBC",
+    "total_rows": 20,
+    "checks": {
+      "required_columns": true,
+      "Open_no_missing": "True",
+      "High_no_missing": "True",
+      "Low_no_missing": "True",
+      "Close_no_missing": "True",
+      "Open_positive": "True",
+      "High_positive": "True",
+      "Low_positive": "True",
+      "Close_positive": "True",
+      "Volume_positive": "True",
+      "ohlc_valid": "True",
+      "date_continuity": "True",
+      "Open_reasonable_range": "True",
+      "High_reasonable_range": "True",
+      "Low_reasonable_range": "True",
+      "Close_reasonable_range": "True",
+      "symbol_consistency": true
+    },
+    "warnings": [],
+    "errors": [],
+    "passed": true,
+    "pass_rate": 1.0
+  },
+  "columns": [
+    "Open",
+    "High",
+    "Low",
+    "Close",
+    "Volume",
+    "Dividends",
+    "Stock Splits",
+    "Capital Gains",
+    "Symbol"
+  ]
+}

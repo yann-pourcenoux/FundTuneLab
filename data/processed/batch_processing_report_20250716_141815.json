@@ -1,0 +1,822 @@
+{
+  "batch_start_time": "2025-07-16T14:18:15.819260",
+  "files_found": 42,
+  "files_processed": 42,
+  "files_successful": 14,
+  "files_failed": 28,
+  "processing_results": [
+    {
+      "symbol": "BND",
+      "status": "error",
+      "input_file": "/Users/yann.pourcenoux/Workspaces/FundTuneLab/data/raw/BND_20250715.csv",
+      "error": "Date standardization failed for BND: Can only use .dt accessor with datetimelike values",
+      "processing_date": "2025-07-16T14:18:15.841778"
+    },
+    {
+      "symbol": "VTI",
+      "status": "success",
+      "input_file": "/Users/yann.pourcenoux/Workspaces/FundTuneLab/data/raw/VTI_20250714.csv",
+      "output_file": "data/processed/VTI_processed_20250716.csv",
+      "original_rows": 20,
+      "final_rows": 20,
+      "rows_removed": 0,
+      "removal_percentage": 0.0,
+      "missing_analysis": {
+        "total_rows": 20,
+        "rows_with_missing": "0",
+        "missing_by_column": {
+          "Date": 0,
+          "Open": 0,
+          "High": 0,
+          "Low": 0,
+          "Close": 0,
+          "Volume": 0,
+          "Dividends": 0,
+          "Stock Splits": 0,
+          "Capital Gains": 0,
+          "Symbol": 0
+        },
+        "missing_percentages": {
+          "Date": 0.0,
+          "Open": 0.0,
+          "High": 0.0,
+          "Low": 0.0,
+          "Close": 0.0,
+          "Volume": 0.0,
+          "Dividends": 0.0,
+          "Stock Splits": 0.0,
+          "Capital Gains": 0.0,
+          "Symbol": 0.0
+        },
+        "critical_missing": {},
+        "has_missing_data": "False"
+      },
+      "processing_date": "2025-07-16T14:18:15.849369"
+    },
+    {
+      "symbol": "VWO",
+      "status": "error",
+      "input_file": "/Users/yann.pourcenoux/Workspaces/FundTuneLab/data/raw/VWO_20250716.csv",
+      "error": "Date standardization failed for VWO: Can only use .dt accessor with datetimelike values",
+      "processing_date": "2025-07-16T14:18:15.865770"
+    },
+    {
+      "symbol": "BND",
+      "status": "success",
+      "input_file": "/Users/yann.pourcenoux/Workspaces/FundTuneLab/data/raw/BND_20250714.csv",
+      "output_file": "data/processed/BND_processed_20250716.csv",
+      "original_rows": 20,
+      "final_rows": 20,
+      "rows_removed": 0,
+      "removal_percentage": 0.0,
+      "missing_analysis": {
+        "total_rows": 20,
+        "rows_with_missing": "0",
+        "missing_by_column": {
+          "Date": 0,
+          "Open": 0,
+          "High": 0,
+          "Low": 0,
+          "Close": 0,
+          "Volume": 0,
+          "Dividends": 0,
+          "Stock Splits": 0,
+          "Capital Gains": 0,
+          "Symbol": 0
+        },
+        "missing_percentages": {
+          "Date": 0.0,
+          "Open": 0.0,
+          "High": 0.0,
+          "Low": 0.0,
+          "Close": 0.0,
+          "Volume": 0.0,
+          "Dividends": 0.0,
+          "Stock Splits": 0.0,
+          "Capital Gains": 0.0,
+          "Symbol": 0.0
+        },
+        "critical_missing": {},
+        "has_missing_data": "False"
+      },
+      "processing_date": "2025-07-16T14:18:15.872170"
+    },
+    {
+      "symbol": "VTI",
+      "status": "error",
+      "input_file": "/Users/yann.pourcenoux/Workspaces/FundTuneLab/data/raw/VTI_20250715.csv",
+      "error": "Date standardization failed for VTI: Can only use .dt accessor with datetimelike values",
+      "processing_date": "2025-07-16T14:18:15.886768"
+    },
+    {
+      "symbol": "BND",
+      "status": "error",
+      "input_file": "/Users/yann.pourcenoux/Workspaces/FundTuneLab/data/raw/BND_20250716.csv",
+      "error": "Date standardization failed for BND: Can only use .dt accessor with datetimelike values",
+      "processing_date": "2025-07-16T14:18:15.901058"
+    },
+    {
+      "symbol": "VWO",
+      "status": "error",
+      "input_file": "/Users/yann.pourcenoux/Workspaces/FundTuneLab/data/raw/VWO_20250715.csv",
+      "error": "Date standardization failed for VWO: Can only use .dt accessor with datetimelike values",
+      "processing_date": "2025-07-16T14:18:15.916286"
+    },
+    {
+      "symbol": "VWO",
+      "status": "success",
+      "input_file": "/Users/yann.pourcenoux/Workspaces/FundTuneLab/data/raw/VWO_20250714.csv",
+      "output_file": "data/processed/VWO_processed_20250716.csv",
+      "original_rows": 20,
+      "final_rows": 19,
+      "rows_removed": 1,
+      "removal_percentage": 5.0,
+      "missing_analysis": {
+        "total_rows": 20,
+        "rows_with_missing": "0",
+        "missing_by_column": {
+          "Date": 0,
+          "Open": 0,
+          "High": 0,
+          "Low": 0,
+          "Close": 0,
+          "Volume": 0,
+          "Dividends": 0,
+          "Stock Splits": 0,
+          "Capital Gains": 0,
+          "Symbol": 0
+        },
+        "missing_percentages": {
+          "Date": 0.0,
+          "Open": 0.0,
+          "High": 0.0,
+          "Low": 0.0,
+          "Close": 0.0,
+          "Volume": 0.0,
+          "Dividends": 0.0,
+          "Stock Splits": 0.0,
+          "Capital Gains": 0.0,
+          "Symbol": 0.0
+        },
+        "critical_missing": {},
+        "has_missing_data": "False"
+      },
+      "processing_date": "2025-07-16T14:18:15.922727"
+    },
+    {
+      "symbol": "VTI",
+      "status": "error",
+      "input_file": "/Users/yann.pourcenoux/Workspaces/FundTuneLab/data/raw/VTI_20250716.csv",
+      "error": "Date standardization failed for VTI: Can only use .dt accessor with datetimelike values",
+      "processing_date": "2025-07-16T14:18:15.936838"
+    },
+    {
+      "symbol": "IWM",
+      "status": "error",
+      "input_file": "/Users/yann.pourcenoux/Workspaces/FundTuneLab/data/raw/IWM_20250715.csv",
+      "error": "Date standardization failed for IWM: Can only use .dt accessor with datetimelike values",
+      "processing_date": "2025-07-16T14:18:15.951573"
+    },
+    {
+      "symbol": "EFA",
+      "status": "error",
+      "input_file": "/Users/yann.pourcenoux/Workspaces/FundTuneLab/data/raw/EFA_20250716.csv",
+      "error": "Date standardization failed for EFA: Can only use .dt accessor with datetimelike values",
+      "processing_date": "2025-07-16T14:18:15.965539"
+    },
+    {
+      "symbol": "TIPS",
+      "status": "success",
+      "input_file": "/Users/yann.pourcenoux/Workspaces/FundTuneLab/data/raw/TIPS_20250714.csv",
+      "output_file": "data/processed/TIPS_processed_20250716.csv",
+      "original_rows": 20,
+      "final_rows": 15,
+      "rows_removed": 5,
+      "removal_percentage": 25.0,
+      "missing_analysis": {
+        "total_rows": 20,
+        "rows_with_missing": "0",
+        "missing_by_column": {
+          "Date": 0,
+          "Open": 0,
+          "High": 0,
+          "Low": 0,
+          "Close": 0,
+          "Volume": 0,
+          "Dividends": 0,
+          "Stock Splits": 0,
+          "Symbol": 0
+        },
+        "missing_percentages": {
+          "Date": 0.0,
+          "Open": 0.0,
+          "High": 0.0,
+          "Low": 0.0,
+          "Close": 0.0,
+          "Volume": 0.0,
+          "Dividends": 0.0,
+          "Stock Splits": 0.0,
+          "Symbol": 0.0
+        },
+        "critical_missing": {},
+        "has_missing_data": "False"
+      },
+      "processing_date": "2025-07-16T14:18:15.971688"
+    },
+    {
+      "symbol": "TIPS",
+      "status": "error",
+      "input_file": "/Users/yann.pourcenoux/Workspaces/FundTuneLab/data/raw/TIPS_20250715.csv",
+      "error": "Date standardization failed for TIPS: Can only use .dt accessor with datetimelike values",
+      "processing_date": "2025-07-16T14:18:15.985584"
+    },
+    {
+      "symbol": "IWM",
+      "status": "success",
+      "input_file": "/Users/yann.pourcenoux/Workspaces/FundTuneLab/data/raw/IWM_20250714.csv",
+      "output_file": "data/processed/IWM_processed_20250716.csv",
+      "original_rows": 20,
+      "final_rows": 20,
+      "rows_removed": 0,
+      "removal_percentage": 0.0,
+      "missing_analysis": {
+        "total_rows": 20,
+        "rows_with_missing": "0",
+        "missing_by_column": {
+          "Date": 0,
+          "Open": 0,
+          "High": 0,
+          "Low": 0,
+          "Close": 0,
+          "Volume": 0,
+          "Dividends": 0,
+          "Stock Splits": 0,
+          "Capital Gains": 0,
+          "Symbol": 0
+        },
+        "missing_percentages": {
+          "Date": 0.0,
+          "Open": 0.0,
+          "High": 0.0,
+          "Low": 0.0,
+          "Close": 0.0,
+          "Volume": 0.0,
+          "Dividends": 0.0,
+          "Stock Splits": 0.0,
+          "Capital Gains": 0.0,
+          "Symbol": 0.0
+        },
+        "critical_missing": {},
+        "has_missing_data": "False"
+      },
+      "processing_date": "2025-07-16T14:18:15.991177"
+    },
+    {
+      "symbol": "IWM",
+      "status": "error",
+      "input_file": "/Users/yann.pourcenoux/Workspaces/FundTuneLab/data/raw/IWM_20250716.csv",
+      "error": "Date standardization failed for IWM: Can only use .dt accessor with datetimelike values",
+      "processing_date": "2025-07-16T14:18:16.005589"
+    },
+    {
+      "symbol": "EFA",
+      "status": "error",
+      "input_file": "/Users/yann.pourcenoux/Workspaces/FundTuneLab/data/raw/EFA_20250715.csv",
+      "error": "Date standardization failed for EFA: Can only use .dt accessor with datetimelike values",
+      "processing_date": "2025-07-16T14:18:16.020296"
+    },
+    {
+      "symbol": "TIPS",
+      "status": "error",
+      "input_file": "/Users/yann.pourcenoux/Workspaces/FundTuneLab/data/raw/TIPS_20250716.csv",
+      "error": "Date standardization failed for TIPS: Can only use .dt accessor with datetimelike values",
+      "processing_date": "2025-07-16T14:18:16.033724"
+    },
+    {
+      "symbol": "EFA",
+      "status": "success",
+      "input_file": "/Users/yann.pourcenoux/Workspaces/FundTuneLab/data/raw/EFA_20250714.csv",
+      "output_file": "data/processed/EFA_processed_20250716.csv",
+      "original_rows": 20,
+      "final_rows": 20,
+      "rows_removed": 0,
+      "removal_percentage": 0.0,
+      "missing_analysis": {
+        "total_rows": 20,
+        "rows_with_missing": "0",
+        "missing_by_column": {
+          "Date": 0,
+          "Open": 0,
+          "High": 0,
+          "Low": 0,
+          "Close": 0,
+          "Volume": 0,
+          "Dividends": 0,
+          "Stock Splits": 0,
+          "Capital Gains": 0,
+          "Symbol": 0
+        },
+        "missing_percentages": {
+          "Date": 0.0,
+          "Open": 0.0,
+          "High": 0.0,
+          "Low": 0.0,
+          "Close": 0.0,
+          "Volume": 0.0,
+          "Dividends": 0.0,
+          "Stock Splits": 0.0,
+          "Capital Gains": 0.0,
+          "Symbol": 0.0
+        },
+        "critical_missing": {},
+        "has_missing_data": "False"
+      },
+      "processing_date": "2025-07-16T14:18:16.039822"
+    },
+    {
+      "symbol": "VEA",
+      "status": "error",
+      "input_file": "/Users/yann.pourcenoux/Workspaces/FundTuneLab/data/raw/VEA_20250715.csv",
+      "error": "Date standardization failed for VEA: Can only use .dt accessor with datetimelike values",
+      "processing_date": "2025-07-16T14:18:16.054294"
+    },
+    {
+      "symbol": "DBC",
+      "status": "error",
+      "input_file": "/Users/yann.pourcenoux/Workspaces/FundTuneLab/data/raw/DBC_20250715.csv",
+      "error": "Date standardization failed for DBC: Can only use .dt accessor with datetimelike values",
+      "processing_date": "2025-07-16T14:18:16.068503"
+    },
+    {
+      "symbol": "DBC",
+      "status": "success",
+      "input_file": "/Users/yann.pourcenoux/Workspaces/FundTuneLab/data/raw/DBC_20250714.csv",
+      "output_file": "data/processed/DBC_processed_20250716.csv",
+      "original_rows": 20,
+      "final_rows": 20,
+      "rows_removed": 0,
+      "removal_percentage": 0.0,
+      "missing_analysis": {
+        "total_rows": 20,
+        "rows_with_missing": "0",
+        "missing_by_column": {
+          "Date": 0,
+          "Open": 0,
+          "High": 0,
+          "Low": 0,
+          "Close": 0,
+          "Volume": 0,
+          "Dividends": 0,
+          "Stock Splits": 0,
+          "Capital Gains": 0,
+          "Symbol": 0
+        },
+        "missing_percentages": {
+          "Date": 0.0,
+          "Open": 0.0,
+          "High": 0.0,
+          "Low": 0.0,
+          "Close": 0.0,
+          "Volume": 0.0,
+          "Dividends": 0.0,
+          "Stock Splits": 0.0,
+          "Capital Gains": 0.0,
+          "Symbol": 0.0
+        },
+        "critical_missing": {},
+        "has_missing_data": "False"
+      },
+      "processing_date": "2025-07-16T14:18:16.074193"
+    },
+    {
+      "symbol": "VNQ",
+      "status": "error",
+      "input_file": "/Users/yann.pourcenoux/Workspaces/FundTuneLab/data/raw/VNQ_20250716.csv",
+      "error": "Date standardization failed for VNQ: Can only use .dt accessor with datetimelike values",
+      "processing_date": "2025-07-16T14:18:16.088497"
+    },
+    {
+      "symbol": "VEA",
+      "status": "success",
+      "input_file": "/Users/yann.pourcenoux/Workspaces/FundTuneLab/data/raw/VEA_20250714.csv",
+      "output_file": "data/processed/VEA_processed_20250716.csv",
+      "original_rows": 20,
+      "final_rows": 20,
+      "rows_removed": 0,
+      "removal_percentage": 0.0,
+      "missing_analysis": {
+        "total_rows": 20,
+        "rows_with_missing": "0",
+        "missing_by_column": {
+          "Date": 0,
+          "Open": 0,
+          "High": 0,
+          "Low": 0,
+          "Close": 0,
+          "Volume": 0,
+          "Dividends": 0,
+          "Stock Splits": 0,
+          "Capital Gains": 0,
+          "Symbol": 0
+        },
+        "missing_percentages": {
+          "Date": 0.0,
+          "Open": 0.0,
+          "High": 0.0,
+          "Low": 0.0,
+          "Close": 0.0,
+          "Volume": 0.0,
+          "Dividends": 0.0,
+          "Stock Splits": 0.0,
+          "Capital Gains": 0.0,
+          "Symbol": 0.0
+        },
+        "critical_missing": {},
+        "has_missing_data": "False"
+      },
+      "processing_date": "2025-07-16T14:18:16.094433"
+    },
+    {
+      "symbol": "VEA",
+      "status": "error",
+      "input_file": "/Users/yann.pourcenoux/Workspaces/FundTuneLab/data/raw/VEA_20250716.csv",
+      "error": "Date standardization failed for VEA: Can only use .dt accessor with datetimelike values",
+      "processing_date": "2025-07-16T14:18:16.108444"
+    },
+    {
+      "symbol": "VNQ",
+      "status": "success",
+      "input_file": "/Users/yann.pourcenoux/Workspaces/FundTuneLab/data/raw/VNQ_20250714.csv",
+      "output_file": "data/processed/VNQ_processed_20250716.csv",
+      "original_rows": 20,
+      "final_rows": 20,
+      "rows_removed": 0,
+      "removal_percentage": 0.0,
+      "missing_analysis": {
+        "total_rows": 20,
+        "rows_with_missing": "0",
+        "missing_by_column": {
+          "Date": 0,
+          "Open": 0,
+          "High": 0,
+          "Low": 0,
+          "Close": 0,
+          "Volume": 0,
+          "Dividends": 0,
+          "Stock Splits": 0,
+          "Capital Gains": 0,
+          "Symbol": 0
+        },
+        "missing_percentages": {
+          "Date": 0.0,
+          "Open": 0.0,
+          "High": 0.0,
+          "Low": 0.0,
+          "Close": 0.0,
+          "Volume": 0.0,
+          "Dividends": 0.0,
+          "Stock Splits": 0.0,
+          "Capital Gains": 0.0,
+          "Symbol": 0.0
+        },
+        "critical_missing": {},
+        "has_missing_data": "False"
+      },
+      "processing_date": "2025-07-16T14:18:16.114329"
+    },
+    {
+      "symbol": "DBC",
+      "status": "error",
+      "input_file": "/Users/yann.pourcenoux/Workspaces/FundTuneLab/data/raw/DBC_20250716.csv",
+      "error": "Date standardization failed for DBC: Can only use .dt accessor with datetimelike values",
+      "processing_date": "2025-07-16T14:18:16.128245"
+    },
+    {
+      "symbol": "VNQ",
+      "status": "error",
+      "input_file": "/Users/yann.pourcenoux/Workspaces/FundTuneLab/data/raw/VNQ_20250715.csv",
+      "error": "Date standardization failed for VNQ: Can only use .dt accessor with datetimelike values",
+      "processing_date": "2025-07-16T14:18:16.142854"
+    },
+    {
+      "symbol": "SHY",
+      "status": "error",
+      "input_file": "/Users/yann.pourcenoux/Workspaces/FundTuneLab/data/raw/SHY_20250716.csv",
+      "error": "Date standardization failed for SHY: Can only use .dt accessor with datetimelike values",
+      "processing_date": "2025-07-16T14:18:16.156262"
+    },
+    {
+      "symbol": "GLD",
+      "status": "error",
+      "input_file": "/Users/yann.pourcenoux/Workspaces/FundTuneLab/data/raw/GLD_20250716.csv",
+      "error": "Date standardization failed for GLD: Can only use .dt accessor with datetimelike values",
+      "processing_date": "2025-07-16T14:18:16.168979"
+    },
+    {
+      "symbol": "SHY",
+      "status": "error",
+      "input_file": "/Users/yann.pourcenoux/Workspaces/FundTuneLab/data/raw/SHY_20250715.csv",
+      "error": "Date standardization failed for SHY: Can only use .dt accessor with datetimelike values",
+      "processing_date": "2025-07-16T14:18:16.182916"
+    },
+    {
+      "symbol": "GLD",
+      "status": "success",
+      "input_file": "/Users/yann.pourcenoux/Workspaces/FundTuneLab/data/raw/GLD_20250714.csv",
+      "output_file": "data/processed/GLD_processed_20250716.csv",
+      "original_rows": 20,
+      "final_rows": 19,
+      "rows_removed": 1,
+      "removal_percentage": 5.0,
+      "missing_analysis": {
+        "total_rows": 20,
+        "rows_with_missing": "0",
+        "missing_by_column": {
+          "Date": 0,
+          "Open": 0,
+          "High": 0,
+          "Low": 0,
+          "Close": 0,
+          "Volume": 0,
+          "Dividends": 0,
+          "Stock Splits": 0,
+          "Capital Gains": 0,
+          "Symbol": 0
+        },
+        "missing_percentages": {
+          "Date": 0.0,
+          "Open": 0.0,
+          "High": 0.0,
+          "Low": 0.0,
+          "Close": 0.0,
+          "Volume": 0.0,
+          "Dividends": 0.0,
+          "Stock Splits": 0.0,
+          "Capital Gains": 0.0,
+          "Symbol": 0.0
+        },
+        "critical_missing": {},
+        "has_missing_data": "False"
+      },
+      "processing_date": "2025-07-16T14:18:16.189138"
+    },
+    {
+      "symbol": "GLD",
+      "status": "error",
+      "input_file": "/Users/yann.pourcenoux/Workspaces/FundTuneLab/data/raw/GLD_20250715.csv",
+      "error": "Date standardization failed for GLD: Can only use .dt accessor with datetimelike values",
+      "processing_date": "2025-07-16T14:18:16.207170"
+    },
+    {
+      "symbol": "SHY",
+      "status": "success",
+      "input_file": "/Users/yann.pourcenoux/Workspaces/FundTuneLab/data/raw/SHY_20250714.csv",
+      "output_file": "data/processed/SHY_processed_20250716.csv",
+      "original_rows": 20,
+      "final_rows": 20,
+      "rows_removed": 0,
+      "removal_percentage": 0.0,
+      "missing_analysis": {
+        "total_rows": 20,
+        "rows_with_missing": "0",
+        "missing_by_column": {
+          "Date": 0,
+          "Open": 0,
+          "High": 0,
+          "Low": 0,
+          "Close": 0,
+          "Volume": 0,
+          "Dividends": 0,
+          "Stock Splits": 0,
+          "Capital Gains": 0,
+          "Symbol": 0
+        },
+        "missing_percentages": {
+          "Date": 0.0,
+          "Open": 0.0,
+          "High": 0.0,
+          "Low": 0.0,
+          "Close": 0.0,
+          "Volume": 0.0,
+          "Dividends": 0.0,
+          "Stock Splits": 0.0,
+          "Capital Gains": 0.0,
+          "Symbol": 0.0
+        },
+        "critical_missing": {},
+        "has_missing_data": "False"
+      },
+      "processing_date": "2025-07-16T14:18:16.273793"
+    },
+    {
+      "symbol": "TLT",
+      "status": "error",
+      "input_file": "/Users/yann.pourcenoux/Workspaces/FundTuneLab/data/raw/TLT_20250716.csv",
+      "error": "Date standardization failed for TLT: Can only use .dt accessor with datetimelike values",
+      "processing_date": "2025-07-16T14:18:16.300364"
+    },
+    {
+      "symbol": "TLT",
+      "status": "error",
+      "input_file": "/Users/yann.pourcenoux/Workspaces/FundTuneLab/data/raw/TLT_20250715.csv",
+      "error": "Date standardization failed for TLT: Can only use .dt accessor with datetimelike values",
+      "processing_date": "2025-07-16T14:18:16.314464"
+    },
+    {
+      "symbol": "TLT",
+      "status": "success",
+      "input_file": "/Users/yann.pourcenoux/Workspaces/FundTuneLab/data/raw/TLT_20250714.csv",
+      "output_file": "data/processed/TLT_processed_20250716.csv",
+      "original_rows": 20,
+      "final_rows": 20,
+      "rows_removed": 0,
+      "removal_percentage": 0.0,
+      "missing_analysis": {
+        "total_rows": 20,
+        "rows_with_missing": "0",
+        "missing_by_column": {
+          "Date": 0,
+          "Open": 0,
+          "High": 0,
+          "Low": 0,
+          "Close": 0,
+          "Volume": 0,
+          "Dividends": 0,
+          "Stock Splits": 0,
+          "Capital Gains": 0,
+          "Symbol": 0
+        },
+        "missing_percentages": {
+          "Date": 0.0,
+          "Open": 0.0,
+          "High": 0.0,
+          "Low": 0.0,
+          "Close": 0.0,
+          "Volume": 0.0,
+          "Dividends": 0.0,
+          "Stock Splits": 0.0,
+          "Capital Gains": 0.0,
+          "Symbol": 0.0
+        },
+        "critical_missing": {},
+        "has_missing_data": "False"
+      },
+      "processing_date": "2025-07-16T14:18:16.319831"
+    },
+    {
+      "symbol": "QQQ",
+      "status": "success",
+      "input_file": "/Users/yann.pourcenoux/Workspaces/FundTuneLab/data/raw/QQQ_20250714.csv",
+      "output_file": "data/processed/QQQ_processed_20250716.csv",
+      "original_rows": 20,
+      "final_rows": 20,
+      "rows_removed": 0,
+      "removal_percentage": 0.0,
+      "missing_analysis": {
+        "total_rows": 20,
+        "rows_with_missing": "0",
+        "missing_by_column": {
+          "Date": 0,
+          "Open": 0,
+          "High": 0,
+          "Low": 0,
+          "Close": 0,
+          "Volume": 0,
+          "Dividends": 0,
+          "Stock Splits": 0,
+          "Capital Gains": 0,
+          "Symbol": 0
+        },
+        "missing_percentages": {
+          "Date": 0.0,
+          "Open": 0.0,
+          "High": 0.0,
+          "Low": 0.0,
+          "Close": 0.0,
+          "Volume": 0.0,
+          "Dividends": 0.0,
+          "Stock Splits": 0.0,
+          "Capital Gains": 0.0,
+          "Symbol": 0.0
+        },
+        "critical_missing": {},
+        "has_missing_data": "False"
+      },
+      "processing_date": "2025-07-16T14:18:16.326102"
+    },
+    {
+      "symbol": "SPY",
+      "status": "success",
+      "input_file": "/Users/yann.pourcenoux/Workspaces/FundTuneLab/data/raw/SPY_20250714.csv",
+      "output_file": "data/processed/SPY_processed_20250716.csv",
+      "original_rows": 20,
+      "final_rows": 17,
+      "rows_removed": 3,
+      "removal_percentage": 15.0,
+      "missing_analysis": {
+        "total_rows": 20,
+        "rows_with_missing": "0",
+        "missing_by_column": {
+          "Date": 0,
+          "Open": 0,
+          "High": 0,
+          "Low": 0,
+          "Close": 0,
+          "Volume": 0,
+          "Dividends": 0,
+          "Stock Splits": 0,
+          "Capital Gains": 0,
+          "Symbol": 0
+        },
+        "missing_percentages": {
+          "Date": 0.0,
+          "Open": 0.0,
+          "High": 0.0,
+          "Low": 0.0,
+          "Close": 0.0,
+          "Volume": 0.0,
+          "Dividends": 0.0,
+          "Stock Splits": 0.0,
+          "Capital Gains": 0.0,
+          "Symbol": 0.0
+        },
+        "critical_missing": {},
+        "has_missing_data": "False"
+      },
+      "processing_date": "2025-07-16T14:18:16.332061"
+    },
+    {
+      "symbol": "SPY",
+      "status": "error",
+      "input_file": "/Users/yann.pourcenoux/Workspaces/FundTuneLab/data/raw/SPY_20250715.csv",
+      "error": "Date standardization failed for SPY: Can only use .dt accessor with datetimelike values",
+      "processing_date": "2025-07-16T14:18:16.346297"
+    },
+    {
+      "symbol": "QQQ",
+      "status": "error",
+      "input_file": "/Users/yann.pourcenoux/Workspaces/FundTuneLab/data/raw/QQQ_20250715.csv",
+      "error": "Date standardization failed for QQQ: Can only use .dt accessor with datetimelike values",
+      "processing_date": "2025-07-16T14:18:16.360541"
+    },
+    {
+      "symbol": "SPY",
+      "status": "error",
+      "input_file": "/Users/yann.pourcenoux/Workspaces/FundTuneLab/data/raw/SPY_20250716.csv",
+      "error": "Date standardization failed for SPY: Can only use .dt accessor with datetimelike values",
+      "processing_date": "2025-07-16T14:18:16.374043"
+    },
+    {
+      "symbol": "QQQ",
+      "status": "error",
+      "input_file": "/Users/yann.pourcenoux/Workspaces/FundTuneLab/data/raw/QQQ_20250716.csv",
+      "error": "Date standardization failed for QQQ: Can only use .dt accessor with datetimelike values",
+      "processing_date": "2025-07-16T14:18:16.387787"
+    }
+  ],
+  "summary_stats": {},
+  "errors": [
+    "Date standardization failed for BND: Can only use .dt accessor with datetimelike values",
+    "Date standardization failed for VWO: Can only use .dt accessor with datetimelike values",
+    "Date standardization failed for VTI: Can only use .dt accessor with datetimelike values",
+    "Date standardization failed for BND: Can only use .dt accessor with datetimelike values",
+    "Date standardization failed for VWO: Can only use .dt accessor with datetimelike values",
+    "Date standardization failed for VTI: Can only use .dt accessor with datetimelike values",
+    "Date standardization failed for IWM: Can only use .dt accessor with datetimelike values",
+    "Date standardization failed for EFA: Can only use .dt accessor with datetimelike values",
+    "Date standardization failed for TIPS: Can only use .dt accessor with datetimelike values",
+    "Date standardization failed for IWM: Can only use .dt accessor with datetimelike values",
+    "Date standardization failed for EFA: Can only use .dt accessor with datetimelike values",
+    "Date standardization failed for TIPS: Can only use .dt accessor with datetimelike values",
+    "Date standardization failed for VEA: Can only use .dt accessor with datetimelike values",
+    "Date standardization failed for DBC: Can only use .dt accessor with datetimelike values",
+    "Date standardization failed for VNQ: Can only use .dt accessor with datetimelike values",
+    "Date standardization failed for VEA: Can only use .dt accessor with datetimelike values",
+    "Date standardization failed for DBC: Can only use .dt accessor with datetimelike values",
+    "Date standardization failed for VNQ: Can only use .dt accessor with datetimelike values",
+    "Date standardization failed for SHY: Can only use .dt accessor with datetimelike values",
+    "Date standardization failed for GLD: Can only use .dt accessor with datetimelike values",
+    "Date standardization failed for SHY: Can only use .dt accessor with datetimelike values",
+    "Date standardization failed for GLD: Can only use .dt accessor with datetimelike values",
+    "Date standardization failed for TLT: Can only use .dt accessor with datetimelike values",
+    "Date standardization failed for TLT: Can only use .dt accessor with datetimelike values",
+    "Date standardization failed for SPY: Can only use .dt accessor with datetimelike values",
+    "Date standardization failed for QQQ: Can only use .dt accessor with datetimelike values",
+    "Date standardization failed for SPY: Can only use .dt accessor with datetimelike values",
+    "Date standardization failed for QQQ: Can only use .dt accessor with datetimelike values"
+  ],
+  "batch_end_time": "2025-07-16T14:18:16.387848",
+  "total_processing_time": "0:00:00.568588",
+  "success_rate": 33.33333333333333,
+  "quality_stats": {
+    "files_processed": 14,
+    "total_rows_input": 39166,
+    "total_rows_output": 270,
+    "missing_values_found": "0",
+    "missing_values_handled": 0,
+    "outliers_detected": 968,
+    "outliers_removed": 968,
+    "date_format_issues": 28,
+    "integrity_checks_failed": 0
+  }
+}
